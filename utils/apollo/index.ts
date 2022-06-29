@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 export const apolloClient = new ApolloClient({
-    uri: "http://139.59.234.34/v1/graphql",
+    uri: process.env.HASURA_URL,
     // uri: "https://smartmark.hasura.app/v1/graphql",
     cache: new InMemoryCache(),
     headers: {
