@@ -9,7 +9,7 @@ export function handleGetFlowError<S>(
   flowType: 'login' | 'registration' | 'settings' | 'recovery' | 'verification',
   resetFlow: Dispatch<SetStateAction<S | undefined>>
 ) {
-  return async (err: AxiosError) => {
+  return async (err: any) => {
     switch (err.response?.data.error?.id) {
       case 'session_aal2_required':
         // 2FA is enabled and enforced, but user did not perform 2fa yet!

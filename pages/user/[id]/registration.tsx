@@ -89,7 +89,7 @@ const Login: NextPage = () => {
                                 .then(() => {});
                         })
                         .catch(handleFlowError(router, "registration", setFlow))
-                        .catch((err: AxiosError) => {
+                        .catch((err: any) => {
                             // If the previous handler did not catch the error it's most likely a form validation error
                             if (err.response?.status === 400) {
                                 // Yup, it is!
