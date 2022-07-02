@@ -20,6 +20,8 @@ function RegisterCard(props: Props) {
             logout()?.then(() => {
                 router.push(`/user/${id}/registration`);
             });
+        } else {
+            router.push(`/user/${id}/registration`);
         }
     };
 

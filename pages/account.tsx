@@ -58,8 +58,6 @@ const Account: NextPage = () => {
 
     const [account, setAccount] = useState<Account>();
 
-    console.log(account);
-
     const [getCardByOryId, { called, loading, data }] =
         useLazyQuery(GET_CARD_BY_ORY_ID);
 
@@ -73,6 +71,8 @@ const Account: NextPage = () => {
             });
         }
     }, [session]);
+
+    console.log(data);
 
     useEffect(() => {
         if (data) {
@@ -170,7 +170,7 @@ const Account: NextPage = () => {
                                     {account && (
                                         <InforSetting account={account} />
                                     )}
-                                    <AvatarDrop account={account}/>
+                                    <AvatarDrop account={account} />
 
                                     {/* <SettingsCard only="profile" flow={flow}>
                                         <h3>Profile Settings</h3>
@@ -226,7 +226,11 @@ const Account: NextPage = () => {
                                                 lineHeight: "20px",
                                                 padding: "8px",
                                             }}
-                                            onClick={onLogout}
+                                            onClick={() =>
+                                                onLogout()?.then(() => {
+                                                    router.push("/login");
+                                                })
+                                            }
                                         >
                                             Logout
                                         </button>
