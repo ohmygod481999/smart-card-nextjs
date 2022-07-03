@@ -58,7 +58,7 @@ function AvatarDrop(props: Props) {
 
             const response = await axios.post(
                 // "http://localhost:3003/storage/upload",
-                process.env.NEXT_PUBLIC_FILE_SERVER_URL || "",
+                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/storage/upload`|| "",
                 formData,
                 {
                     headers: {
