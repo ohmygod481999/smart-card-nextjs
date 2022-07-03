@@ -1,0 +1,52 @@
+domains:
+- domain: smartcardnp.vn
+  type: PRIMARY
+  zone: smartcardnp.vn
+envs:
+- key: HASURA_URL
+  scope: RUN_AND_BUILD_TIME
+  value: https://hasura.smartcardnp.vn/v1/graphql
+- key: NEXT_PUBLIC_FILE_SERVER_URL
+  scope: RUN_AND_BUILD_TIME
+  value: https://server.smartcardnp.vn
+name: lionfish-app
+region: sgp
+services:
+- build_command: yarn build
+  environment_slug: node-js
+  envs:
+  - key: ORY_SDK_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://auth.smartcardnp.vn
+  - key: NEXT_PUBLIC_HASURA_ADMIN_SECRET
+    scope: RUN_AND_BUILD_TIME
+    type: SECRET
+    value: EV[1:q2wd9+2gsJmVaeYL87xnSnO4rMXauJe9:4XE6F36uF737Jmo9B1zqf0QX9ZHMgBB3/ut/Tz7xV4CmvZsJrAdrpRIaJAT0JObAf9aCh81D81czef2HjOYertMdec7ooxmRoA8eg2LRHk4=]
+  - key: SPACE_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://sgp1.digitaloceanspaces.com
+  - key: SPACE_REGION
+    scope: RUN_AND_BUILD_TIME
+    value: sgp1
+  - key: ACCESS_KEY_ID
+    scope: RUN_AND_BUILD_TIME
+    value: OZMG7XXNT64EPKWZYSVM
+  - key: SECRET_ACCESS_KEY
+    scope: RUN_AND_BUILD_TIME
+    type: SECRET
+    value: EV[1:ECgL92rUARBYtj9XNIjOzW8FpJoLw46W:VjFr3weSL9MY8953TeQEP4f8Qyu5BrTa9LEkltT8MnR3PtTGWATEOmNtwNY3+1mXpDZIEZHP4W4uHag=]
+  - key: NEXT_PUBLIC_FILE_SERVER_URL
+    scope: RUN_AND_BUILD_TIME
+    value: https://server.smartcardnp.vn
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: ohmygod481999/smart-card-nextjs
+  http_port: 8080
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  name: smart-card-nextjs
+  routes:
+  - path: /
+  run_command: yarn start
+  source_dir: /
