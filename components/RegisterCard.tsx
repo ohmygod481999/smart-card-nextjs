@@ -15,14 +15,11 @@ function RegisterCard(props: Props) {
 
     const logout = useLogoutHandler();
 
-    const onRegister = () => {
+    const onRegister = async () => {
         if (session) {
-            logout()?.then(() => {
-                router.push(`/user/${id}/registration`);
-            });
-        } else {
-            router.push(`/user/${id}/registration`);
+            await logout();
         }
+        router.push(`/register?card_id=${id}`);
     };
 
     return (

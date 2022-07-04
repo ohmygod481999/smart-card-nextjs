@@ -12,9 +12,6 @@ export const GET_CARD = gql`
                 email
                 name
                 phone
-                user_info {
-                    traits
-                }
                 description
             }
         }
@@ -32,9 +29,6 @@ export const GET_CARD_BY_ORY_ID = gql`
                 phone
                 email
                 description
-                user_info {
-                    traits
-                }
             }
         }
     }

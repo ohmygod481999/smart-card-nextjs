@@ -2,9 +2,10 @@ import { SelfServiceRegistrationFlow } from "@ory/client";
 import axios from "axios";
 import _ from "lodash";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import LayoutAuthed from "../components/LayoutAuthed";
+import SessionContext from "../context/session-context";
 import { ory } from "../pkg";
 import { handleFlowError } from "../pkg/errors";
 
@@ -19,14 +20,17 @@ function Register() {
         formState: { errors },
     } = useForm();
 
+    const { card_id } = router.query;
+
+    const { updateSession } = useContext(SessionContext);
+    const [messages, setMessages] = useState<any[]>([]);
+
     // The "flow" represents a registration process and contains
     // information about the form we need to render (e.g. username + password)
     const [flow, setFlow] = useState<SelfServiceRegistrationFlow>();
 
     // Get ?flow=... from the URL
     const { flow: flowId, return_to: returnTo } = router.query;
-
-    // console.log(flow);
 
     // In this effect we either initiate a new registration flow, or we fetch an existing registration flow.
     useEffect(() => {
@@ -58,28 +62,60 @@ function Register() {
     }, [flowId, router, router.isReady, returnTo, flow]);
 
     const onSubmit = async (data: any) => {
+        router.query.flow = flow?.id;
+        router.push(router);
+
+        await router
+            // On submission, add the flow ID to the URL but do not navigate. This prevents the user loosing
+            // his data when she/he reloads the page.
+            .push(router);
+        setMessages([]);
         const { myData } = data;
+        if (card_id) {
+            myData["cardId"] = card_id;
+        }
+
         delete data["myData"];
-        // console.log(myData);
-        // console.log(data);
         const body = {
             flowId: flow?.id,
             myData,
             data,
         };
 
-        axios
-            .post(
+        try {
+            const res = await axios.post(
                 `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/registration` || "",
                 // "https://faas-sgp1-18bc02ac.doserverless.co/api/v1/web/fn-a916d45e-b515-4ffa-8656-7131ef8f4d20/smartcard/registration",
                 body,
                 {
                     withCredentials: true,
                 }
-            )
-            .then((data) => {
-                console.log(data.data);
-            });
+            );
+            if (res.data.success) {
+                const { identity, session } = res.data;
+
+                return router
+                    .push(flow?.return_to || `/login?login_success=true`)
+                    .then(() => {});
+            }
+        } catch (error: any) {
+            const _messages: any[] = [];
+            // setMessage()
+            _.get(error, "response.data.data.ui.nodes")?.forEach(
+                (node: any) => {
+                    node.messages.forEach((msg: any) => {
+                        _messages.push(msg);
+                    });
+                }
+            );
+            _.get(error, "response.data.data.ui.messages")?.forEach(
+                (msg: any) => {
+                    _messages.push(msg);
+                }
+            );
+            setMessages(_messages);
+            console.log(error.response.data);
+        }
     };
 
     return (
@@ -181,7 +217,7 @@ function Register() {
                                                             node.meta.label
                                                                 ?.text
                                                         }
-                                                        value={_.get(
+                                                        defaultValue={_.get(
                                                             node,
                                                             "attributes.value"
                                                         )}
@@ -199,6 +235,8 @@ function Register() {
                                             autoComplete="off"
                                             className="form-control"
                                             placeholder="Mã thẻ"
+                                            value={card_id}
+                                            disabled={card_id ? true : false}
                                         />
                                     </div>
                                     <div className="form-group mb-3">
@@ -229,6 +267,9 @@ function Register() {
                                             type="password"
                                         />
                                     </div>
+                                    {messages.map((msg) => (
+                                        <div key={msg.id}>{msg.text}</div>
+                                    ))}
                                     <div className="form-submit">
                                         <button
                                             {...register("method")}
