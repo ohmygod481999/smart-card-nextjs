@@ -29,11 +29,15 @@ function InforSetting(props: Props) {
     useEffect(() => {
         if (account) {
             if (account) {
-                const { name, phone, description, email } = account;
+                const { name, phone, description, email, facebook, zalo, slide_text } =
+                    account;
                 setValue("name", name);
                 setValue("phone", phone);
                 setValue("description", description);
                 setValue("email", email);
+                setValue("facebook", facebook);
+                setValue("zalo", zalo);
+                setValue("slide_text", slide_text);
             }
         }
     }, [account]);
@@ -42,7 +46,7 @@ function InforSetting(props: Props) {
         return <div className="text-center">Thẻ chưa kích hoạt</div>;
 
     const onSubmit = async (data: any) => {
-        const { name, phone, description, email } = data;
+        const { name, phone, description, email, facebook, zalo, slide_text } = data;
         if (account) {
             setMsg("");
             setSubmitLoading(true);
@@ -53,14 +57,16 @@ function InforSetting(props: Props) {
                     name,
                     phone,
                     description,
-                    email
+                    email,
+                    facebook,
+                    zalo,
+                    slide_text,
                 },
             });
             setSubmitLoading(false);
             setMsg("Cập nhật thành công");
-        }
-        else {
-            setMsg("Chưa load đc account")
+        } else {
+            setMsg("Chưa load đc account");
         }
     };
 
@@ -93,6 +99,27 @@ function InforSetting(props: Props) {
                         {...register("email")}
                         className="form-control"
                         placeholder="Email..."
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        {...register("facebook")}
+                        className="form-control"
+                        placeholder="Facebook..."
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        {...register("zalo")}
+                        className="form-control"
+                        placeholder="Số điện thoại Zalo (VD: 082....)"
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        {...register("slide_text")}
+                        className="form-control"
+                        placeholder="Chữ chạy (cách nhau bởi dấu ',')..."
                     />
                 </div>
                 <div className="form-group mb-3">

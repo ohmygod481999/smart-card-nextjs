@@ -35,7 +35,7 @@ function Navigation(props: Props) {
                             </a>
                         </Link>
                     </li>
-                    <li
+                    {/* <li
                         className={`list ${
                             pathname.includes("/about") ? "active" : ""
                         }`}
@@ -82,7 +82,7 @@ function Navigation(props: Props) {
                                 </div>
                             </a>
                         </Link>
-                    </li>
+                    </li> */}
                     {session ? (
                         <li
                             className={`list ${

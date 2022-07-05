@@ -5,6 +5,9 @@ export interface Account {
     avatar: string;
     phone: string;
     email: string;
+    facebook: string;
+    zalo: string;
+    slide_text: string;
     description: string;
     user_info: {
         traits: string;

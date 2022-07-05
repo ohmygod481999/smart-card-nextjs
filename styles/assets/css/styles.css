@@ -661,7 +661,7 @@ li.active {
     background-color: #fff;
 }
 
-li.active::before {
+/* li.active::before {
     content: '';
     position: absolute;
     left: 50%;
@@ -683,7 +683,7 @@ li.active::after {
     background-color: transparent;
     border-top-left-radius: 20px;
     box-shadow: -10px 1px 0 0 #eee;
-}
+} */
 
 
 /********************* Header section Close *******************/

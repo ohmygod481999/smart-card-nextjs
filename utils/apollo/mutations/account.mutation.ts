@@ -7,6 +7,9 @@ export const UPDATE_ACCOUNT = gql`
         $phone: String
         $description: String
         $email: String
+        $facebook: String
+        $zalo: String
+        $slide_text: String
     ) {
         update_account_by_pk(
             pk_columns: { id: $id }
@@ -15,6 +18,9 @@ export const UPDATE_ACCOUNT = gql`
                 phone: $phone
                 description: $description
                 email: $email
+                facebook: $facebook
+                zalo: $zalo
+                slide_text: $slide_text
             }
         ) {
             id
@@ -22,6 +28,9 @@ export const UPDATE_ACCOUNT = gql`
             phone
             description
             email
+            facebook
+            zalo
+            slide_text
         }
     }
 `;

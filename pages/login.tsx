@@ -140,7 +140,7 @@ const Login: NextPage = () => {
                         {/* Blog-Section Title End */}
                         {/* Blog-Content Box Start */}
                         <div className="blog-section animate__animated animate__fadeInUp animate__delay-2s">
-                            <div className="row justify-content-center">
+                            <div className="row justify-content-center flex-column">
                                 {login_success === "true" && (
                                     <p className="text-center">
                                         Đăng ký thành công, mời đăng nhập
@@ -159,14 +159,7 @@ const Login: NextPage = () => {
                                         </CenterLink>
                                     </ActionCard>
                                 ) : (
-                                    <>
-                                        <ActionCard>
-                                            <Link href="/registration" passHref>
-                                                <CenterLink>
-                                                    Create account
-                                                </CenterLink>
-                                            </Link>
-                                        </ActionCard>
+                                    <div className="text-center">
                                         <ActionCard>
                                             <Link href="/recovery" passHref>
                                                 <CenterLink>
@@ -174,7 +167,7 @@ const Login: NextPage = () => {
                                                 </CenterLink>
                                             </Link>
                                         </ActionCard>
-                                    </>
+                                    </div>
                                 )}
                             </div>
                         </div>

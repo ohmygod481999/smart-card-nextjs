@@ -315,7 +315,7 @@
         right: 0px;
     }
 
-    li.active::before {
+    /* li.active::before {
         content: '';
         position: absolute;
         width: 20px;
@@ -337,7 +337,7 @@
         background-color: transparent;
         border-top-left-radius: 20px;
         box-shadow: -1px -10px 0 0 #111;
-    }
+    } */
 
     .homecolor-box {
         left: -141%;

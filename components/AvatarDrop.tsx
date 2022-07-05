@@ -47,6 +47,10 @@ function AvatarDrop(props: Props) {
     }, []);
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
+        accept: {
+            "image/jpeg": [],
+            "image/png": [],
+        },
     });
 
     const onSave = async () => {
@@ -55,32 +59,38 @@ function AvatarDrop(props: Props) {
             setSubmitLoading(true);
             const formData = new FormData();
             formData.append("file", file);
+            try {
 
-            const response = await axios.post(
-                // "http://localhost:3003/storage/upload",
-                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/storage/upload`|| "",
-                formData,
-                {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "x-path": "/smartcard",
-                    },
-                    withCredentials: true,
+                const response = await axios.post(
+                    // "http://localhost:3003/storage/upload",
+                    `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/storage/upload` ||
+                        "",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "x-path": "/smartcard",
+                        },
+                        withCredentials: true,
+                    }
+                );
+    
+                if (_.get(response, "data.success")) {
+                    const imgUrl = _.get(response, "data.data.location");
+                    console.log(imgUrl);
+    
+                    await apolloClient.mutate({
+                        mutation: UPDATE_AVATAR_ACCOUNT,
+                        variables: {
+                            id: account.id,
+                            avatar: imgUrl,
+                        },
+                    });
+                    setMsg("Cập nhật thành công");
                 }
-            );
-
-            if (_.get(response, "data.success")) {
-                const imgUrl = _.get(response, "data.data.location");
-                console.log(imgUrl);
-
-                await apolloClient.mutate({
-                    mutation: UPDATE_AVATAR_ACCOUNT,
-                    variables: {
-                        id: account.id,
-                        avatar: imgUrl,
-                    },
-                });
-                setMsg("Cập nhật thành công");
+            }
+            catch(err) {
+                setMsg("File không được quá 1 MB");
             }
             setSubmitLoading(false);
         }

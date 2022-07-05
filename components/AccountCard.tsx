@@ -38,9 +38,12 @@ function AccountCard({ account }: Props) {
                                 </h1>
                                 <div className="animated-bar animate__animated animate__fadeInDown animate__delay-2s" />
                                 <div className="animated-text animate__animated animate__fadeInDown animate__delay-2s">
-                                    <h3>Web Developer</h3>
-                                    <h3>UI - UX Designer</h3>
-                                    <h3>Software Engineer</h3>
+                                    {_.get(account, "slide_text") &&
+                                        _.get(account, "slide_text")
+                                            ?.split(",")
+                                            .map((text, i) => (
+                                                <h3 key={i}>{text.trim()}</h3>
+                                            ))}
                                 </div>
                                 {/* Social media icons*/}
                                 {/* <div className="fixed-block animate__animated animate__jackInTheBox animate__delay-2-5s">
@@ -73,17 +76,45 @@ function AccountCard({ account }: Props) {
                                         </ul>
                                     </div> */}
                                 <ul className="account-infor-list">
-                                    <li>
-                                        <a href="facebook.com">
-                                            <div className="logo">
-                                                <i className="fab fa-facebook-square " />{" "}
-                                            </div>
-                                            <div className="content">
-                                                Facebook
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
+                                    {_.get(account, "facebook") && (
+                                        <li>
+                                            <a
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                href={_.get(
+                                                    account,
+                                                    "facebook"
+                                                )}
+                                            >
+                                                <div className="logo">
+                                                    <i className="fab fa-facebook-square " />{" "}
+                                                </div>
+                                                <div className="content">
+                                                    Facebook
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )}
+                                    {_.get(account, "zalo") && (
+                                        <li>
+                                            <a
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                href={`https://zalo.me/${_.get(
+                                                    account,
+                                                    "zalo"
+                                                )}`}
+                                            >
+                                                <div className="logo">
+                                                    <i className="fas fa-phone" />{" "}
+                                                </div>
+                                                <div className="content">
+                                                    Zalo
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )}
+                                    {/* <li>
                                         <a href="instagram.com">
                                             <div className="logo">
                                                 <i className="fab fa-instagram-square" />{" "}
@@ -92,9 +123,9 @@ function AccountCard({ account }: Props) {
                                                 Instagram
                                             </div>
                                         </a>
-                                    </li>
+                                    </li> */}
                                     <li>
-                                        <a href="instagram.com">
+                                        <a href={`mailto:${_.get(account, "email")}`}>
                                             <div className="logo">
                                                 <i className="far fa-envelope" />{" "}
                                             </div>
