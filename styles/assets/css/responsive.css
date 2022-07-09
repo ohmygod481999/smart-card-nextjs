@@ -191,6 +191,10 @@
         font-size: 40px;
     }
 
+    h1.left-title {
+        font-size: 33px;
+    }
+
     .animated-text h3 {
         font-size: 25px;
     }
@@ -362,6 +366,11 @@
     h1.common-title {
         margin-bottom: 5px;
         font-size: 30px;
+    }
+
+    h1.left-title {
+        margin-bottom: 5px;
+        font-size: 28px;
     }
 
     .about-content .social-icons{
@@ -671,6 +680,10 @@
     }
 
     h1.common-title {
+        font-size: 28px;
+    }
+
+    h1.left-title {
         font-size: 28px;
     }
 

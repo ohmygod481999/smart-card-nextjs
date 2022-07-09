@@ -9,7 +9,7 @@ import SessionContext from "../context/session-context";
 import { ory } from "../pkg";
 import { handleFlowError } from "../pkg/errors";
 
-const invisibleInputs = ["traits.card_id", "method", "password"];
+const invisibleInputs = ["traits.card_id", "method", "password", "traits.referer_id"];
 
 function Register() {
     const router = useRouter();
@@ -130,7 +130,7 @@ function Register() {
                                 <div className="col-12">
                                     <div className="section-title animate__animated animate__bounceInDown animate__delay-1s">
                                         <h1 className="common-title">
-                                            Register
+                                            Đăng ký
                                         </h1>
                                         <div className="animated-bar" />
                                     </div>
@@ -204,6 +204,9 @@ function Register() {
                                                     key={i}
                                                     className="form-group mb-3"
                                                 >
+                                                    <label>
+                                                        {node.meta.label?.text}
+                                                    </label>
                                                     <input
                                                         {...register(
                                                             _.get(
@@ -230,6 +233,7 @@ function Register() {
                                             );
                                         })}
                                     <div className="form-group mb-3">
+                                        <label>Mã thẻ</label>
                                         <input
                                             {...register("myData.cardId")}
                                             autoComplete="off"
@@ -240,6 +244,7 @@ function Register() {
                                         />
                                     </div>
                                     <div className="form-group mb-3">
+                                        <label>Mã người giới thiệu</label>
                                         <input
                                             {...register("myData.referrerCode")}
                                             autoComplete="off"
@@ -248,6 +253,7 @@ function Register() {
                                         />
                                     </div>
                                     <div className="form-group mb-3">
+                                        <label>Mật khẩu</label>
                                         <input
                                             {...register("password")}
                                             autoComplete="off"
@@ -257,6 +263,7 @@ function Register() {
                                         />
                                     </div>
                                     <div className="form-group mb-3">
+                                        <label>Xác nhận mật khẩu</label>
                                         <input
                                             {...register(
                                                 "myData.confirmPassword"

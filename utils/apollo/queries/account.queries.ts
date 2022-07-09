@@ -18,3 +18,23 @@ export const GET_ACCOUNT = gql`
         }
     }
 `;
+
+export const GET_REFEREES = gql`
+    query getReferees($ory_id: uuid!) {
+        account(where: { ory_id: { _eq: $ory_id } }) {
+            id
+            ory_id
+            name
+            user_info {
+                traits
+            }
+            created_at
+            referees {
+                id
+                ory_id
+                name
+                created_at
+            }
+        }
+    }
+`;
