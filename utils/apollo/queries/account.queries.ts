@@ -19,6 +19,14 @@ export const GET_ACCOUNT = gql`
     }
 `;
 
+export const GET_ACCOUNT_BY_ORY_ID = gql`
+    query getAccountByOryId($ory_id: uuid) {
+        account(where: { ory_id: { _eq: $ory_id } }) {
+            id
+        }
+    }
+`;
+
 export const GET_REFEREES = gql`
     query getReferees($ory_id: uuid!) {
         account(where: { ory_id: { _eq: $ory_id } }) {

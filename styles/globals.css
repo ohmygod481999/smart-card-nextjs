@@ -71,3 +71,60 @@ h1.left-title {
 td.child-row__name {
     padding-left: 5px;
 }
+
+/* Start wallet */
+
+.wallet-tab-list {
+    /* background-color: #5d95b1; */
+    background-color: #f9fbfc;
+    height: 40px;
+    border-radius: 30px;
+    display: flex;
+    padding: 0px;
+    max-width: 350px;
+    margin: auto;
+}
+
+.wallet-tab-list .wallet-tab {
+    flex-basis: 50%;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+}
+.wallet-tab-list .wallet-tab.activate {
+    background-color: #95cb28;
+    border-radius: 30px;
+    color: white;
+}
+
+.wallet-amount {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.wallet-amount__money {
+    font-size: 40px;
+    font-weight: 400;
+    color: black;
+}
+
+.title-section__title {
+    color: black;
+    font-weight: 400;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.wallet-transaction__item {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid rgb(210, 210, 210);
+}
+
+.wallet-transaction__item__right {
+    display: flex;
+    align-items: center;
+}

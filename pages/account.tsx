@@ -165,7 +165,7 @@ const Account: NextPage = () => {
                                 </div>
                             </div>
 
-                            <div className="row single-section">
+                            <div className="row single-section animate__animated animate__fadeInDown animate__delay-1s">
                                 <div className="col-12 ">
                                     {account && (
                                         <InforSetting account={account} />

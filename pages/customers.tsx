@@ -68,7 +68,7 @@ const Home: NextPage = () => {
                                 <div className="col-12">
                                     <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
                                         <h1 className="left-title">
-                                            Danh sách <span>khách hàng</span>
+                                            Danh sách <span>đại lý</span>
                                         </h1>
                                         <div className="animated-bar left" />
                                     </div>
@@ -89,9 +89,9 @@ const Home: NextPage = () => {
                                                     <th scope="col">
                                                         Ngày tham gia
                                                     </th>
-                                                    <th scope="col">
+                                                    {/* <th scope="col">
                                                         Hoa hồng
-                                                    </th>
+                                                    </th> */}
                                                     <th scope="col">
                                                         Lượt giới thiệu
                                                     </th>

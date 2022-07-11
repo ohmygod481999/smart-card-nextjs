@@ -51,3 +51,24 @@ export interface AccountInfo {
     ory_id: string;
     user_info: OryUserInfo;
 }
+
+export enum WalletType {
+    Main = 0,
+    Secondary = 1,
+}
+export interface Wallet {
+    id: number;
+    amount: number;
+    type: WalletType;
+}
+
+export enum TransactionType {
+    REFER = 0,
+}
+
+export interface Transaction {
+    amount: number;
+    date: string;
+    id: number;
+    type: TransactionType;
+}

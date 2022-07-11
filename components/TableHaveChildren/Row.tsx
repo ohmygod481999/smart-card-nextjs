@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getDataGraphqlResult } from "../../utils";
+import { formatDateTime, getDataGraphqlResult } from "../../utils";
 import { apolloClient } from "../../utils/apollo";
 import { GET_REFEREES } from "../../utils/apollo/queries/account.queries";
 
@@ -26,6 +26,7 @@ interface Props {
 function Row(props: Props) {
     const { level, referee } = props;
     const haveChild = referee.referees ? referee.referees.length > 0 : false;
+    const [toggleLoading, setToggleLoading] = useState(false);
 
     const [childrenWithKids, setChildrenWithKids] = useState(referee.referees);
 
@@ -33,6 +34,7 @@ function Row(props: Props) {
 
     const toggle = async () => {
         if (!toggled) {
+            setToggleLoading(true)
             const childrenWithTheirKids = await Promise.all(
                 referee.referees.map(async (child) => {
                     const data = await apolloClient.query({
@@ -45,11 +47,12 @@ function Row(props: Props) {
                 })
             );
             setChildrenWithKids(childrenWithTheirKids);
+            setToggleLoading(false)
         }
         setToggled(!toggled);
     };
 
-    const traits:any = referee.user_info.traits
+    const traits: any = referee.user_info.traits
         ? JSON.parse(referee.user_info.traits)
         : {};
 
@@ -77,17 +80,16 @@ function Row(props: Props) {
                         {referee.name || "N/A"}
                     </div>
                 </td>
-                <td>
-                    {traits.email}
-                </td>
-                <td>
-                    {String(
-                        new Date(referee.created_at).toLocaleDateString("vi-VN")
-                    )}
-                </td>
-                <td>20,000đ</td>
+                <td>{traits.email}</td>
+                <td>{formatDateTime(referee.created_at)}</td>
+                {/* <td>20,000đ</td> */}
                 <td className="">{childrenWithKids.length}</td>
             </tr>
+            {toggleLoading && (
+                <tr>
+                    <td colSpan={4}>Loading...</td>
+                </tr>
+            )}
             {toggled && (
                 <>
                     {childrenWithKids.map((child, i) => (

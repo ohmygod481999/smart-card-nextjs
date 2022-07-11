@@ -12,6 +12,7 @@ import "../styles/assets/css/styles.css";
 import "../styles/assets/css/colors/green.css";
 import "../styles/assets/css/responsive.css";
 import "../styles/globals.css"
+import "../styles/sb-admin-2.css"
 
 import type { AppProps } from "next/app";
 import { SessionProvider } from "../context/session-context";

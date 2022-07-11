@@ -75,7 +75,7 @@ function AccountCard({ account }: Props) {
                                             </li>
                                         </ul>
                                     </div> */}
-                                <ul className="account-infor-list">
+                                <ul className="account-infor-list animate__animated animate__fadeInDown animate__delay-1s">
                                     {_.get(account, "facebook") && (
                                         <li>
                                             <a
@@ -124,16 +124,23 @@ function AccountCard({ account }: Props) {
                                             </div>
                                         </a>
                                     </li> */}
-                                    <li>
-                                        <a href={`mailto:${_.get(account, "email")}`}>
-                                            <div className="logo">
-                                                <i className="far fa-envelope" />{" "}
-                                            </div>
-                                            <div className="content">
-                                                {_.get(account, "email")}
-                                            </div>
-                                        </a>
-                                    </li>
+                                    {_.get(account, "email") && (
+                                        <li>
+                                            <a
+                                                href={`mailto:${_.get(
+                                                    account,
+                                                    "email"
+                                                )}`}
+                                            >
+                                                <div className="logo">
+                                                    <i className="far fa-envelope" />{" "}
+                                                </div>
+                                                <div className="content">
+                                                    {_.get(account, "email")}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )}
                                     {_.get(account, "phone") && (
                                         <li>
                                             <a

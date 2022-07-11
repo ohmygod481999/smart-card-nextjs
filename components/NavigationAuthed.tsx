@@ -34,10 +34,28 @@ function NavigationAuthed() {
                             <Link href={`/customers`}>
                                 <a className="active">
                                     <span className="icon">
-                                        <i className="fas fa-user-alt" />
+                                        <i className="fas fa-users" />
                                     </span>
                                     <div className="social__tooltip social__tooltip-bottom">
-                                        Danh sách khách hàng
+                                        Danh sách đại lý
+                                    </div>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
+                    {session && (
+                        <li
+                            className={`list ${
+                                pathname === "/wallet" ? "active" : ""
+                            }`}
+                        >
+                            <Link href={`/wallet`}>
+                                <a className="active">
+                                    <span className="icon">
+                                        <i className="fas fa-wallet" />
+                                    </span>
+                                    <div className="social__tooltip social__tooltip-bottom">
+                                        Ví của tôi
                                     </div>
                                 </a>
                             </Link>
@@ -53,7 +71,7 @@ function NavigationAuthed() {
                             <Link href={`/account`}>
                                 <a>
                                     <span className="icon">
-                                        <i className="fas fa-blog" />
+                                        <i className="fas fa-user-circle" />
                                     </span>
                                     <div className="social__tooltip social__tooltip-bottom">
                                         Account
@@ -71,7 +89,7 @@ function NavigationAuthed() {
                             <Link href={`/login`}>
                                 <a>
                                     <span className="icon">
-                                        <i className="fas fa-blog" />
+                                        <i className="fas fa-sign-in-alt" />
                                     </span>
                                     <div className="social__tooltip social__tooltip-bottom">
                                         Login

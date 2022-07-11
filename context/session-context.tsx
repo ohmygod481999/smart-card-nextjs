@@ -1,6 +1,9 @@
 import React, { Dispatch, useEffect, useReducer } from "react";
 import { ory } from "../pkg";
 import { Configuration, V0alpha2Api, Session, Identity } from "@ory/client";
+import { apolloClient } from "../utils/apollo";
+import { GET_ACCOUNT_BY_ORY_ID } from "../utils/apollo/queries/account.queries";
+import { getDataGraphqlResult } from "../utils";
 // import { edgeConfig } from "@ory/integrations/next";
 
 // const ory = new V0alpha2Api(new Configuration(edgeConfig));
@@ -54,10 +57,23 @@ export const SessionProvider = (props: Props) => {
     }, []);
 
     const updateSession = () => {
-        return ory.toSession()
-            .then(({ data }) => {
-                // User has a session!
-                dispatch({ type: ActionKind.UPDATE_SESSION, payload: data });
+        return ory
+            .toSession()
+            .then(async ({ data }) => {
+                const res = await apolloClient.query({
+                    query: GET_ACCOUNT_BY_ORY_ID,
+                    variables: {
+                        ory_id: data.identity.id,
+                    },
+                });
+                const user = getDataGraphqlResult(res.data)[0];
+                dispatch({
+                    type: ActionKind.UPDATE_SESSION,
+                    payload: {
+                        ...data,
+                        user,
+                    },
+                });
             })
             .catch((err) => {
                 dispatch({ type: ActionKind.UPDATE_SESSION, payload: null });
