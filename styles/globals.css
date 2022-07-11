@@ -116,6 +116,10 @@ td.child-row__name {
     margin-bottom: 10px;
 }
 
+.wallet-transaction {
+    padding-bottom: 40px;
+}
+
 .wallet-transaction__item {
     display: flex;
     justify-content: space-between;

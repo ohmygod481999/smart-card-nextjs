@@ -354,7 +354,7 @@ function dashboard() {
                                             <div className="small text-gray-500">
                                                 December 2, 2019
                                             </div>
-                                            Spending Alert: We've noticed
+                                            Spending Alert: Weve noticed
                                             unusually high spending for your
                                             account.
                                         </div>
@@ -407,7 +407,7 @@ function dashboard() {
                                         <div className="font-weight-bold">
                                             <div className="text-truncate">
                                                 Hi there! I am wondering if you
-                                                can help me with a problem I've
+                                                can help me with a problem Ive
                                                 been having.
                                             </div>
                                             <div className="small text-gray-500">
@@ -452,7 +452,7 @@ function dashboard() {
                                         </div>
                                         <div>
                                             <div className="text-truncate">
-                                                Last month's report looks great,
+                                                Last months report looks great,
                                                 I am very happy with the
                                                 progress so far, keep up the
                                                 good work!
@@ -479,7 +479,7 @@ function dashboard() {
                                                 Am I a good boy? The reason I
                                                 ask is because someone told me
                                                 that people say this to all
-                                                dogs, even if they aren't
+                                                dogs, even if they arent
                                                 good...
                                             </div>
                                             <div className="small text-gray-500">
@@ -998,7 +998,7 @@ function dashboard() {
                                             to your project courtesy of{" "}
                                             <a
                                                 target="_blank"
-                                                rel="nofollow"
+                                                rel="noreferrer"
                                                 href="https://undraw.co/"
                                             >
                                                 unDraw
@@ -1010,7 +1010,7 @@ function dashboard() {
                                         </p>
                                         <a
                                             target="_blank"
-                                            rel="nofollow"
+                                            rel="noreferrer"
                                             href="https://undraw.co/"
                                         >
                                             Browse Illustrations on unDraw →
