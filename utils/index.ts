@@ -29,7 +29,8 @@ export const formatDateTime = (date: string) => {
 };
 
 export const transactionMapping = {
-    0: "Tiền hoa hồng giới thiệu"
+    0: "Tiền hoa hồng giới thiệu",
+    1: "Thưởng người dùng mới"
 }
 
 export const defaultImg =

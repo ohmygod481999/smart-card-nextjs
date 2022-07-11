@@ -32,9 +32,11 @@ function WalletPage() {
 
     const { session, updateSession } = useContext(SessionContext);
     const [wallets, setWallets] = useState<Wallet[] | null>(null);
-    const [transactions, setTransactions] = useState<Transaction[] | null>(
-        null
-    );
+    const [mainWalletTransactions, setMainWalletTransactions] = useState<
+        Transaction[] | null
+    >(null);
+    const [secondaryWalletTransactions, setSecondaryWalletTransactions] =
+        useState<Transaction[] | null>(null);
 
     const [walletTab, setWalletTab] = useState<WalletType>(WalletType.Main);
 
@@ -60,22 +62,6 @@ function WalletPage() {
         }
     }, [data]);
 
-    useEffect(() => {
-        if (session) {
-            apolloClient
-                .query({
-                    query: GET_TRANSATION,
-                    variables: {
-                        account_id: session.user.id,
-                    },
-                })
-                .then(({ data }) => {
-                    const _transaction = getDataGraphqlResult(data);
-                    setTransactions(_transaction);
-                });
-        }
-    }, [data]);
-
     const mainWallet: Wallet | null = useMemo(
         () => getWallet(wallets || [], WalletType.Main),
         [wallets]
@@ -85,6 +71,36 @@ function WalletPage() {
         () => getWallet(wallets || [], WalletType.Secondary),
         [wallets]
     );
+
+    useEffect(() => {
+        if (session && mainWallet && secondaryWallet) {
+            apolloClient
+                .query({
+                    query: GET_TRANSATION,
+                    variables: {
+                        account_id: session.user.id,
+                    },
+                })
+                .then(({ data }) => {
+                    const transactions = getDataGraphqlResult(data);
+                    const mainTransactions: Transaction[] = [];
+                    const secondaryTransactions: Transaction[] = [];
+                    transactions.forEach((transaction: Transaction) => {
+                        if (transaction.wallet_id === mainWallet.id) {
+                            mainTransactions.push(transaction);
+                        } else if (
+                            transaction.wallet_id === secondaryWallet.id
+                        ) {
+                            secondaryTransactions.push(transaction);
+                        }
+                    });
+                    setMainWalletTransactions(mainTransactions);
+                    setSecondaryWalletTransactions(secondaryTransactions);
+                });
+        }
+    }, [data, mainWallet, secondaryWallet]);
+
+    // console.log(transactions);
 
     return (
         <LayoutAuthed>
@@ -158,57 +174,65 @@ function WalletPage() {
                                     Lịch sử giao dịch
                                 </div>
                             </div>
-
-                            {walletTab === WalletType.Main && (
-                                <div className="wallet-transaction">
-                                    {transactions ? (
-                                        transactions.length > 0 ? (
-                                            transactions.map((transaction) => (
-                                                <div
-                                                    key={transaction.id}
-                                                    className="wallet-transaction__item"
-                                                >
-                                                    <div className="wallet-transaction__item__left">
-                                                        <div className="wallet-transaction__item__left__title">
-                                                            {
-                                                                transactionMapping[
-                                                                    transaction
-                                                                        .type
-                                                                ]
-                                                            }
+                            {(function () {
+                                let transactions: Transaction[] | null = null;
+                                if (walletTab === WalletType.Main) {
+                                    transactions = mainWalletTransactions;
+                                } else if (walletTab === WalletType.Secondary) {
+                                    transactions = secondaryWalletTransactions;
+                                } 
+                                return (
+                                    <div className="wallet-transaction">
+                                        {transactions ? (
+                                            transactions.length > 0 ? (
+                                                transactions.map(
+                                                    (transaction) => (
+                                                        <div
+                                                            key={transaction.id}
+                                                            className="wallet-transaction__item"
+                                                        >
+                                                            <div className="wallet-transaction__item__left">
+                                                                <div className="wallet-transaction__item__left__title">
+                                                                    {
+                                                                        transactionMapping[
+                                                                            transaction
+                                                                                .type
+                                                                        ]
+                                                                    }
+                                                                </div>
+                                                                <div className="wallet-transaction__item__left__description">
+                                                                    {formatDateTime(
+                                                                        transaction.date
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                            <div className="wallet-transaction__item__right">
+                                                                <div>
+                                                                    {`${
+                                                                        transaction.amount >
+                                                                        0
+                                                                            ? "+ "
+                                                                            : ""
+                                                                    }${formatMoney(
+                                                                        transaction.amount
+                                                                    )}`}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className="wallet-transaction__item__left__description">
-                                                            {formatDateTime(
-                                                                transaction.date
-                                                            )}
-                                                        </div>
-                                                    </div>
-                                                    <div className="wallet-transaction__item__right">
-                                                        <div>
-                                                            {`${
-                                                                transaction.amount >
-                                                                0
-                                                                    ? "+ "
-                                                                    : ""
-                                                            }${formatMoney(
-                                                                transaction.amount
-                                                            )}`}
-                                                        </div>
-                                                    </div>
+                                                    )
+                                                )
+                                            ) : (
+                                                <div className="wallet-transaction__item justify-content-center">
+                                                    <div>Trống</div>
                                                 </div>
-                                            ))
+                                            )
                                         ) : (
                                             <div className="wallet-transaction__item justify-content-center">
-                                                <div>Trống</div>
+                                                <div>Loading...</div>
                                             </div>
-                                        )
-                                    ) : (
-                                        <div className="wallet-transaction__item justify-content-center">
-                                            <div>Loading...</div>
-                                        </div>
-                                    )}
+                                        )}
 
-                                    {/* <div className="wallet-transaction__item">
+                                        {/* <div className="wallet-transaction__item">
                                     <div className="wallet-transaction__item__left">
                                         <div className="wallet-transaction__item__left__title">
                                             Food for lunch
@@ -234,8 +258,9 @@ function WalletPage() {
                                         <div>- 300,000đ</div>
                                     </div>
                                 </div> */}
-                                </div>
-                            )}
+                                    </div>
+                                );
+                            })()}
                         </div>
                         {/* Contact-page End */}
                     </div>

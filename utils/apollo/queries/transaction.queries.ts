@@ -7,6 +7,7 @@ export const GET_TRANSATION = gql`
             amount
             type
             date
+            wallet_id
         }
     }
 `;

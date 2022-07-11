@@ -71,4 +71,5 @@ export interface Transaction {
     date: string;
     id: number;
     type: TransactionType;
+    wallet_id: number;
 }
