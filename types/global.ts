@@ -9,6 +9,7 @@ export interface Account {
     zalo: string;
     slide_text: string;
     description: string;
+    is_agency: boolean;
     user_info: {
         traits: string;
     };
@@ -72,4 +73,8 @@ export interface Transaction {
     id: number;
     type: TransactionType;
     wallet_id: number;
+}
+
+export enum RegistrationType {
+    AGENCY = 0,
 }

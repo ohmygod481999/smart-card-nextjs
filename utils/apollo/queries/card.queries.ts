@@ -35,6 +35,7 @@ export const GET_CARD_BY_ORY_ID = gql`
                 zalo
                 slide_text
                 description
+                is_agency
             }
         }
     }

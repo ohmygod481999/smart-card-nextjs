@@ -11,18 +11,20 @@ import "../styles/assets/css/colors.css";
 import "../styles/assets/css/styles.css";
 import "../styles/assets/css/colors/green.css";
 import "../styles/assets/css/responsive.css";
-import "../styles/globals.css"
-import "../styles/sb-admin-2.css"
+import "../styles/globals.css";
+import "../styles/sb-admin-2.css";
 
 import type { AppProps } from "next/app";
 import { SessionProvider } from "../context/session-context";
 import { ApolloProvider } from "@apollo/client";
 import { apolloClient } from "../utils/apollo";
+import ReactTooltip from 'react-tooltip';
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ApolloProvider client={apolloClient}>
             <SessionProvider>
+                <ReactTooltip className="my-tooltip" effect="solid" eventOff="hover" place="bottom" />
                 <Component {...pageProps} />
             </SessionProvider>
         </ApolloProvider>

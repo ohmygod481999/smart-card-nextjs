@@ -34,7 +34,16 @@ function AccountCard({ account }: Props) {
                                     {/* {getUserName(session?.identity) ||
                                             "Unknown"} */}
                                     {/* {_.get(traits, "email")} */}
-                                    {_.get(account, "name")}
+                                    {_.get(account, "name")}{" "}
+                                    {_.get(account, "is_agency") && (
+                                        <i
+                                            style={{
+                                                color: "khaki",
+                                            }}
+                                            data-tip="Đại lý chính thức"
+                                            className="far fa-star"
+                                        ></i>
+                                    )}
                                 </h1>
                                 <div className="animated-bar animate__animated animate__fadeInDown animate__delay-2s" />
                                 <div className="animated-text animate__animated animate__fadeInDown animate__delay-2s">
