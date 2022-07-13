@@ -78,7 +78,7 @@ function InforSetting(props: Props) {
                 padding: "20px",
             }}
         >
-            <h3>Profile</h3>
+            <h3>Thông tin cá nhân</h3>
             <div className="row">
                 <div className="form-group mb-3">
                     <input
@@ -137,7 +137,7 @@ function InforSetting(props: Props) {
                         className="clickbtn"
                         disabled={submitLoading}
                     >
-                        Save
+                        Lưu
                     </button>
                 </div>
             </div>

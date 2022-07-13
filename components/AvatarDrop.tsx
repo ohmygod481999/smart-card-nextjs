@@ -104,7 +104,7 @@ function AvatarDrop(props: Props) {
                 padding: "20px",
             }}
         >
-            <h3>Avatar</h3>
+            <h3>Ảnh đại diện</h3>
             <div {...getRootProps()} className="mb-3">
                 <input {...getInputProps()} />
                 {isDragActive ? (
@@ -123,7 +123,7 @@ function AvatarDrop(props: Props) {
                     onClick={onSave}
                     disabled={submitLoading}
                 >
-                    Save avatar
+                    Lưu
                 </button>
             </div>
         </div>

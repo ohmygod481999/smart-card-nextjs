@@ -185,7 +185,7 @@ function AccountTab(props: Props) {
                             })
                         }
                     >
-                        Logout
+                        Đăng xuất
                     </button>
                 </div>
             </div>

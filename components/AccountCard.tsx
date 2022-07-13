@@ -16,11 +16,26 @@ function AccountCard({ account }: Props) {
                     <div className="row align-items-center">
                         {/* Profile-Pic */}
                         <div className=" col-xl-5 col-lg-6 col-md-6 col-12">
-                            <div className="home-profile animate__animated animate__fadeInLeft animate__delay-1s">
-                                <img
+                            <div className="d-flex justify-content-center">
+                                <div
+                                    className="main-avatar animate__animated animate__fadeInLeft animate__delay-1s"
+                                    style={{
+                                        backgroundImage: `url(${
+                                            account?.avatar || defaultImg
+                                        })`,
+                                        // width: 150,
+                                        // height: 150,
+                                        // backgroundPosition: "center",
+                                        // backgroundSize: "cover",
+                                        // backgroundRepeat: "no-repeat",
+                                        // borderRadius: "50%",
+                                    }}
+                                >
+                                    {/* <img
                                     src={account?.avatar || defaultImg}
                                     alt="home-profile"
-                                />
+                                /> */}
+                                </div>
                             </div>
                         </div>
                         {/* Profile-Pic End*/}
@@ -85,6 +100,27 @@ function AccountCard({ account }: Props) {
                                         </ul>
                                     </div> */}
                                 <ul className="account-infor-list animate__animated animate__fadeInDown animate__delay-1s">
+                                    {_.get(account, "phone") && (
+                                        <li>
+                                            <a
+                                                href={`tel:${_.get(
+                                                    account,
+                                                    "phone"
+                                                )}`}
+                                            >
+                                                <div className="logo">
+                                                    <img
+                                                        src="/icon/phone-icon.png"
+                                                        alt="email"
+                                                    />
+                                                    {/* <i className="fas fa-phone" />{" "} */}
+                                                </div>
+                                                <div className="content">
+                                                    {_.get(account, "phone")}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )}
                                     {_.get(account, "facebook") && (
                                         <li>
                                             <a
@@ -96,7 +132,11 @@ function AccountCard({ account }: Props) {
                                                 )}
                                             >
                                                 <div className="logo">
-                                                    <i className="fab fa-facebook-square " />{" "}
+                                                    <img
+                                                        src="/icon/facebook-icon.png"
+                                                        alt="facebook"
+                                                    />
+                                                    {/* <i className="fas fa-phone" />{" "} */}
                                                 </div>
                                                 <div className="content">
                                                     Facebook
@@ -115,7 +155,11 @@ function AccountCard({ account }: Props) {
                                                 )}`}
                                             >
                                                 <div className="logo">
-                                                    <i className="fas fa-phone" />{" "}
+                                                    <img
+                                                        src="/icon/zalo-icon.png"
+                                                        alt="zalo"
+                                                    />
+                                                    {/* <i className="fas fa-phone" />{" "} */}
                                                 </div>
                                                 <div className="content">
                                                     Zalo
@@ -142,27 +186,14 @@ function AccountCard({ account }: Props) {
                                                 )}`}
                                             >
                                                 <div className="logo">
-                                                    <i className="far fa-envelope" />{" "}
+                                                    <img
+                                                        src="/icon/email-icon.png"
+                                                        alt="email"
+                                                    />
+                                                    {/* <i className="fas fa-phone" />{" "} */}
                                                 </div>
                                                 <div className="content">
                                                     {_.get(account, "email")}
-                                                </div>
-                                            </a>
-                                        </li>
-                                    )}
-                                    {_.get(account, "phone") && (
-                                        <li>
-                                            <a
-                                                href={`tel:${_.get(
-                                                    account,
-                                                    "phone"
-                                                )}`}
-                                            >
-                                                <div className="logo">
-                                                    <i className="fas fa-mobile"></i>{" "}
-                                                </div>
-                                                <div className="content">
-                                                    {_.get(account, "phone")}
                                                 </div>
                                             </a>
                                         </li>

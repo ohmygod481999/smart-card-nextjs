@@ -128,7 +128,7 @@ const Login: NextPage = () => {
                                                 ) {
                                                     return "Two-Factor Authentication";
                                                 }
-                                                return "Sign In";
+                                                return "Đăng nhập";
                                             })()}
                                         </h1>
                                         <div className="animated-bar" />
@@ -163,7 +163,7 @@ const Login: NextPage = () => {
                                         <ActionCard>
                                             <Link href="/recovery" passHref>
                                                 <CenterLink>
-                                                    Recover your account
+                                                    Khôi phục tài khoản
                                                 </CenterLink>
                                             </Link>
                                         </ActionCard>

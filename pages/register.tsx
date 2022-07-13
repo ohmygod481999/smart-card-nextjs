@@ -75,7 +75,19 @@ function Register() {
             // his data when she/he reloads the page.
             .push(router);
         setMessages([]);
-        const { myData } = data;
+        const { myData, password } = data;
+        const { confirmPassword } = myData;
+
+        if (password !== confirmPassword) {
+            setMessages([
+                {
+                    id: 0,
+                    text: "Mật khẩu xác nhận không trùng khớp",
+                },
+            ]);
+            return;
+        }
+
         if (card_id) {
             myData["cardId"] = card_id;
         }
@@ -106,7 +118,9 @@ function Register() {
                 setMessages([
                     {
                         id: 0,
-                        text: "Có lỗi xảy ra. Mã Lỗi 001",
+                        text: res.data.message
+                            ? res.data.message
+                            : "Có lỗi xảy ra. Mã Lỗi 001",
                     },
                 ]);
             }
@@ -292,7 +306,9 @@ function Register() {
                                         />
                                     </div>
                                     {messages.map((msg) => (
-                                        <div className="error-msg" key={msg.id}>{msg.text}</div>
+                                        <div className="error-msg" key={msg.id}>
+                                            {msg.text}
+                                        </div>
                                     ))}
                                     <div className="form-submit">
                                         <button
