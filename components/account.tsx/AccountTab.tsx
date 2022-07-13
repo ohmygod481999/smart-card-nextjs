@@ -142,7 +142,7 @@ function AccountTab(props: Props) {
             />
         </SettingsCard> */}
                 <SettingsCard only="password" flow={flow}>
-                    <h3>Change Password</h3>
+                    <h3>Đổi mật khẩu</h3>
 
                     <Messages messages={flow?.ui.messages} />
                     <Flow

@@ -65,7 +65,7 @@ h1.left-title {
 }
 
 .child-row {
-    background-color: #f4f2f2;
+    background-color: #fcfafa;
 }
 
 td.child-row__name {
@@ -166,4 +166,8 @@ button.full-width-btn:hover {
     background-color: #95cb28;
     color: white;
     opacity: 1;
+}
+
+.error-msg {
+    color: red;
 }

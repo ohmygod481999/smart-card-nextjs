@@ -43,6 +43,7 @@ export const GET_REFEREES = gql`
                 name
                 created_at
             }
+            is_agency
         }
     }
 `;

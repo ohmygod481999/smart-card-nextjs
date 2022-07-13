@@ -14,45 +14,49 @@ export interface RefereeRecord {
     user_info: UserInfo;
     created_at: string;
     referees: RefereeRecord[];
+    is_agency: boolean;
 }
 
 interface Props {
     level: number;
     referee: RefereeRecord;
-    // name: string;
-    // refereeChildren: RefereeRecord[];
+    moreExpand?: boolean;
 }
 
 function Row(props: Props) {
-    const { level, referee } = props;
+    const { level, referee, moreExpand } = props;
     const haveChild = referee.referees ? referee.referees.length > 0 : false;
     const [toggleLoading, setToggleLoading] = useState(false);
 
-    const [childrenWithKids, setChildrenWithKids] = useState(referee.referees);
+    const [childrenWithKids, setChildrenWithKids] = useState(
+        referee.referees ? referee.referees : []
+    );
 
     const [toggled, setToggled] = useState(false);
 
     const toggle = async () => {
         if (!toggled) {
-            setToggleLoading(true)
-            const childrenWithTheirKids = await Promise.all(
-                referee.referees.map(async (child) => {
-                    const data = await apolloClient.query({
-                        query: GET_REFEREES,
-                        variables: {
-                            ory_id: child.ory_id,
-                        },
-                    });
-                    return getDataGraphqlResult(data.data)[0];
-                })
-            );
-            setChildrenWithKids(childrenWithTheirKids);
-            setToggleLoading(false)
+            if (moreExpand) {
+                setToggleLoading(true);
+                const childrenWithTheirKids = await Promise.all(
+                    referee.referees.map(async (child) => {
+                        const data = await apolloClient.query({
+                            query: GET_REFEREES,
+                            variables: {
+                                ory_id: child.ory_id,
+                            },
+                        });
+                        return getDataGraphqlResult(data.data)[0];
+                    })
+                );
+                setChildrenWithKids(childrenWithTheirKids);
+                setToggleLoading(false);
+            }
         }
         setToggled(!toggled);
     };
 
-    const traits: any = referee.user_info.traits
+    const traits: any = referee?.user_info?.traits
         ? JSON.parse(referee.user_info.traits)
         : {};
 
@@ -81,8 +85,20 @@ function Row(props: Props) {
                     </div>
                 </td>
                 <td>{traits.email}</td>
-                <td>{formatDateTime(referee.created_at)}</td>
-                {/* <td>20,000đ</td> */}
+                <td>{formatDateTime(referee.created_at, false)}</td>
+                <td>
+                    {referee.is_agency ? (
+                        <span
+                            style={{
+                                color: "#95cb28",
+                            }}
+                        >
+                            Có
+                        </span>
+                    ) : (
+                        "Không"
+                    )}
+                </td>
                 <td className="">{childrenWithKids.length}</td>
             </tr>
             {toggleLoading && (
@@ -93,7 +109,12 @@ function Row(props: Props) {
             {toggled && (
                 <>
                     {childrenWithKids.map((child, i) => (
-                        <Row key={i} level={level + 1} referee={child} />
+                        <Row
+                            key={i}
+                            level={level + 1}
+                            referee={child}
+                            moreExpand={moreExpand}
+                        />
                     ))}
                 </>
             )}

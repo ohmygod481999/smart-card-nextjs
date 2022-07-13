@@ -24,14 +24,17 @@ export const formatMoney = (amount: number) => {
     return formatter.format(amount);
 };
 
-export const formatDateTime = (date: string) => {
-    return String(new Date(date).toLocaleDateString("vi-VN"));
+export const formatDateTime = (date: string, isHaveTime: boolean = true) => {
+    const d = new Date(date);
+    return `${isHaveTime ? `${String(d.toLocaleTimeString())}, ` : ""}${String(
+        d.toLocaleDateString("vi-VN")
+    )}`;
 };
 
 export const transactionMapping = {
     0: "Tiền hoa hồng giới thiệu",
-    1: "Thưởng người dùng mới"
-}
+    1: "Thưởng người dùng mới",
+};
 
 export const defaultImg =
     "https://long-space.sgp1.digitaloceanspaces.com/smartcard/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpeg";

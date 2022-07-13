@@ -9,7 +9,12 @@ import SessionContext from "../context/session-context";
 import { ory } from "../pkg";
 import { handleFlowError } from "../pkg/errors";
 
-const invisibleInputs = ["traits.card_id", "method", "password", "traits.referer_id"];
+const invisibleInputs = [
+    "traits.card_id",
+    "method",
+    "password",
+    "traits.referer_id",
+];
 
 function Register() {
     const router = useRouter();
@@ -97,6 +102,13 @@ function Register() {
                 return router
                     .push(flow?.return_to || `/login?login_success=true`)
                     .then(() => {});
+            } else {
+                setMessages([
+                    {
+                        id: 0,
+                        text: "Có lỗi xảy ra. Mã Lỗi 001",
+                    },
+                ]);
             }
         } catch (error: any) {
             const _messages: any[] = [];
@@ -113,8 +125,13 @@ function Register() {
                     _messages.push(msg);
                 }
             );
+            if (_messages.length === 0) {
+                _messages.push({
+                    id: 0,
+                    text: error.message,
+                });
+            }
             setMessages(_messages);
-            console.log(error.response.data);
         }
     };
 
@@ -275,7 +292,7 @@ function Register() {
                                         />
                                     </div>
                                     {messages.map((msg) => (
-                                        <div key={msg.id}>{msg.text}</div>
+                                        <div className="error-msg" key={msg.id}>{msg.text}</div>
                                     ))}
                                     <div className="form-submit">
                                         <button

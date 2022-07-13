@@ -89,9 +89,9 @@ const Home: NextPage = () => {
                                                     <th scope="col">
                                                         Ngày tham gia
                                                     </th>
-                                                    {/* <th scope="col">
-                                                        Hoa hồng
-                                                    </th> */}
+                                                    <th scope="col">
+                                                        Là đại lý
+                                                    </th>
                                                     <th scope="col">
                                                         Lượt giới thiệu
                                                     </th>
@@ -104,6 +104,7 @@ const Home: NextPage = () => {
                                                             key={referee.id}
                                                             level={0}
                                                             referee={referee}
+                                                            moreExpand={referee.is_agency}
                                                             // name={referee.name}
                                                             // refereeChildren={referee.referees}
                                                         />
