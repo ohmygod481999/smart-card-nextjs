@@ -103,7 +103,7 @@ const Account: NextPage = () => {
                                 <div className="col-12 ">
                                     <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
                                         <p className="common-desctiption">
-                                            my intro
+                                            my info
                                         </p>
                                         <h1 className="common-title">
                                             Sửa <span>Thông tin</span>
@@ -134,7 +134,7 @@ const Account: NextPage = () => {
                                         setTab(AccountTabValue.SETTING)
                                     }
                                 >
-                                    Cài đặt
+                                    Khác
                                 </div>
                             </div>
 

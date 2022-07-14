@@ -8,7 +8,7 @@ interface UserInfo {
 }
 
 export interface RefereeRecord {
-    id: string;
+    id: number;
     ory_id: string;
     name: string;
     user_info: UserInfo;

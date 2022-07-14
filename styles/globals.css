@@ -196,3 +196,10 @@ button.full-width-btn:hover {
 
     }
 }
+
+.referer-code {
+    background-color: #95cb28;
+    color: white;
+    padding: 3px;
+    border-radius: 5px;
+}

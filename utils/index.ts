@@ -36,5 +36,9 @@ export const transactionMapping = {
     1: "Thưởng người dùng mới",
 };
 
+export const paddingId = (id: number) => {
+    return String(id).padStart(6, '0')
+}
+
 export const defaultImg =
     "https://long-space.sgp1.digitaloceanspaces.com/smartcard/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpeg";

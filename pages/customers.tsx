@@ -9,7 +9,7 @@ import { GET_CARD_BY_ORY_ID } from "../utils/apollo/queries/card.queries";
 import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { Account } from "../types/global";
-import { getDataGraphqlResult } from "../utils";
+import { getDataGraphqlResult, paddingId } from "../utils";
 import { get } from "lodash";
 import AccountCard from "../components/AccountCard";
 import { GET_REFEREES } from "../utils/apollo/queries/account.queries";
@@ -38,15 +38,17 @@ const Home: NextPage = () => {
     useEffect(() => {
         if (data) {
             const referees = getDataGraphqlResult(data);
-            setReferees(referees.map((referee: any) => {
-                if (referee.ory_id === session.identity.id) {
-                    return {
-                        ...referee,
-                        name: `${referee.name} (Tôi)`
+            setReferees(
+                referees.map((referee: any) => {
+                    if (referee.ory_id === session.identity.id) {
+                        return {
+                            ...referee,
+                            name: `${referee.name} (Tôi)`,
+                        };
                     }
-                }
-                return referee
-            }));
+                    return referee;
+                })
+            );
             // if (cards && cards.length > 0) {
             //     setAccount(cards[0].account);
             // }
@@ -79,6 +81,19 @@ const Home: NextPage = () => {
                             <div className="contact-section">
                                 <div className="row">
                                     {/* Contact form */}
+                                    <div
+                                        className="col-lg-12 col-12"
+                                        style={{
+                                            marginBottom: 20,
+                                        }}
+                                    >
+                                        Mã giới thiệu:{" "}
+                                        <span className="referer-code">
+                                            {referees?.length
+                                                ? paddingId(referees[0].id)
+                                                : "N/A"}
+                                        </span>
+                                    </div>
                                     <div className="col-lg-12 col-12 table-responsive">
                                         <table className="table">
                                             <thead>
@@ -104,7 +119,9 @@ const Home: NextPage = () => {
                                                             key={referee.id}
                                                             level={0}
                                                             referee={referee}
-                                                            moreExpand={referee.is_agency}
+                                                            moreExpand={
+                                                                referee.is_agency
+                                                            }
                                                             // name={referee.name}
                                                             // refereeChildren={referee.referees}
                                                         />
