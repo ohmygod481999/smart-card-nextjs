@@ -61,6 +61,24 @@ function NavigationAuthed() {
                             </Link>
                         </li>
                     )}
+                    {session && (
+                        <li
+                            className={`list ${
+                                pathname === "/features" ? "active" : ""
+                            }`}
+                        >
+                            <Link href={`/features`}>
+                                <a className="active">
+                                    <span className="icon">
+                                        <i className="far fa-list-alt" />
+                                    </span>
+                                    <div className="social__tooltip social__tooltip-bottom">
+                                        Danh sách tính năng
+                                    </div>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
                     {session ? (
                         <li
                             className={`list ${
