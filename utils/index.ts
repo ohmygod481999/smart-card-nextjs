@@ -32,8 +32,9 @@ export const formatDateTime = (date: string, isHaveTime: boolean = true) => {
 };
 
 export const transactionMapping = {
-    0: "Tiền hoa hồng giới thiệu",
+    0: "Hoa hồng giới thiệu",
     1: "Thưởng người dùng mới",
+    2: "Hoa hồng giới thiệu đại lý"
 };
 
 export const paddingId = (id: number) => {

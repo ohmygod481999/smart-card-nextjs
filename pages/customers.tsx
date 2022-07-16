@@ -14,6 +14,7 @@ import { get } from "lodash";
 import AccountCard from "../components/AccountCard";
 import { GET_REFEREES } from "../utils/apollo/queries/account.queries";
 import Row, { RefereeRecord } from "../components/TableHaveChildren/Row";
+import Head from "next/head";
 
 const Home: NextPage = () => {
     const router = useRouter();
@@ -59,6 +60,9 @@ const Home: NextPage = () => {
 
     return (
         <LayoutAuthed>
+            <Head>
+                <title>Smartcardnp - Danh sách đại lý</title>
+            </Head>
             <section id="contact" className="section active">
                 <div className="homecolor-box" />
                 <div className="common_bg animate__animated animate__zoomIn">

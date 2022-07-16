@@ -12,6 +12,7 @@ import { Account } from "../types/global";
 import { getDataGraphqlResult } from "../utils";
 import { get } from "lodash";
 import AccountCard from "../components/AccountCard";
+import Head from "next/head";
 
 // const ory = new V0alpha2Api(new Configuration(edgeConfig));
 
@@ -53,6 +54,9 @@ const Home: NextPage = () => {
 
     return (
         <LayoutAuthed>
+            <Head>
+                <title>Smartcardnp{account?.name ? ` - ${account?.name}` : ""}</title>
+            </Head>
             <AccountCard account={account} />
         </LayoutAuthed>
     );

@@ -1,4 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import LayoutAuthed from "../components/LayoutAuthed";
@@ -104,6 +105,9 @@ function WalletPage() {
 
     return (
         <LayoutAuthed>
+            <Head>
+                <title>Smartcardnp - Ví của tôi</title>
+            </Head>
             <section id="contact" className="section active">
                 <div className="homecolor-box" />
                 <div className="common_bg animate__animated animate__zoomIn">

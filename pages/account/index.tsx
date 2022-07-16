@@ -5,6 +5,7 @@ import {
 } from "@ory/client";
 import { AxiosError } from "axios";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { ReactNode, useContext, useEffect, useState } from "react";
 import AccountTab from "../../components/account.tsx/AccountTab";
@@ -93,6 +94,9 @@ const Account: NextPage = () => {
 
     return (
         <LayoutAuthed>
+            <Head>
+                <title>Smartcardnp - Tài khoản</title>
+            </Head>
             <section id="about" className="section active">
                 <div className="homecolor-box" />
                 <div className="common_bg animate__animated animate__fadeInDown">
