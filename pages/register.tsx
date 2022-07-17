@@ -316,7 +316,7 @@ function Register() {
                                             value={"password"}
                                             className="clickbtn"
                                         >
-                                            Save
+                                            Đăng ký
                                         </button>
                                     </div>
                                 </form>

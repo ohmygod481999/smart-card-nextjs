@@ -1,3 +1,5 @@
+import { Wallet, WalletType } from "../types/global";
+
 export const getValueFromGraphql = (input: any) => {
     if (!input) {
         return input;
@@ -34,12 +36,25 @@ export const formatDateTime = (date: string, isHaveTime: boolean = true) => {
 export const transactionMapping = {
     0: "Doanh thu giới thiệu",
     1: "Thưởng người dùng mới",
-    2: "Doanh thu giới thiệu đại lý"
+    2: "Doanh thu giới thiệu đại lý",
 };
 
 export const paddingId = (id: number) => {
-    return String(id).padStart(6, '0')
-}
+    return String(id).padStart(6, "0");
+};
+
+export const getWallet = (
+    wallets: Wallet[],
+    walletType: WalletType
+): Wallet | null => {
+    let result = null;
+    wallets.forEach((wallet) => {
+        if (wallet.type === walletType) {
+            result = wallet;
+        }
+    });
+    return result;
+};
 
 export const defaultImg =
     "https://long-space.sgp1.digitaloceanspaces.com/smartcard/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpeg";

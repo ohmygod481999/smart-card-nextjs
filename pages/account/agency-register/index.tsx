@@ -5,15 +5,14 @@ import SectionLayout from "../../../components/SectionLayout";
 import SessionContext from "../../../context/session-context";
 import { RegistrationType } from "../../../types/global";
 import { apolloClient } from "../../../utils/apollo";
-import { INSERT_AGENCY_REGISTRATION } from "../../../utils/apollo/mutations/registration.mutation";
-import { GET_REFEREES } from "../../../utils/apollo/queries/account.queries";
-import { GET_REGISTRATION_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/registration.queries";
+import { INSERT_REGISTRATION } from "../../../utils/apollo/mutations/registration.mutation";
+import { GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/registration.queries";
 
 function AgencyRegister() {
     const router = useRouter();
 
     const [getRegistrationByAccountId, { called, loading, data }] =
-        useLazyQuery(GET_REGISTRATION_BY_ACCOUNT_ID);
+        useLazyQuery(GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID);
 
     const [agree, setAgree] = useState(false);
 
@@ -36,13 +35,13 @@ function AgencyRegister() {
         if (agree && session) {
             try {
                 const res = await apolloClient.mutate({
-                    mutation: INSERT_AGENCY_REGISTRATION,
+                    mutation: INSERT_REGISTRATION,
                     variables: {
                         account_id: session.user.id,
                         type: RegistrationType.AGENCY,
                     },
                 });
-                router.push("/account/agency-register/success")
+                router.push("/account/agency-register/success");
             } catch (err) {
                 alert("Có lỗi xảy ra");
             }

@@ -145,6 +145,7 @@ button.full-width-btn {
     color: white;
     padding: 10px;
     border-radius: 30px;
+    width: 100%;
 }
 
 button.full-width-btn:hover {
@@ -176,7 +177,8 @@ button.full-width-btn:hover {
 }
 
 .error-msg {
-    color: red;
+    color: rgb(227, 92, 92);
+    margin-top: 5px;
 }
 
 .main-avatar {
@@ -224,7 +226,6 @@ button.full-width-btn:hover {
 
 .section-features__tab.active {
     color: #95cb28;
-    
 }
 
 .section-features__tab:hover {
@@ -247,6 +248,7 @@ button.full-width-btn:hover {
     display: flex;
     flex-wrap: wrap;
     transition: 0.3;
+    margin-bottom: 20px;
     /* border-top: 1px solid black; */
 }
 
@@ -271,11 +273,59 @@ button.full-width-btn:hover {
     color: #0096ff;
 }
 
-.section-features__item.inactive .icon{
-    color: gray!important;
+.section-features__item.inactive .icon {
+    color: gray !important;
     cursor: not-allowed;
 }
 .section-features__item.inactive {
     cursor: not-allowed;
 }
 /* end features page */
+
+/* start withdraw page */
+.section-withdraw {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.withdraw-balance {
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(242, 242, 242);
+    padding: 8px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+.withdraw-balance img {
+    width: 30px;
+    border: 1px solid #95cb28;
+    border-radius: 5px;
+    margin: 0;
+    margin-right: 7px;
+}
+
+.withdraw-receiving-method {
+    display: flex;
+    border: 2px solid #95cb28;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.withdraw-receiving-method__content .title {
+    color: black;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.withdraw-receiving-method__logo {
+    margin-right: 20px;
+    margin-left: 10px;
+    font-size: 30px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+}
+/* end withdraw page */

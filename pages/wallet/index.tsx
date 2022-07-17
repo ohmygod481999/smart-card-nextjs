@@ -1,32 +1,21 @@
 import { useLazyQuery } from "@apollo/client";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import LayoutAuthed from "../components/LayoutAuthed";
-import SessionContext from "../context/session-context";
-import { Transaction, Wallet, WalletType } from "../types/global";
+import LayoutAuthed from "../../components/LayoutAuthed";
+import SessionContext from "../../context/session-context";
+import { Transaction, Wallet, WalletType } from "../../types/global";
 import {
     formatDateTime,
     formatMoney,
     getDataGraphqlResult,
+    getWallet,
     transactionMapping,
-} from "../utils";
-import { apolloClient } from "../utils/apollo";
-import { GET_TRANSATION } from "../utils/apollo/queries/transaction.queries";
-import { GET_WALLETS } from "../utils/apollo/queries/wallet.queries";
-
-const getWallet = (
-    wallets: Wallet[],
-    walletType: WalletType
-): Wallet | null => {
-    let result = null;
-    wallets.forEach((wallet) => {
-        if (wallet.type === walletType) {
-            result = wallet;
-        }
-    });
-    return result;
-};
+} from "../../utils";
+import { apolloClient } from "../../utils/apollo";
+import { GET_TRANSATION } from "../../utils/apollo/queries/transaction.queries";
+import { GET_WALLETS } from "../../utils/apollo/queries/wallet.queries";
 
 function WalletPage() {
     const router = useRouter();
@@ -173,6 +162,46 @@ function WalletPage() {
                                     </div>
                                 </div>
                             )}
+                            {walletTab === WalletType.Main && (
+                                <>
+                                    <div className="title-section">
+                                        <div className="title-section__title">
+                                            Dịch vụ
+                                        </div>
+                                    </div>
+                                    <div className="section-features__list">
+                                        <div className="section-features__item inactive">
+                                            <span className="icon">
+                                                <i className="far fa-address-card"></i>
+                                            </span>
+                                            <span>Nạp tiền</span>
+                                        </div>
+                                        <Link href="/wallet/withdraw">
+                                            <div className="section-features__item">
+                                                <span className="icon">
+                                                    <i className="fas fa-boxes"></i>
+                                                </span>
+                                                <span>Rút tiền</span>
+                                            </div>
+                                        </Link>
+                                        <div className="section-features__item">
+                                            <span className="icon">
+                                                <i className="fas fa-tasks"></i>
+                                            </span>
+                                            <span>
+                                                lịch sử
+                                                <br /> giao dịch
+                                            </span>
+                                        </div>
+                                        <div className="section-features__item inactive">
+                                            <span className="icon">
+                                                <i className="fas fa-store"></i>
+                                            </span>
+                                            <span>Hỗ trợ</span>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                             <div className="title-section">
                                 <div className="title-section__title">
                                     Lịch sử giao dịch
@@ -184,7 +213,7 @@ function WalletPage() {
                                     transactions = mainWalletTransactions;
                                 } else if (walletTab === WalletType.Secondary) {
                                     transactions = secondaryWalletTransactions;
-                                } 
+                                }
                                 return (
                                     <div className="wallet-transaction">
                                         {transactions ? (

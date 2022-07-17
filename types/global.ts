@@ -61,6 +61,8 @@ export interface Wallet {
     id: number;
     amount: number;
     type: WalletType;
+    bank_name: string;
+    bank_number: string;
 }
 
 export enum TransactionType {
@@ -77,4 +79,18 @@ export interface Transaction {
 
 export enum RegistrationType {
     AGENCY = 0,
+    WITHDRAW = 1,
+}
+
+export interface RegistrationPayload {
+    amount: number;
+}
+
+export interface Registration {
+    id: number;
+    account_id: number;
+    type: RegistrationType;
+    approved: boolean;
+    created_at: string;
+    payload: null | RegistrationPayload;
 }

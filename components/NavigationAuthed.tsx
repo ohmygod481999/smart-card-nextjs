@@ -34,7 +34,7 @@ function NavigationAuthed() {
                             <Link href={`/customers`}>
                                 <a className="active">
                                     <span className="icon">
-                                        <i className="fas fa-users" />
+                                        <i className="fas fa-sitemap" />
                                     </span>
                                     <div className="social__tooltip social__tooltip-bottom">
                                         Danh sách đại lý
@@ -46,7 +46,7 @@ function NavigationAuthed() {
                     {session && (
                         <li
                             className={`list ${
-                                pathname === "/wallet" ? "active" : ""
+                                pathname.includes("/wallet") ? "active" : ""
                             }`}
                         >
                             <Link href={`/wallet`}>
