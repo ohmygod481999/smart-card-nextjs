@@ -5,7 +5,12 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import LayoutAuthed from "../../components/LayoutAuthed";
 import SessionContext from "../../context/session-context";
-import { Transaction, Wallet, WalletType } from "../../types/global";
+import {
+    Transaction,
+    TransactionType,
+    Wallet,
+    WalletType,
+} from "../../types/global";
 import {
     formatDateTime,
     formatMoney,
@@ -73,13 +78,18 @@ function WalletPage() {
                 })
                 .then(({ data }) => {
                     const transactions = getDataGraphqlResult(data);
+                    console.log(transactions);
                     const mainTransactions: Transaction[] = [];
                     const secondaryTransactions: Transaction[] = [];
                     transactions.forEach((transaction: Transaction) => {
-                        if (transaction.wallet_id === mainWallet.id) {
+                        if (
+                            transaction.wallet_id === mainWallet.id ||
+                            transaction.from_wallet_id === mainWallet.id
+                        ) {
                             mainTransactions.push(transaction);
                         } else if (
-                            transaction.wallet_id === secondaryWallet.id
+                            transaction.wallet_id === secondaryWallet.id ||
+                            transaction.from_wallet_id === secondaryWallet.id
                         ) {
                             secondaryTransactions.push(transaction);
                         }
@@ -242,10 +252,10 @@ function WalletPage() {
                                                             <div className="wallet-transaction__item__right">
                                                                 <div>
                                                                     {`${
-                                                                        transaction.amount >
-                                                                        0
+                                                                        transaction.type !==
+                                                                        TransactionType.WITHDRAW
                                                                             ? "+ "
-                                                                            : ""
+                                                                            : "- "
                                                                     }${formatMoney(
                                                                         transaction.amount
                                                                     )}`}

@@ -67,6 +67,9 @@ export interface Wallet {
 
 export enum TransactionType {
     REFER = 0,
+    REWARD_NEW_USER = 1,
+    REFER_AGENCY = 2,
+    WITHDRAW = 3,
 }
 
 export interface Transaction {
@@ -75,6 +78,7 @@ export interface Transaction {
     id: number;
     type: TransactionType;
     wallet_id: number;
+    from_wallet_id: number;
 }
 
 export enum RegistrationType {
