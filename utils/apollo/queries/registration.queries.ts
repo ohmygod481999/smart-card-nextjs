@@ -41,3 +41,55 @@ export const GET_REGISTRATION_BY_ID = gql`
         }
     }
 `;
+
+export const GET_AGENCY_REGISTRATIONS_ADMIN = gql`
+    query getRegistration($limit: Int!, $offset: Int!) {
+        registration(
+            limit: $limit
+            offset: $offset
+            order_by: { created_at: desc }
+            where: { approved: { _eq: false }, type: { _eq: 0 } }
+        ) {
+            id
+            account_id
+            approved
+            created_at
+            account {
+                id
+                name
+                email
+                phone
+            }
+        }
+    }
+`;
+
+export const GET_WITHDRAW_REGISTRATIONS_ADMIN = gql`
+    query getRegistration($limit: Int!, $offset: Int!) {
+        registration(
+            limit: $limit
+            offset: $offset
+            order_by: { created_at: desc }
+            where: { approved: { _eq: false }, type: { _eq: 1 } }
+        ) {
+            id
+            account_id
+            approved
+            created_at
+            payload
+            account {
+                id
+                name
+                email
+                phone
+                wallets {
+                    id
+                    type
+                    amount
+                    bank_name
+                    bank_number
+                }
+            }
+        }
+    }
+`;

@@ -34,9 +34,9 @@ export const formatDateTime = (date: string, isHaveTime: boolean = true) => {
 };
 
 export const transactionMapping = {
-    0: "Doanh thu giới thiệu",
+    0: "Doanh thu bán hàng",
     1: "Thưởng người dùng mới",
-    2: "Doanh thu giới thiệu đại lý",
+    2: "Doanh thu đại lý",
     3: "Rút tiền vào thẻ ngân hàng",
 };
 

@@ -182,21 +182,21 @@ function WalletPage() {
                                     <div className="section-features__list">
                                         <div className="section-features__item inactive">
                                             <span className="icon">
-                                                <i className="far fa-address-card"></i>
+                                                <i className="fas fa-sign-in-alt"></i>
                                             </span>
                                             <span>Nạp tiền</span>
                                         </div>
                                         <Link href="/wallet/withdraw">
                                             <div className="section-features__item">
                                                 <span className="icon">
-                                                    <i className="fas fa-boxes"></i>
+                                                    <i className="fas fa-sign-out-alt"></i>
                                                 </span>
                                                 <span>Rút tiền</span>
                                             </div>
                                         </Link>
                                         <div className="section-features__item">
                                             <span className="icon">
-                                                <i className="fas fa-tasks"></i>
+                                                <i className="fas fa-history"></i>
                                             </span>
                                             <span>
                                                 lịch sử
@@ -205,7 +205,7 @@ function WalletPage() {
                                         </div>
                                         <div className="section-features__item inactive">
                                             <span className="icon">
-                                                <i className="fas fa-store"></i>
+                                                <i className="fas fa-headset"></i>
                                             </span>
                                             <span>Hỗ trợ</span>
                                         </div>
