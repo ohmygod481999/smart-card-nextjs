@@ -6,6 +6,7 @@ import React, {
     useContext,
     useEffect,
     useMemo,
+    useRef,
     useState,
 } from "react";
 import { useForm } from "react-hook-form";
@@ -32,6 +33,7 @@ import {
     GET_WALLETS,
     UPDATE_BANK_ACCOUNT,
 } from "../../../utils/apollo/queries/wallet.queries";
+import _ from "lodash";
 
 function Withdraw() {
     const {
@@ -41,12 +43,14 @@ function Withdraw() {
         formState: { errors },
     } = useForm();
 
+    const withdrawalAmountRef = useRef(null);
+
     const router = useRouter();
     const { session, updateSession } = useContext(SessionContext);
     const [unapprovedWithdraws, setUnapprovedWithdraws] = useState<
         null | Registration[]
     >(null);
-    const [withdrawalAmount, setWithdrawalAmount] = useState(50000);
+    // const [withdrawalAmount, setWithdrawalAmount] = useState(50000);
     const [errMsg, setErrMsg] = useState("");
 
     const [wallets, setWallets] = useState<Wallet[] | null>(null);
@@ -66,7 +70,7 @@ function Withdraw() {
                         account_id: session.user.id,
                         approved: false,
                     },
-                    fetchPolicy: "network-only"
+                    fetchPolicy: "network-only",
                 })
                 .then(({ data }) => {
                     const withdrawRegistrations = getDataGraphqlResult(data);
@@ -89,21 +93,21 @@ function Withdraw() {
         [wallets]
     );
 
-    useEffect(() => {
-        if (mainWallet) {
-            console.log(withdrawalAmount, mainWallet.amount);
-            if (withdrawalAmount > mainWallet.amount) {
-                setErrMsg(
-                    "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
-                );
-            }
-            if (withdrawalAmount < 50000) {
-                setErrMsg("Số tiền rút tối thiểu là 50,000đ");
-            }
-        }
-    }, [withdrawalAmount, mainWallet]);
+    console.log(mainWallet);
 
-    console.log(unapprovedWithdraws);
+    // useEffect(() => {
+    //     if (mainWallet) {
+    //         console.log(withdrawalAmount, mainWallet.amount);
+    //         if (withdrawalAmount > mainWallet.amount) {
+    //             setErrMsg(
+    //                 "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
+    //             );
+    //         }
+    //         if (withdrawalAmount < 50000) {
+    //             setErrMsg("Số tiền rút tối thiểu là 50,000đ");
+    //         }
+    //     }
+    // }, [withdrawalAmount, mainWallet]);
 
     const onSubmitAddBank = async (values: any) => {
         const { bank_name, bank_number } = values;
@@ -126,28 +130,48 @@ function Withdraw() {
     };
 
     const onWithdrawSubmit = useCallback(async () => {
-        try {
-            if (session && router.isReady) {
-                const res = await apolloClient.mutate({
-                    mutation: INSERT_REGISTRATION,
-                    variables: {
-                        account_id: session.user.id,
-                        type: RegistrationType.WITHDRAW,
-                        payload: {
-                            amount: withdrawalAmount,
-                        },
-                    },
-                });
-                // if success
-                if (res.data?.insert_registration_one) {
-                    const { id } = res.data.insert_registration_one;
-                    router.push(`/wallet/withdraw/success?id=${id}`);
-                }
+        if (mainWallet) {
+            const withdrawalAmount = parseInt(
+                _.get(withdrawalAmountRef, "current.value")
+            );
+            if (withdrawalAmount > mainWallet.amount) {
+                setErrMsg(
+                    "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
+                );
+                return;
             }
-        } catch (error) {
-            console.error(error);
+            if (withdrawalAmount < 50000) {
+                setErrMsg("Số tiền rút tối thiểu là 50,000đ");
+                return;
+            }
+            if (mainWallet.amount - withdrawalAmount < 50000) {
+                setErrMsg("Số tiền còn lại trong ví tối thiểu là 50,000đ");
+                return;
+            }
+
+            try {
+                if (session && router.isReady) {
+                    const res = await apolloClient.mutate({
+                        mutation: INSERT_REGISTRATION,
+                        variables: {
+                            account_id: session.user.id,
+                            type: RegistrationType.WITHDRAW,
+                            payload: {
+                                amount: withdrawalAmount,
+                            },
+                        },
+                    });
+                    // if success
+                    if (res.data?.insert_registration_one) {
+                        const { id } = res.data.insert_registration_one;
+                        router.push(`/wallet/withdraw/success?id=${id}`);
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }, [withdrawalAmount, session, router.isReady]);
+    }, [mainWallet, session, router.isReady]);
 
     if (unapprovedWithdraws && unapprovedWithdraws.length > 0) {
         return (
@@ -280,18 +304,14 @@ function Withdraw() {
                                             <div className="form-group mb-3">
                                                 <label>Số tiền cần rút</label>
                                                 <input
+                                                    ref={withdrawalAmountRef}
                                                     autoComplete="off"
                                                     className="form-control"
-                                                    placeholder="0đ"
+                                                    placeholder="Số tiền rút tối thiểu: 50,000đ"
                                                     type="number"
-                                                    value={withdrawalAmount}
+                                                    // value={withdrawalAmount}
                                                     onChange={(e) => {
                                                         setErrMsg("");
-                                                        setWithdrawalAmount(
-                                                            parseInt(
-                                                                e.target.value
-                                                            )
-                                                        );
                                                     }}
                                                 />
                                                 {errMsg && (
@@ -318,11 +338,14 @@ function Withdraw() {
                                                     </div>
                                                     <div className="description">
                                                         <div>
-                                                            Ngân hàng: MB Bank
+                                                            Ngân hàng:{" "}
+                                                            {mainWallet.bank_name.toUpperCase()}
                                                         </div>
                                                         <div>
-                                                            Số tài khoản:
-                                                            0829400301
+                                                            Số tài khoản:{" "}
+                                                            {
+                                                                mainWallet.bank_number
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>
