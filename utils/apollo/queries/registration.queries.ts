@@ -59,6 +59,7 @@ export const GET_AGENCY_REGISTRATIONS_ADMIN = gql`
                 name
                 email
                 phone
+                is_agency
             }
         }
     }

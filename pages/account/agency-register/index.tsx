@@ -12,7 +12,9 @@ function AgencyRegister() {
     const router = useRouter();
 
     const [getRegistrationByAccountId, { called, loading, data }] =
-        useLazyQuery(GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID);
+        useLazyQuery(GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID, {
+            fetchPolicy: "network-only",
+        });
 
     const [agree, setAgree] = useState(false);
 

@@ -85,6 +85,7 @@ function AgencyAdmin() {
                                     <th scope="col">Email</th>
                                     <th scope="col">Số điện thoại</th>
                                     <th scope="col">Ngày đăng ký</th>
+                                    <th scope="col">Đã là đại lý</th>
                                     <th scope="col">Tùy chọn</th>
                                 </tr>
                             </thead>
@@ -101,10 +102,11 @@ function AgencyAdmin() {
                                                 false
                                             )}
                                         </td>
+                                        <td>{agencyRegister.account.is_agency ? "Rồi" : "chưa"}</td>
                                         <td>
                                             {!agencyRegister.approved && (
                                                 <button
-                                                    disabled={loadingApprove}
+                                                    disabled={loadingApprove || agencyRegister.account.is_agency}
                                                     className="btn btn-sm btn-primary shadow-sm"
                                                     onClick={() =>
                                                         approveAgencyHandler(

@@ -47,3 +47,24 @@ export const GET_REFEREES = gql`
         }
     }
 `;
+
+export const GET_REFEREES_BY_ACCOUNT_ID = gql`
+    query getReferees($id: Int!) {
+        account(where: { id: { _eq: $id } }) {
+            id
+            ory_id
+            name
+            user_info {
+                traits
+            }
+            created_at
+            referees {
+                id
+                ory_id
+                name
+                created_at
+            }
+            is_agency
+        }
+    }
+`;

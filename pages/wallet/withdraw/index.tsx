@@ -134,6 +134,12 @@ function Withdraw() {
             const withdrawalAmount = parseInt(
                 _.get(withdrawalAmountRef, "current.value")
             );
+            if (isNaN(withdrawalAmount)) {
+                setErrMsg(
+                    "Số tiền rút không hợp lệ"
+                );
+                return;
+            }
             if (withdrawalAmount > mainWallet.amount) {
                 setErrMsg(
                     "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
