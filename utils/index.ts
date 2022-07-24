@@ -57,5 +57,20 @@ export const getWallet = (
     return result;
 };
 
+export const CARD_PRICE = 300000;
+export const AGENCY_PRICE = 2000000;
+export const PERCENT_AGENCY = {
+    0: 0.25,
+    1: 0.1,
+    2: 0.05,
+    3: 0.03,
+    4: 0.02,
+    5: 0.01,
+    6: 0.01,
+    7: 0.01,
+    8: 0.01,
+    9: 0.01,
+};
+
 export const defaultImg =
     "https://long-space.sgp1.digitaloceanspaces.com/smartcard/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpeg";

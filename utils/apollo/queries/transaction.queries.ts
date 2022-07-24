@@ -9,6 +9,7 @@ export const GET_TRANSATION = gql`
                     { walletFromWalletId: { account_id: { _eq: $account_id } } }
                 ]
             }
+            order_by: { date: desc }
         ) {
             id
             amount
