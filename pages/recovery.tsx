@@ -32,13 +32,11 @@ const Recovery: NextPage = () => {
 
         // If ?flow=.. was in the URL, we fetch it
         if (flowId) {
-            ory.getSelfServiceRecoveryFlow(String(flowId), undefined, {
-                headers: { Authorization: `Bearer ${token}` },
-            })
+            ory.getSelfServiceRecoveryFlow(String(flowId))
                 .then(({ data }) => {
                     setFlow(data);
                 })
-                .catch(handleFlowError(router, "recovery", setFlow));
+                // .catch(handleFlowError(router, "recovery", setFlow));
             return;
         }
 

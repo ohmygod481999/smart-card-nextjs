@@ -13,7 +13,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Flow, Methods, Messages, ActionCard, CenterLink } from "../pkg";
 import { handleFlowError } from "../pkg/errors";
 import ory from "../pkg/sdk";
-import _ from "lodash"
+import _ from "lodash";
 
 interface Props {
     flow?: SelfServiceSettingsFlow;
@@ -45,7 +45,7 @@ const Settings: NextPage = () => {
 
     // Get ?flow=... from the URL
     const router = useRouter();
-    const { flow: flowId, return_to: returnTo, token } = router.query;
+    const { flow: flowId, return_to: returnTo } = router.query;
 
     useEffect(() => {
         // If the router is not ready yet, or we already have a flow, do nothing.
@@ -55,14 +55,7 @@ const Settings: NextPage = () => {
 
         // If ?flow=.. was in the URL, we fetch it
         if (flowId) {
-            ory.getSelfServiceSettingsFlow(
-                String(flowId),
-                String(token),
-                undefined,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            )
+            ory.getSelfServiceSettingsFlow(String(flowId))
                 .then(({ data }) => {
                     setFlow(data);
                 })
@@ -87,10 +80,7 @@ const Settings: NextPage = () => {
             .push(`/settings?flow=${flow?.id}`, undefined, { shallow: true })
             .then(() =>
                 ory
-                    .submitSelfServiceSettingsFlow(
-                        String(flow?.id),
-                        values
-                    )
+                    .submitSelfServiceSettingsFlow(String(flow?.id), values)
                     .then(({ data }) => {
                         // The settings have been saved and the flow was updated. Let's show it to the user!
                         setFlow(data);
