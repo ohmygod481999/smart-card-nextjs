@@ -366,3 +366,11 @@ button.full-width-btn:hover {
 
 }
 /* end shop page */
+
+/* dashboard */
+.page-item.activated a {
+    background-color: #4e73df;
+    color: white;
+}
+/* end dashboard */
+

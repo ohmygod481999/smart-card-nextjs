@@ -5,21 +5,24 @@ import {
     CARD_PRICE,
     formatMoney,
     PERCENT_AGENCY,
+    PERCENT_NON_AGENCY,
 } from "../../utils";
 
 interface Props {
     agencyTree: any[] | null;
     withdrawTransactions: Transaction[] | null;
+    isAgency: boolean
 }
 
-function AgencyStatistic({ agencyTree, withdrawTransactions }: Props) {
+function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) {
     const totalCardIncome = agencyTree
         ? agencyTree
               .filter((item, i) => i !== 0)
               .reduce((previousValue: any, currentValue: any, i) => {
+                  const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
                   return (
                       previousValue +
-                      currentValue.length * CARD_PRICE * PERCENT_AGENCY[i]
+                      currentValue.length * CARD_PRICE * percent
                   );
               }, 0)
         : 0;
@@ -37,9 +40,10 @@ function AgencyStatistic({ agencyTree, withdrawTransactions }: Props) {
                       },
                       0
                   );
+                  const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
                   return (
                       previousValue +
-                      numAgency * AGENCY_PRICE * PERCENT_AGENCY[i]
+                      numAgency * AGENCY_PRICE * percent
                   );
               }, 0)
         : 0;
@@ -80,24 +84,25 @@ function AgencyStatistic({ agencyTree, withdrawTransactions }: Props) {
                                     },
                                     0
                                 );
+                                const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
                                 return (
                                     <tr key={i}>
                                         <td>{i + 1}</td>
                                         <td>{itemLevel.length}</td>
                                         <td>{numAgency}</td>
-                                        <td>{PERCENT_AGENCY[i] * 100} %</td>
+                                        <td>{percent * 100} %</td>
                                         <td>
                                             {formatMoney(
                                                 itemLevel.length *
                                                     CARD_PRICE *
-                                                    PERCENT_AGENCY[i]
+                                                    percent
                                             )}
                                         </td>
                                         <td>
                                             {formatMoney(
                                                 numAgency *
                                                     AGENCY_PRICE *
-                                                    PERCENT_AGENCY[i]
+                                                    percent
                                             )}
                                         </td>
                                     </tr>

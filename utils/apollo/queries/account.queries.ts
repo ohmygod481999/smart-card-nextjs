@@ -68,3 +68,21 @@ export const GET_REFEREES_BY_ACCOUNT_ID = gql`
         }
     }
 `;
+
+export const GET_ACCOUNTS = gql`
+    query getAccounts($limit: Int!, $offset: Int!) {
+        account_aggregate {
+            aggregate {
+                count
+            }
+        }
+        account(limit: $limit, offset: $offset, order_by: {created_at: desc}) {
+            id
+            name
+            email
+            phone
+            is_agency
+            created_at
+        }
+    }
+`;

@@ -59,6 +59,7 @@ export const getWallet = (
 
 export const CARD_PRICE = 300000;
 export const AGENCY_PRICE = 2000000;
+export const PERCENT_NON_AGENCY = 0.2;
 export const PERCENT_AGENCY: { [x: number]: number } = {
     0: 0.25,
     1: 0.1,
@@ -70,6 +71,9 @@ export const PERCENT_AGENCY: { [x: number]: number } = {
     7: 0.01,
     8: 0.01,
     9: 0.01,
+    10: 0.01,
+    11: 0.01,
+    12: 0.01,
 };
 
 export const defaultImg =

@@ -24,11 +24,17 @@ import { GET_TRANSATION } from "../../utils/apollo/queries/transaction.queries";
 import { GET_WALLETS } from "../../utils/apollo/queries/wallet.queries";
 import axios from "axios";
 import AgencyStatistic from "../../components/dashboard/AgencyStatistic";
+import { useRouter } from "next/router";
 
 function AgencyTree() {
-    const idUserRef = useRef(null);
+    const router = useRouter();
+
+    const { id } = router.query;
+
+    const idUserRef = useRef<HTMLInputElement>(null);
 
     const [userId, setUserId] = useState<number | null>(null);
+    const [isAgency, setIsAgency] = useState<boolean | null>(null);
     const [agencyTree, setAgencyTree] = useState<any[] | null>(null);
 
     const [referees, setReferees] = useState<RefereeRecord[] | null>(null);
@@ -37,6 +43,13 @@ function AgencyTree() {
     const [mainWalletTransactions, setMainWalletTransactions] = useState<
         Transaction[] | null
     >(null);
+
+    useEffect(() => {
+        if (id && router.isReady && idUserRef && idUserRef.current) {
+            idUserRef.current.value = String(id);
+            onSubmitUserId();
+        }
+    }, [id, router.isReady, idUserRef]);
 
     useEffect(() => {
         if (userId) {
@@ -69,7 +82,6 @@ function AgencyTree() {
                             })
                             .then(({ data }) => {
                                 const transactions = getDataGraphqlResult(data);
-                                console.log(transactions);
                                 const mainTransactions: Transaction[] = [];
                                 const secondaryTransactions: Transaction[] = [];
                                 transactions.forEach(
@@ -114,13 +126,16 @@ function AgencyTree() {
                 })
                 .then(({ data }) => {
                     const _referees = getDataGraphqlResult(data);
+                    if (_referees && _referees.length > 0) {
+                        setIsAgency(_referees[0].is_agency);
+                    }
                     setReferees(_referees);
                 });
         }
     }, [userId]);
 
     useEffect(() => {
-        if (userId) {
+        if (userId && isAgency !== null) {
             axios
                 .get(`https://server.smartcardnp.vn/agency/children/${userId}`)
                 .then((res) => {
@@ -129,7 +144,14 @@ function AgencyTree() {
                         const tree = [[children[0]]];
                         let currentLevel = 0;
                         let currentItems = [];
-                        for (let i = 1; i < children.length; i++) {
+                        const limit =
+                            children.length < 2
+                                ? 1
+                                : isAgency
+                                ? children.length
+                                : 3;
+
+                        for (let i = 1; i < limit; i++) {
                             if (
                                 tree[currentLevel]
                                     .map((item) => item.id)
@@ -143,18 +165,14 @@ function AgencyTree() {
                             }
                         }
                         tree.push(currentItems);
-                        // console.log(children);
-                        console.log(tree);
                         setAgencyTree(tree);
                     }
                 });
         }
-    }, [userId]);
+    }, [userId, isAgency]);
 
     const onSubmitUserId = () => {
-        console.log(_.get(idUserRef, "current.value"));
         const idUser = parseInt(_.get(idUserRef, "current.value"));
-        console.log(idUser);
         setUserId(idUser);
     };
 
@@ -162,7 +180,6 @@ function AgencyTree() {
         () => getWallet(wallets || [], WalletType.Main),
         [wallets]
     );
-    console.log(mainWallet);
 
     return (
         <LayoutDashboard>
@@ -232,18 +249,23 @@ function AgencyTree() {
                             <h3 className="h5 mb-0 text-gray-800">
                                 Thống kê:{" "}
                             </h3>
-                            <AgencyStatistic
-                                agencyTree={agencyTree}
-                                withdrawTransactions={
-                                    mainWalletTransactions
-                                        ? mainWalletTransactions.filter(
-                                              (tst) =>
-                                                  tst.type ===
-                                                  TransactionType.WITHDRAW
-                                          )
-                                        : null
-                                }
-                            />
+                            {isAgency !== null &&
+                                agencyTree &&
+                                mainWalletTransactions && (
+                                    <AgencyStatistic
+                                        agencyTree={agencyTree}
+                                        withdrawTransactions={
+                                            mainWalletTransactions
+                                                ? mainWalletTransactions.filter(
+                                                      (tst) =>
+                                                          tst.type ===
+                                                          TransactionType.WITHDRAW
+                                                  )
+                                                : null
+                                        }
+                                        isAgency={isAgency}
+                                    />
+                                )}
                         </div>
 
                         <div className="mb-3">

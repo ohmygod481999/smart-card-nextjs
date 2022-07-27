@@ -1,9 +1,9 @@
 import { useQuery } from "@apollo/client";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import LayoutDashboard from "../../components/dashboard/LayoutDashboard";
-import { formatDateTime, getDataGraphqlResult } from "../../utils";
-import { GET_AGENCY_REGISTRATIONS_ADMIN } from "../../utils/apollo/queries/registration.queries";
+import LayoutDashboard from "../../../components/dashboard/LayoutDashboard";
+import { formatDateTime, getDataGraphqlResult } from "../../../utils";
+import { GET_AGENCY_REGISTRATIONS_ADMIN } from "../../../utils/apollo/queries/registration.queries";
 
 function AgencyAdmin() {
     const [agencyRegisters, setAgencyRegisters] = useState<any>([]);
