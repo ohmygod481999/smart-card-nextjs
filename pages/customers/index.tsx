@@ -3,18 +3,19 @@ import { useContext, useEffect, useState } from "react";
 
 import { Identity } from "@ory/client";
 
-import SessionContext from "../context/session-context";
-import LayoutAuthed from "../components/LayoutAuthed";
-import { GET_CARD_BY_ORY_ID } from "../utils/apollo/queries/card.queries";
+import SessionContext from "../../context/session-context";
+import LayoutAuthed from "../../components/LayoutAuthed";
+import { GET_CARD_BY_ORY_ID } from "../../utils/apollo/queries/card.queries";
 import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { Account } from "../types/global";
-import { getDataGraphqlResult, paddingId } from "../utils";
+import { Account } from "../../types/global";
+import { getDataGraphqlResult, paddingId } from "../../utils";
 import { get } from "lodash";
-import AccountCard from "../components/AccountCard";
-import { GET_REFEREES } from "../utils/apollo/queries/account.queries";
-import Row, { RefereeRecord } from "../components/TableHaveChildren/Row";
+import AccountCard from "../../components/AccountCard";
+import { GET_REFEREES } from "../../utils/apollo/queries/account.queries";
+import Row, { RefereeRecord } from "../../components/TableHaveChildren/Row";
 import Head from "next/head";
+import Link from "next/link";
 
 const Home: NextPage = () => {
     const router = useRouter();
@@ -58,6 +59,9 @@ const Home: NextPage = () => {
 
     console.log(referees);
 
+    const isAgency =
+        referees && referees.length > 0 ? referees[0].is_agency : false;
+
     return (
         <LayoutAuthed>
             <Head>
@@ -91,13 +95,57 @@ const Home: NextPage = () => {
                                             marginBottom: 20,
                                         }}
                                     >
-                                        Mã giới thiệu:{" "}
+                                        Mã {isAgency ? "đại lý" : "giới thiệu"}:{" "}
                                         <span className="referer-code">
                                             {referees?.length
                                                 ? paddingId(referees[0].id)
                                                 : "N/A"}
                                         </span>
                                     </div>
+                                    {isAgency && (
+                                        <div
+                                            className="col-lg-12 col-12"
+                                            style={{
+                                                marginBottom: 20,
+                                            }}
+                                        >
+                                            <div className="section-features__list">
+                                                {/* <Link href="/customers/purchase"> */}
+                                                    <div className="section-features__item inactive">
+                                                        <span className="icon">
+                                                            <i className="far fa-address-card"></i>
+                                                        </span>
+                                                        <span>Nhập hàng</span>
+                                                    </div>
+                                                {/* </Link> */}
+                                                {/* <Link href="/wallet/withdraw"> */}
+                                                    <div className="section-features__item inactive">
+                                                        <span className="icon">
+                                                            <i className="fas fa-boxes"></i>
+                                                        </span>
+                                                        <span>
+                                                            Lịch sử nhập hàng
+                                                        </span>
+                                                    </div>
+                                                {/* </Link> */}
+                                                {/* <div className="section-features__item">
+                                                    <span className="icon">
+                                                        <i className="fas fa-tasks"></i>
+                                                    </span>
+                                                    <span>
+                                                        lịch sử
+                                                        <br /> giao dịch
+                                                    </span>
+                                                </div>
+                                                <div className="section-features__item inactive">
+                                                    <span className="icon">
+                                                        <i className="fas fa-store"></i>
+                                                    </span>
+                                                    <span>Hỗ trợ</span>
+                                                </div> */}
+                                            </div>
+                                        </div>
+                                    )}
                                     <div className="col-lg-12 col-12 table-responsive">
                                         <table className="table">
                                             <thead>
