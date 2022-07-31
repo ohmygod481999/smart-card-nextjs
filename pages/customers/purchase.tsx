@@ -1,9 +1,65 @@
+import { useQuery } from "@apollo/client";
 import Head from "next/head";
-import React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import LayoutAuthed from "../../components/LayoutAuthed";
 import SectionLayout from "../../components/SectionLayout";
+import ProductItem from "../../components/shop/ProductItem";
+import QuantityBtns from "../../components/shop/QuantityBtns";
+import { CartItem, Product } from "../../types/global";
+import { formatMoney, getDataGraphqlResult } from "../../utils";
+import { GET_PRODUCTS } from "../../utils/apollo/queries/product.queries";
 
 function Purchase() {
+    const { data, loading, error } = useQuery(GET_PRODUCTS);
+
+    const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+    const products: null | Product[] = useMemo(() => {
+        if (!data) return null;
+        return getDataGraphqlResult(data);
+    }, [data]);
+
+    const totalPrice = useMemo(() => {
+        return cartItems.reduce((prev, cur) => {
+            return prev + cur.quantity * cur.product.price;
+        }, 0);
+    }, [cartItems]);
+
+    const changeQuantityProduct = useCallback(
+        (product: Product, quantity: number) => {
+            if (cartItems.map((item) => item.product.id).includes(product.id)) {
+                setCartItems(
+                    cartItems.map((item) => {
+                        if (item.product.id === product.id) {
+                            return {
+                                ...item,
+                                quantity,
+                            };
+                        }
+                        return item;
+                    })
+                );
+            } else {
+                setCartItems([
+                    ...cartItems,
+                    {
+                        product,
+                        quantity,
+                    },
+                ]);
+            }
+        },
+        [cartItems]
+    );
+
+    const onOrder = useCallback(() => {
+        if (cartItems.length > 0) {
+            alert(JSON.stringify(cartItems));
+        } else {
+            alert("Vui lòng chọn sản phẩm");
+        }
+    }, [cartItems]);
+
     return (
         <LayoutAuthed>
             <Head>
@@ -16,26 +72,39 @@ function Purchase() {
                     </h1>
                     <div className="animated-bar left" />
                 </div>
-                <div className="section-products">
-                    <div className="section-products-item">
-                        <div className="section-products-item__thumbnail" >
-                            <img src="https://i.pinimg.com/originals/d2/bc/2e/d2bc2e48daf3b728e0273427fc1f6cfd.jpg" />
-                        </div>
-                        <div className="section-products-item__content">
-                            <div>
-                                <div className="section-products-item__title">
-                                    Thẻ smart card
+                <div className="shop-container">
+                    <div className="section-products">
+                        {products &&
+                            products.map((product) => (
+                                <ProductItem
+                                    product={product}
+                                    cartItems={cartItems}
+                                    changeQuantityProduct={
+                                        changeQuantityProduct
+                                    }
+                                />
+                            ))}
+                    </div>
+                    <div className="section-cart">
+                        <div className="section-cart__items">
+                            <div className="section-cart__item">
+                                <div className="section-cart__item-title">
+                                    Tổng tiền
                                 </div>
-                                <div className="section-products-item__description">
-                                    Lorem ipsum dolor sit amet, consectetur
-                                    adipiscing elit. Nullam dapibus ante erat,
-                                    ut lacinia enim imperdiet vel.
+                                <div className="section-cart__item-right">
+                                    <div className="section-cart__item-price">
+                                        {formatMoney(totalPrice)}
+                                    </div>
                                 </div>
                             </div>
-                            <div className="section-products-item__price">
-                                2,000,000đ
-                            </div>
                         </div>
+
+                        <button
+                            className="full-width-btn btn-white"
+                            onClick={onOrder}
+                        >
+                            Đặt hàng
+                        </button>
                     </div>
                 </div>
             </SectionLayout>

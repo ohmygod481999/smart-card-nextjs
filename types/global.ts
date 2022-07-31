@@ -98,3 +98,17 @@ export interface Registration {
     created_at: string;
     payload: null | RegistrationPayload;
 }
+
+export interface Product {
+    id: number;
+    name: string;
+    price: number;
+    description: string;
+    thumbnail: string;
+    created_at: string;
+}
+
+export interface CartItem {
+    product: Product;
+    quantity: number;
+}
