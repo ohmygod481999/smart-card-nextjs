@@ -31,7 +31,7 @@ function WalletAdmin() {
     const approveAgencyHandler = useCallback(async (agencyRegister: any) => {
         try {
             const res = await axios.post(
-                "https://server.smartcardnp.vn/wallet/approve-withdraw",
+                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/wallet/approve-withdraw`,
                 {
                     registrationId: agencyRegister.id,
                 }

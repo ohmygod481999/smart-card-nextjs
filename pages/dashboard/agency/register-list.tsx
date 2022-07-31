@@ -29,10 +29,11 @@ function AgencyAdmin() {
     }, [data, loading]);
 
     const approveAgencyHandler = useCallback(async (agencyRegister: any) => {
+        // return console.log(process.env.NEXT_PUBLIC_FILE_SERVER_URL);
         try {
             setLoadingApprove(true);
             const res = await axios.post(
-                "https://server.smartcardnp.vn/agency/approve",
+                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/agency/approve`,
                 {
                     registrationId: agencyRegister.id,
                 }

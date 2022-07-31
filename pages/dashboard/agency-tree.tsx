@@ -137,7 +137,7 @@ function AgencyTree() {
     useEffect(() => {
         if (userId && isAgency !== null) {
             axios
-                .get(`https://server.smartcardnp.vn/agency/children/${userId}`)
+                .get(`${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/agency/children/${userId}`)
                 .then((res) => {
                     if (res.data) {
                         const children = res.data.data;
@@ -147,9 +147,7 @@ function AgencyTree() {
                         const limit =
                             children.length < 2
                                 ? 1
-                                : isAgency
-                                ? children.length
-                                : 3;
+                                : children.length;
 
                         for (let i = 1; i < limit; i++) {
                             if (

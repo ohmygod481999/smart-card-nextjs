@@ -10,7 +10,7 @@ import Layout from "../../../components/Layout";
 import SessionContext from "../../../context/session-context";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { GET_CARD } from "../../../utils/apollo/queries/card.queries";
-import { getValueFromGraphql } from "../../../utils";
+import { getDataGraphqlResult, getValueFromGraphql } from "../../../utils";
 import { Account, AccountInfo, CardInfo } from "../../../types/global";
 import useGetCardInfo from "../../../hooks/useGetCardInfo";
 import CardDontExist from "../../../components/CardDontExist";
