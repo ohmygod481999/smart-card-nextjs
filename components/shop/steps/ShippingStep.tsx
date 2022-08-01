@@ -22,7 +22,7 @@ function ShippingStep({ onNext, setShipping }: Props) {
     const submit = (values: any) => {
         setShipping({
             shippingOption,
-            payload: shippingOption === ShippingOption.SHIP ? values : {},
+            payload: values,
         });
         onNext();
     };
@@ -71,49 +71,50 @@ function ShippingStep({ onNext, setShipping }: Props) {
                             className="form-check-label"
                             htmlFor="flexRadioDefault2"
                         >
-                            Giao hàng tại nhà
+                            Giao hàng
                         </label>
                     </div>
-                    {shippingOption === ShippingOption.SHIP && (
-                        <div className="register-form row">
-                            <div className="form-group mb-3">
-                                <label>Tên người nhận</label>
-                                <input
-                                    {...register("name", {
-                                        required: {
-                                            message: "Trường bắt buộc",
-                                            value: true,
-                                        },
-                                    })}
-                                    autoComplete="off"
-                                    className="form-control"
-                                    placeholder="Nhập tên"
-                                />
-                                {errors && errors["name"] && (
-                                    <div className="invalid-feedback d-block">
-                                        {String(errors["name"].message)}
-                                    </div>
-                                )}
-                            </div>
-                            <div className="form-group mb-3">
-                                <label>Số điện thoại</label>
-                                <input
-                                    {...register("phone", {
-                                        required: {
-                                            message: "Trường bắt buộc",
-                                            value: true,
-                                        },
-                                    })}
-                                    autoComplete="off"
-                                    className="form-control"
-                                    placeholder="VD: 0829400301"
-                                />
-                                {errors && errors["phone"] && (
-                                    <div className="invalid-feedback d-block">
-                                        {String(errors["phone"].message)}
-                                    </div>
-                                )}
-                            </div>
+
+                    <div className="register-form row">
+                        <div className="form-group mb-3">
+                            <label>Tên người nhận</label>
+                            <input
+                                {...register("name", {
+                                    required: {
+                                        message: "Trường bắt buộc",
+                                        value: true,
+                                    },
+                                })}
+                                autoComplete="off"
+                                className="form-control"
+                                placeholder="Nhập tên"
+                            />
+                            {errors && errors["name"] && (
+                                <div className="invalid-feedback d-block">
+                                    {String(errors["name"].message)}
+                                </div>
+                            )}
+                        </div>
+                        <div className="form-group mb-3">
+                            <label>Số điện thoại</label>
+                            <input
+                                {...register("phone", {
+                                    required: {
+                                        message: "Trường bắt buộc",
+                                        value: true,
+                                    },
+                                })}
+                                autoComplete="off"
+                                className="form-control"
+                                placeholder="VD: 0829400301"
+                            />
+                            {errors && errors["phone"] && (
+                                <div className="invalid-feedback d-block">
+                                    {String(errors["phone"].message)}
+                                </div>
+                            )}
+                        </div>
+                        {shippingOption === ShippingOption.SHIP && (
                             <div className="form-group mb-3">
                                 <label>Địa chỉ</label>
                                 <input
@@ -133,8 +134,8 @@ function ShippingStep({ onNext, setShipping }: Props) {
                                     </div>
                                 )}
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </div>
             <button className="full-width-btn" onClick={handleSubmit(submit)}>

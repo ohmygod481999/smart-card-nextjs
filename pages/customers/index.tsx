@@ -110,14 +110,14 @@ const Home: NextPage = () => {
                                             }}
                                         >
                                             <div className="section-features__list">
-                                                {/* <Link href="/customers/purchase"> */}
-                                                    <div className="section-features__item inactive">
+                                                <Link href="/customers/shop">
+                                                    <div className="section-features__item">
                                                         <span className="icon">
                                                             <i className="far fa-address-card"></i>
                                                         </span>
                                                         <span>Nhập hàng</span>
                                                     </div>
-                                                {/* </Link> */}
+                                                </Link>
                                                 {/* <Link href="/wallet/withdraw"> */}
                                                     <div className="section-features__item inactive">
                                                         <span className="icon">

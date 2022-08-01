@@ -114,8 +114,8 @@ export interface CartItem {
 }
 
 export enum ShippingOption {
-    SELF_GET,
-    SHIP,
+    SELF_GET = 0,
+    SHIP = 1,
 }
 
 export interface Shipping {
@@ -135,4 +135,14 @@ export enum PaymentMethod {
 export interface Order {
     shipping: Shipping | null;
     paymentMethod: PaymentMethod | null;
+}
+
+export enum OrderStatus {
+    CREATED = 0,
+    APPROVE = 1,
+}
+
+export interface OrderItem {
+    product_id: number;
+    quantity: number;
 }

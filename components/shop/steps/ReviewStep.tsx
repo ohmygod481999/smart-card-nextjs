@@ -74,9 +74,7 @@ function ReviewStep({ order, onNext }: Props) {
         const cartItemsJson = localStorage.getItem("cart");
         return cartItemsJson ? JSON.parse(cartItemsJson) : null;
     }, []);
-    console.log(cartItems);
-    console.log(order.paymentMethod === PaymentMethod.BANK_TRANSFER);
-
+    
     const totalPrice = useMemo(() => {
         if (!cartItems) return 0;
         return cartItems.reduce((prev, cur) => {

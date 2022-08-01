@@ -2,18 +2,30 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
 import LayoutAuthed from "../../../components/LayoutAuthed";
 import SectionLayout from "../../../components/SectionLayout";
 import PaymentStep from "../../../components/shop/steps/PaymentStep";
 import ReviewStep from "../../../components/shop/steps/ReviewStep";
 import ShippingStep from "../../../components/shop/steps/ShippingStep";
+import SessionContext from "../../../context/session-context";
 import {
     CartItem,
     Order,
+    OrderItem,
+    OrderStatus,
     PaymentMethod,
     Shipping,
 } from "../../../types/global";
+import { apolloClient } from "../../../utils/apollo";
+import { ADD_ORDER } from "../../../utils/apollo/mutations/order.mutation";
+import _ from "lodash";
 
 enum CheckoutStep {
     SHIPPING = 0,
@@ -23,6 +35,8 @@ enum CheckoutStep {
 }
 
 function Checkout() {
+    const { session, updateSession } = useContext(SessionContext);
+
     const router = useRouter();
     const [order, setOrder] = useState<Order>({
         shipping: null,
@@ -64,14 +78,65 @@ function Checkout() {
         }
     }, []);
 
-    const onNext = useCallback(() => {
+    const cartItems: CartItem[] | null = useMemo(() => {
+        if (typeof window !== "undefined") {
+            const cartItemsJson = localStorage.getItem("cart");
+            return cartItemsJson ? JSON.parse(cartItemsJson) : null;
+        }
+        return null;
+    }, []);
+
+    const onNext = useCallback(async () => {
         if (currentStep < 2) {
             setCurrentStep(currentStep + 1);
         } else {
-            alert("Đặt hàng");
-            setCurrentStep(currentStep + 1);
+            if (order.shipping && order.paymentMethod !== null && cartItems) {
+                const orderItems: OrderItem[] = cartItems.map((item) => ({
+                    product_id: item.product.id,
+                    quantity: item.quantity,
+                }));
+
+                try {
+                    const res = await apolloClient.mutate({
+                        mutation: ADD_ORDER,
+                        variables: {
+                            account_id: session.user.id,
+                            customer_phone: order.shipping.payload.phone
+                                ? order.shipping.payload.phone
+                                : "N/A",
+                            customer_name: order.shipping.payload.name
+                                ? order.shipping.payload.name
+                                : "N/A",
+                            customer_address: order.shipping.payload.address
+                                ? order.shipping.payload.address
+                                : "N/A",
+                            status: OrderStatus.CREATED,
+                            shipping_type: order.shipping.shippingOption,
+                            payment_type: order.paymentMethod,
+                            order_items: {
+                                data: orderItems,
+                            },
+                        },
+                    });
+
+                    if (res.data && _.get(res, "data.insert_order_one.id")) {
+                        // success
+                        setCurrentStep(currentStep + 1);
+                    } else {
+                        throw new Error("Some thing wrong happend");
+                    }
+                } catch (err) {
+                    console.error(err);
+                }
+            } else {
+                console.log(
+                    "missing information",
+                    order.shipping,
+                    order.paymentMethod
+                );
+            }
         }
-    }, [currentStep]);
+    }, [currentStep, order]);
 
     return (
         <LayoutAuthed>
