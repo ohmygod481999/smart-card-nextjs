@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import SessionContext from "../context/session-context";
 import { useLogoutHandler } from "../pkg";
 
@@ -14,7 +14,7 @@ function RegisterCard(props: Props) {
     const { id } = props;
 
     const logout = useLogoutHandler();
-
+    const [active, setActive] = useState<number>(1);
     const onRegister = async () => {
         if (session) {
             await logout();
@@ -30,38 +30,116 @@ function RegisterCard(props: Props) {
                     <div className="row align-items-center">
                         <div className="col-12">
                             <div className="home-content text-center">
-                                <p className="common-desctiption animate__animated animate__fadeInDown animate__delay-1s">
-                                    Thẻ chưa kích hoạt
-                                </p>
-                                <p>
+                                <div className="onboarding-container">
+                                    <div
+                                        className="steps"
+                                        style={{
+                                            transform: `translateX(${
+                                                -(100 / 3) * (active - 1)
+                                            }%)`,
+                                        }}
+                                    >
+                                        <div className="step">
+                                            <div className="image-container">
+                                                <img
+                                                    className="step-image"
+                                                    src="/images/onboarding/tech.png"
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className="step-description">
+                                                <p>
+                                                    Chào mừng đến với hệ sinh
+                                                    thái smartcard.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="step">
+                                            <div className="image-container">
+                                                <img
+                                                    className="step-image"
+                                                    src="/images/onboarding/image1.png"
+                                                    alt=""
+                                                />
+                                            </div>
+
+                                            <div className="step-description">
+                                                <p>
+                                                    Smart card là thẻ thông minh
+                                                    cho cá nhân và doanh nghiệp.
+                                                    Với smartcard, bạn có thể
+                                                    tiện lợi chia sẻ thông tin
+                                                    cho khách hàng cá nhân và
+                                                    tích hợp quản trị doanh
+                                                    nghiệp
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="step">
+                                            <div className="image-container">
+                                                <img
+                                                    className="step-image"
+                                                    src="/images/onboarding/social.png"
+                                                    alt=""
+                                                />
+                                            </div>
+                                            <div className="step-description">
+                                                <p>
+                                                    Đăng ký ngay và bắt đầu trải nghiệm
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="btn-container ">
+                                        <div
+                                            className={`skip-btn ${
+                                                active === 3 ? "btn-hiden" : ""
+                                            }`}
+                                            onClick={() => {
+                                                setActive(3);
+                                            }}
+                                        >
+                                            Bỏ qua
+                                        </div>
+                                        <div className="dots">
+                                            <div
+                                                className={`dot ${
+                                                    active === 1 ? "active" : ""
+                                                }`}
+                                            ></div>
+                                            <div
+                                                className={`dot ${
+                                                    active === 2 ? "active" : ""
+                                                }`}
+                                            ></div>
+                                            <div
+                                                className={`dot ${
+                                                    active === 3 ? "active" : ""
+                                                }`}
+                                            ></div>
+                                        </div>
+                                        <div
+                                            className={`next-btn ${
+                                                active === 3 ? "btn-hiden" : ""
+                                            }`}
+                                            onClick={() => {
+                                                setActive((prep) => prep + 1);
+                                            }}
+                                        >
+                                            Tiếp tục
+                                        </div>
+                                    </div>
                                     <button
-                                        className="btn btn-link"
+                                        className={`btn btn-link ${
+                                            active === 3 ? "" : "btn-hiden"
+                                        }`}
                                         onClick={onRegister}
                                     >
-                                        Đăng ký
+                                        Đăng ký ngay
                                     </button>
-                                    ngay
-                                    {/* <Link href={`/user/${id}/registration`}>Đăng ký</Link>  */}
-                                </p>
-                                {/* <div className="home-btn">
-                                    <a
-                                        href="#contact"
-                                        data-section-index={1}
-                                        className="clickbtn hire-me animate__animated animate__fadeInTopLeft animate__delay-3s "
-                                    >
-                                        Hire me
-                                    </a>
-                                    <a
-                                        href="#about"
-                                        data-section-index={1}
-                                        className="clickbtn about-us animate__animated animate__fadeInTopRight animate__delay-3s"
-                                    >
-                                        about me{" "}
-                                    </a>
-                                </div> */}
+                                </div>
                             </div>
                         </div>
-                        {/* Profile-Information End */}
                     </div>
                 </div>
             </div>
