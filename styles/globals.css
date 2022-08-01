@@ -452,6 +452,7 @@ button.full-width-btn:hover {
     display: flex;
     width: 300%;
     transition: all 400ms ease;
+    margin-bottom: 15px;
 }
 .steps .step{
     width: 100%;
@@ -474,6 +475,9 @@ button.full-width-btn:hover {
 }
 .onboarding-container .btn-hiden{
     display: none;
+}
+.btn-container {
+    margin-bottom: 20px;
 }
 .btn-container .next-btn {
     font-size: 16px;
@@ -506,5 +510,12 @@ button.full-width-btn:hover {
   }
   .onboarding-container .dot.active {
     background: #222;
+  }
+
+  .step-description {
+      height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
 /* end onboarding */
