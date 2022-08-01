@@ -77,6 +77,7 @@ function Purchase() {
                         {products &&
                             products.map((product) => (
                                 <ProductItem
+                                    key={product.id}
                                     product={product}
                                     cartItems={cartItems}
                                     changeQuantityProduct={
