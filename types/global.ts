@@ -112,3 +112,27 @@ export interface CartItem {
     product: Product;
     quantity: number;
 }
+
+export enum ShippingOption {
+    SELF_GET,
+    SHIP,
+}
+
+export interface Shipping {
+    shippingOption: ShippingOption;
+    payload: {
+        name: string;
+        phone: string;
+        address: string;
+    };
+}
+
+export enum PaymentMethod {
+    BANK_TRANSFER = 0,
+    SMARTCARD_WALLET = 1,
+}
+
+export interface Order {
+    shipping: Shipping | null;
+    paymentMethod: PaymentMethod | null;
+}

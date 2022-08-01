@@ -308,10 +308,15 @@ button.full-width-btn:hover {
 
 .withdraw-receiving-method {
     display: flex;
-    border: 2px solid #95cb28;
+    border: 1px solid gray;
     padding: 10px;
     border-radius: 5px;
     cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.withdraw-receiving-method.activate {
+    border: 2px solid #95cb28;
 }
 
 .withdraw-receiving-method__content .title {
@@ -355,8 +360,10 @@ button.full-width-btn:hover {
     align-items: center;
     margin-right: 10px;
 }
+
 .section-products-item__thumbnail img {
     width: 100%;
+    border-radius: 5px;
 }
 
 .section-products-item__content {
@@ -410,11 +417,6 @@ button.full-width-btn:hover {
     margin-bottom: 20px;
 }
 
-/* .section-cart__items {
-    max-height: 10vh;
-    overflow-y: scroll;
-} */
-
 .section-cart__item {
     display: flex;
     justify-content: space-between;
@@ -434,7 +436,72 @@ button.full-width-btn:hover {
     background-color: white;
     color: #95cb28;
 }
+
+.order-summary-cart__item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.order-summary-cart__item .right {
+    max-width: 60%;
+}
+
+.order-summary-cart__item h5{
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.order-summary-cart__address p{
+    margin-bottom: 2px;
+}
 /* end shop page */
+
+/* checkout page */
+.section-checkout {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60vh;
+}
+
+.section-checkout__steps {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.section-checkout__step {
+    flex-basis: 33%;
+    text-align: center;
+}
+
+.section-checkout__step.done span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    color: white;
+    background-color: #95cb28;
+    border-radius: 50%;
+}
+.section-checkout__step.done::before {
+    content: "";
+    background: url("/icon/check.png") no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    left: -4px;
+    top: 6px;
+}
+
+.section-checkout__step.done span {
+    display: none;
+}
+
+.section-checkout__step-page {
+}
+/* end checkout page */
 
 /* dashboard */
 .page-item.activated a {

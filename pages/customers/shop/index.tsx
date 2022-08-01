@@ -1,16 +1,18 @@
 import { useQuery } from "@apollo/client";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useCallback, useMemo, useState } from "react";
-import LayoutAuthed from "../../components/LayoutAuthed";
-import SectionLayout from "../../components/SectionLayout";
-import ProductItem from "../../components/shop/ProductItem";
-import QuantityBtns from "../../components/shop/QuantityBtns";
-import { CartItem, Product } from "../../types/global";
-import { formatMoney, getDataGraphqlResult } from "../../utils";
-import { GET_PRODUCTS } from "../../utils/apollo/queries/product.queries";
+import LayoutAuthed from "../../../components/LayoutAuthed";
+import SectionLayout from "../../../components/SectionLayout";
+import ProductItem from "../../../components/shop/ProductItem";
+import QuantityBtns from "../../../components/shop/QuantityBtns";
+import { CartItem, Product } from "../../../types/global";
+import { formatMoney, getDataGraphqlResult } from "../../../utils";
+import { GET_PRODUCTS } from "../../../utils/apollo/queries/product.queries";
 
-function Purchase() {
+function Shop() {
     const { data, loading, error } = useQuery(GET_PRODUCTS);
+    const router = useRouter()
 
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
@@ -28,17 +30,28 @@ function Purchase() {
     const changeQuantityProduct = useCallback(
         (product: Product, quantity: number) => {
             if (cartItems.map((item) => item.product.id).includes(product.id)) {
-                setCartItems(
-                    cartItems.map((item) => {
-                        if (item.product.id === product.id) {
-                            return {
-                                ...item,
-                                quantity,
-                            };
-                        }
-                        return item;
-                    })
-                );
+                if (quantity !== 0) {
+                    setCartItems(
+                        cartItems.map((item) => {
+                            if (item.product.id === product.id) {
+                                return {
+                                    ...item,
+                                    quantity,
+                                };
+                            }
+                            return item;
+                        })
+                    );
+                } else {
+                    setCartItems(
+                        cartItems.filter((item) => {
+                            if (item.product.id !== product.id) {
+                                return true;
+                            }
+                            return false;
+                        })
+                    );
+                }
             } else {
                 setCartItems([
                     ...cartItems,
@@ -54,7 +67,8 @@ function Purchase() {
 
     const onOrder = useCallback(() => {
         if (cartItems.length > 0) {
-            alert(JSON.stringify(cartItems));
+            localStorage.setItem("cart", JSON.stringify(cartItems));
+            router.push("/customers/shop/checkout")
         } else {
             alert("Vui lòng chọn sản phẩm");
         }
@@ -113,4 +127,4 @@ function Purchase() {
     );
 }
 
-export default Purchase;
+export default Shop;

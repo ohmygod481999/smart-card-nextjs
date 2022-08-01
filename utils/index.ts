@@ -76,5 +76,10 @@ export const PERCENT_AGENCY: { [x: number]: number } = {
     12: 0.01,
 };
 
+export const BANK_ACCOUNT = {
+    BANK_NAME: "MB Bank",
+    BANK_NUMBER: "0829400301",
+};
+
 export const defaultImg =
     "https://long-space.sgp1.digitaloceanspaces.com/smartcard/default-avatar-profile-trendy-style-social-media-user-icon-187599373.jpeg";

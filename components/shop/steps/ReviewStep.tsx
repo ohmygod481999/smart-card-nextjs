@@ -1,0 +1,249 @@
+import { useLazyQuery } from "@apollo/client";
+import { useRouter } from "next/router";
+import React, {
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from "react";
+import SessionContext from "../../../context/session-context";
+import {
+    CartItem,
+    Order,
+    PaymentMethod,
+    ShippingOption,
+    Wallet,
+    WalletType,
+} from "../../../types/global";
+import {
+    BANK_ACCOUNT,
+    formatMoney,
+    getDataGraphqlResult,
+    getWallet,
+} from "../../../utils";
+import { GET_WALLETS } from "../../../utils/apollo/queries/wallet.queries";
+
+interface Props {
+    order: Order;
+    onNext: () => void;
+}
+
+function ReviewStep({ order, onNext }: Props) {
+    const router = useRouter();
+
+    const { session, updateSession } = useContext(SessionContext);
+    const [wallets, setWallets] = useState<Wallet[] | null>(null);
+
+    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+
+    // const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
+    //     PaymentMethod.BANK_TRANSFER
+    // );
+
+    useEffect(() => {
+        if (session) {
+            getWallets({
+                variables: {
+                    account_id: session.user.id,
+                },
+            });
+        } else if (session === null) {
+            router.push("/login");
+        }
+    }, [session]);
+
+    useEffect(() => {
+        if (data) {
+            const wallets = getDataGraphqlResult(data);
+            setWallets(wallets);
+        }
+    }, [data]);
+
+    const mainWallet: Wallet | null = useMemo(
+        () => getWallet(wallets || [], WalletType.Main),
+        [wallets]
+    );
+
+    const secondaryWallet: Wallet | null = useMemo(
+        () => getWallet(wallets || [], WalletType.Secondary),
+        [wallets]
+    );
+
+    const cartItems: CartItem[] | null = useMemo(() => {
+        const cartItemsJson = localStorage.getItem("cart");
+        return cartItemsJson ? JSON.parse(cartItemsJson) : null;
+    }, []);
+    console.log(cartItems);
+    console.log(order.paymentMethod === PaymentMethod.BANK_TRANSFER);
+
+    const totalPrice = useMemo(() => {
+        if (!cartItems) return 0;
+        return cartItems.reduce((prev, cur) => {
+            return prev + cur.quantity * cur.product.price;
+        }, 0);
+    }, [cartItems]);
+
+    const onSubmit = useCallback(() => {
+        onNext();
+    }, [onNext]);
+
+    return (
+        <div className="section-checkout">
+            <div>
+                <div className="section-checkout__step-page">
+                    <p
+                        style={{
+                            borderBottom: "1px solid",
+                        }}
+                    >
+                        Sản phẩm
+                    </p>
+                    <div className="order-summary-cart">
+                        {cartItems &&
+                            cartItems.map((item) => (
+                                <div
+                                    key={item.product.id}
+                                    className="order-summary-cart__item"
+                                >
+                                    <div className="right">
+                                        <h5
+                                            style={{
+                                                textTransform: "uppercase",
+                                            }}
+                                        >
+                                            {item.product.name}
+                                        </h5>
+                                        <p>
+                                            Số lượng:{" "}
+                                            <strong>{item.quantity}</strong>
+                                        </p>
+                                    </div>
+                                    <div className="order-summary-cart__item-price">
+                                        {formatMoney(item.product.price)}
+                                    </div>
+                                </div>
+                            ))}
+                        <div
+                            style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                marginBottom: 20,
+                            }}
+                        >
+                            <div>Thành tiền</div>
+                            <div>
+                                <strong>{formatMoney(totalPrice)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <p
+                        style={{
+                            borderBottom: "1px solid",
+                        }}
+                    >
+                        Giao hàng
+                    </p>
+                    {order.shipping && (
+                        <div className="">
+                            {order.shipping.shippingOption ===
+                                ShippingOption.SELF_GET && (
+                                <p>Nhận hàng tại công ty</p>
+                            )}
+                            {order.shipping.shippingOption ===
+                                ShippingOption.SHIP && (
+                                <>
+                                    <p>
+                                        Tên người nhận:{" "}
+                                        {order.shipping.payload.name}
+                                    </p>
+                                    <p>
+                                        Số điện thoại:{" "}
+                                        {order.shipping.payload.phone}
+                                    </p>
+                                    <p>
+                                        Địa chỉ:{" "}
+                                        {order.shipping.payload.address}
+                                    </p>
+                                </>
+                            )}
+                        </div>
+                    )}
+                    <p
+                        style={{
+                            borderBottom: "1px solid",
+                        }}
+                    >
+                        Thanh toán
+                    </p>
+
+                    <div className="">
+                        {order.paymentMethod ===
+                            PaymentMethod.BANK_TRANSFER && (
+                            <>
+                                <p>
+                                    Sau khi đặt hàng, vui lòng chuyển khoản đến
+                                    số tài khoản sau
+                                </p>
+                                <p>
+                                    Ngân hàng: MB Bank
+                                    <br />
+                                    STK: 0829400301
+                                </p>
+                            </>
+                        )}
+                        {order.paymentMethod ===
+                            PaymentMethod.SMARTCARD_WALLET &&
+                            mainWallet && (
+                                <>
+                                    <p>
+                                        Ví smartcard - Số dư{" "}
+                                        {formatMoney(mainWallet.amount)}
+                                    </p>
+                                    {mainWallet.amount - 50000 < totalPrice && (
+                                        <>
+                                            <p>
+                                                Số tiền trong ví không đủ, vui
+                                                lòng quý khách chuyển số tiền
+                                                còn lại{" "}
+                                                <strong>
+                                                    {formatMoney(
+                                                        totalPrice -
+                                                            mainWallet.amount -
+                                                            50000
+                                                    )}
+                                                </strong>{" "}
+                                                vào tài khoản
+                                                <br />
+                                                Ngân hàng:{" "}
+                                                {BANK_ACCOUNT.BANK_NAME}, STK:{" "}
+                                                {BANK_ACCOUNT.BANK_NUMBER}
+                                            </p>
+                                            <p>
+                                                Số tiền còn lại trong ví:
+                                                50,000đ
+                                            </p>
+                                        </>
+                                    )}
+                                    {mainWallet.amount - 50000 >=
+                                        totalPrice && (
+                                        <p>
+                                            Số tiền còn lại trong ví:{" "}
+                                            {formatMoney(
+                                                mainWallet.amount - totalPrice
+                                            )}
+                                        </p>
+                                    )}
+                                </>
+                            )}
+                    </div>
+                </div>
+            </div>
+            <button className="full-width-btn" onClick={onSubmit}>
+                Xác nhận đặt hàng
+            </button>
+        </div>
+    );
+}
+
+export default ReviewStep;

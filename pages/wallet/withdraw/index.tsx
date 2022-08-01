@@ -333,7 +333,7 @@ function Withdraw() {
                                                     Phương thức nhận tiền
                                                 </div>
                                             </div>
-                                            <div className="withdraw-receiving-method">
+                                            <div className="withdraw-receiving-method activate">
                                                 <div className="withdraw-receiving-method__logo">
                                                     <i className="fas fa-money-check-alt"></i>
                                                 </div>
