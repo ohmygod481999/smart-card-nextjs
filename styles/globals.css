@@ -442,3 +442,69 @@ button.full-width-btn:hover {
     color: white;
 }
 /* end dashboard */
+
+/* start onboarding */
+.onboarding-container{
+    width: 100%;
+    overflow: hidden;
+}
+.onboarding-container .steps {
+    display: flex;
+    width: 300%;
+    transition: all 400ms ease;
+}
+.steps .step{
+    width: 100%;
+}
+.image-container{
+    width: 100%;
+}
+.image-container .step-image{
+    max-width: 100%;
+}
+@media only screen and (min-width: 769px) {
+    .step-image{
+        max-width: 40%  !important;
+    }
+}
+.onboarding-container .btn-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.onboarding-container .btn-hiden{
+    display: none;
+}
+.btn-container .next-btn {
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+  
+  .btn-container .skip-btn {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: #636363;
+  }
+  .onboarding-container .dots {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    gap: 8px;
+  }
+  
+  .onboarding-container .dot {
+    width: 10px;
+    height: 10px;
+    background: #dbdbdb;
+    border-radius: 50%;
+    transition: all 400ms ease;
+  }
+  .onboarding-container .dot.active {
+    background: #222;
+  }
+/* end onboarding */
