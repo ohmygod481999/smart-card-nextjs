@@ -10,7 +10,7 @@ import React, {
 import SessionContext from "../../../context/session-context";
 import {
     CartItem,
-    Order,
+    OrderState,
     PaymentMethod,
     ShippingOption,
     Wallet,
@@ -25,7 +25,7 @@ import {
 import { GET_WALLETS } from "../../../utils/apollo/queries/wallet.queries";
 
 interface Props {
-    order: Order;
+    order: OrderState;
     onNext: () => void;
 }
 
@@ -184,9 +184,9 @@ function ReviewStep({ order, onNext }: Props) {
                                     số tài khoản sau
                                 </p>
                                 <p>
-                                    Ngân hàng: MB Bank
+                                    Ngân hàng: {BANK_ACCOUNT.BANK_NAME}
                                     <br />
-                                    STK: 0829400301
+                                    STK: {BANK_ACCOUNT.BANK_NUMBER}
                                 </p>
                             </>
                         )}

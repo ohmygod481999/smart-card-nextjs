@@ -17,7 +17,7 @@ import ShippingStep from "../../../components/shop/steps/ShippingStep";
 import SessionContext from "../../../context/session-context";
 import {
     CartItem,
-    Order,
+    OrderState,
     OrderItem,
     OrderStatus,
     PaymentMethod,
@@ -38,7 +38,7 @@ function Checkout() {
     const { session, updateSession } = useContext(SessionContext);
 
     const router = useRouter();
-    const [order, setOrder] = useState<Order>({
+    const [order, setOrder] = useState<OrderState>({
         shipping: null,
         paymentMethod: null,
     });
@@ -90,10 +90,12 @@ function Checkout() {
         if (currentStep < 2) {
             setCurrentStep(currentStep + 1);
         } else {
+            // Place order
             if (order.shipping && order.paymentMethod !== null && cartItems) {
                 const orderItems: OrderItem[] = cartItems.map((item) => ({
                     product_id: item.product.id,
                     quantity: item.quantity,
+                    product: item.product,
                 }));
 
                 try {
@@ -114,7 +116,10 @@ function Checkout() {
                             shipping_type: order.shipping.shippingOption,
                             payment_type: order.paymentMethod,
                             order_items: {
-                                data: orderItems,
+                                data: orderItems.map(item => ({
+                                    product_id: item.product_id,
+                                    quantity: item.quantity
+                                })),
                             },
                         },
                     });
@@ -146,6 +151,15 @@ function Checkout() {
             <SectionLayout>
                 <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
                     <h1 className="left-title">
+                        <button className="back-btn">
+                            <Link href={"/customers/shop"}>
+                                <Image
+                                    src="/icon/back.png"
+                                    width={22}
+                                    height={22}
+                                />
+                            </Link>
+                        </button>{" "}
                         Thanh <span>toán</span>
                     </h1>
                     <div className="animated-bar left" />

@@ -1,4 +1,4 @@
-import { Wallet, WalletType } from "../types/global";
+import { OrderStatus, Wallet, WalletType } from "../types/global";
 
 export const getValueFromGraphql = (input: any) => {
     if (!input) {
@@ -79,6 +79,14 @@ export const PERCENT_AGENCY: { [x: number]: number } = {
 export const BANK_ACCOUNT = {
     BANK_NAME: "MB Bank",
     BANK_NUMBER: "0829400301",
+    BANK_BRANCH: "Hà Nội",
+};
+
+export const ORDER_STATUS_MAPPING: {
+    [x in OrderStatus]: string;
+} = {
+    [OrderStatus.APPROVE]: "Đã xác nhận",
+    [OrderStatus.CREATED]: "Chờ xác nhận",
 };
 
 export const defaultImg =

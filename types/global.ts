@@ -132,7 +132,7 @@ export enum PaymentMethod {
     SMARTCARD_WALLET = 1,
 }
 
-export interface Order {
+export interface OrderState {
     shipping: Shipping | null;
     paymentMethod: PaymentMethod | null;
 }
@@ -145,4 +145,19 @@ export enum OrderStatus {
 export interface OrderItem {
     product_id: number;
     quantity: number;
+    product: Product
+}
+
+export interface Order {
+    id: number;
+    status: OrderStatus;
+    agency_id: number;
+    shipping_type: ShippingOption;
+    customer_name: string;
+    customer_phone: string;
+    customer_address: string;
+    payment_type: PaymentMethod;
+    order_items: OrderItem[];
+    created_at: string;
+    totalPrice?: number;
 }

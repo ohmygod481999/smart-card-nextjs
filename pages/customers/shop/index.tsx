@@ -1,5 +1,7 @@
 import { useQuery } from "@apollo/client";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, {
     useCallback,
@@ -16,7 +18,7 @@ import SessionContext from "../../../context/session-context";
 import { CartItem, OrderStatus, Product } from "../../../types/global";
 import { formatMoney, getDataGraphqlResult } from "../../../utils";
 import { apolloClient } from "../../../utils/apollo";
-import { GET_ORDER_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/order.queries";
+import { GET_ORDERS_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/order.queries";
 import { GET_PRODUCTS } from "../../../utils/apollo/queries/product.queries";
 
 function Shop() {
@@ -29,7 +31,7 @@ function Shop() {
         if (session) {
             apolloClient
                 .query({
-                    query: GET_ORDER_BY_ACCOUNT_ID,
+                    query: GET_ORDERS_BY_ACCOUNT_ID,
                     variables: {
                         account_id: session.user.id,
                         status: OrderStatus.CREATED,
@@ -113,6 +115,15 @@ function Shop() {
             <SectionLayout>
                 <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
                     <h1 className="left-title">
+                        <button className="back-btn">
+                            <Link href={"/customers"}>
+                                <Image
+                                    src="/icon/back.png"
+                                    width={22}
+                                    height={22}
+                                />
+                            </Link>
+                        </button>{" "}
                         Nhập <span>hàng</span>
                     </h1>
                     <div className="animated-bar left" />
