@@ -187,6 +187,8 @@ function ReviewStep({ order, onNext }: Props) {
                                     Ngân hàng: {BANK_ACCOUNT.BANK_NAME}
                                     <br />
                                     STK: {BANK_ACCOUNT.BANK_NUMBER}
+                                    <br />
+                                    Chủ tài khoản: {BANK_ACCOUNT.BANK_ACCOUNT_NAME}
                                 </p>
                             </>
                         )}
@@ -215,7 +217,7 @@ function ReviewStep({ order, onNext }: Props) {
                                                 <br />
                                                 Ngân hàng:{" "}
                                                 {BANK_ACCOUNT.BANK_NAME}, STK:{" "}
-                                                {BANK_ACCOUNT.BANK_NUMBER}
+                                                {BANK_ACCOUNT.BANK_NUMBER}, Chủ tài khoản: {BANK_ACCOUNT.BANK_ACCOUNT_NAME}
                                             </p>
                                             <p>
                                                 Số tiền còn lại trong ví:

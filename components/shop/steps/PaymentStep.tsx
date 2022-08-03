@@ -96,6 +96,7 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
                             <div className="description">
                                 <div>Ngân hàng: {BANK_ACCOUNT.BANK_NAME}</div>
                                 <div>Số tài khoản: {BANK_ACCOUNT.BANK_NUMBER}</div>
+                                <div>Chủ tài khoản: {BANK_ACCOUNT.BANK_ACCOUNT_NAME}</div>
                             </div>
                         </div>
                     </div>
