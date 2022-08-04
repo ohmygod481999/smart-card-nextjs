@@ -38,6 +38,7 @@ export const transactionMapping = {
     1: "Thưởng người dùng mới",
     2: "Doanh thu đại lý",
     3: "Rút tiền vào thẻ ngân hàng",
+    4: "Đặt hàng"
 };
 
 export const paddingId = (id: number) => {

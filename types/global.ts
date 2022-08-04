@@ -70,6 +70,7 @@ export enum TransactionType {
     REWARD_NEW_USER = 1,
     REFER_AGENCY = 2,
     WITHDRAW = 3,
+    PLACE_ORDER = 4,
 }
 
 export interface Transaction {
@@ -145,7 +146,7 @@ export enum OrderStatus {
 export interface OrderItem {
     product_id: number;
     quantity: number;
-    product: Product
+    product: Product;
 }
 
 export interface Order {

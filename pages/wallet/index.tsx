@@ -253,7 +253,9 @@ function WalletPage() {
                                                                 <div>
                                                                     {`${
                                                                         transaction.type !==
-                                                                        TransactionType.WITHDRAW
+                                                                            TransactionType.WITHDRAW &&
+                                                                        transaction.type !==
+                                                                            TransactionType.PLACE_ORDER
                                                                             ? "+ "
                                                                             : "- "
                                                                     }${formatMoney(
