@@ -160,6 +160,9 @@ const Home: NextPage = () => {
                                                         Là đại lý
                                                     </th>
                                                     <th scope="col">
+                                                        Ngày thành đại lý
+                                                    </th>
+                                                    <th scope="col">
                                                         Lượt giới thiệu
                                                     </th>
                                                 </tr>

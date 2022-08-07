@@ -13,6 +13,7 @@ export interface RefereeRecord {
     name: string;
     user_info: UserInfo;
     created_at: string;
+    agency_at: string;
     referees: RefereeRecord[];
     is_agency: boolean;
 }
@@ -99,6 +100,7 @@ function Row(props: Props) {
                         "Không"
                     )}
                 </td>
+                <td>{referee.agency_at ? formatDateTime(referee.agency_at, false) : "N/A"}</td>
                 <td className="">{childrenWithKids.length}</td>
             </tr>
             {toggleLoading && (
