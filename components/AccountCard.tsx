@@ -209,6 +209,7 @@ function AccountCard({ account }: Props) {
                                                         : `https://${account.website}`
                                                 }
                                                 target="_blank"
+                                                rel="noreferrer"
                                             >
                                                 <div className="logo">
                                                     <img
