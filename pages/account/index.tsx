@@ -11,7 +11,7 @@ import { ReactNode, useContext, useEffect, useState } from "react";
 import AccountTab from "../../components/account.tsx/AccountTab";
 import SettingTab from "../../components/account.tsx/SettingTab";
 import AvatarDrop from "../../components/AvatarDrop";
-import InforSetting from "../../components/InforSetting";
+import InforSetting from "../../components/account.tsx/InforSetting";
 import Layout from "../../components/Layout";
 import LayoutAuthed from "../../components/LayoutAuthed";
 import SessionContext from "../../context/session-context";

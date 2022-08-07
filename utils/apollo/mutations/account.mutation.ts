@@ -10,6 +10,7 @@ export const UPDATE_ACCOUNT = gql`
         $facebook: String
         $zalo: String
         $slide_text: String
+        $website: String
     ) {
         update_account_by_pk(
             pk_columns: { id: $id }
@@ -21,6 +22,7 @@ export const UPDATE_ACCOUNT = gql`
                 facebook: $facebook
                 zalo: $zalo
                 slide_text: $slide_text
+                website: $website
             }
         ) {
             id
@@ -31,6 +33,7 @@ export const UPDATE_ACCOUNT = gql`
             facebook
             zalo
             slide_text
+            website
         }
     }
 `;

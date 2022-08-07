@@ -7,6 +7,7 @@ export interface Account {
     email: string;
     facebook: string;
     zalo: string;
+    website: string;
     slide_text: string;
     description: string;
     is_agency: boolean;

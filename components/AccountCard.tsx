@@ -198,6 +198,31 @@ function AccountCard({ account }: Props) {
                                             </a>
                                         </li>
                                     )}
+                                    {account?.website && (
+                                        <li>
+                                            <a
+                                                href={
+                                                    account.website.includes(
+                                                        "http"
+                                                    )
+                                                        ? account.website
+                                                        : `https://${account.website}`
+                                                }
+                                                target="_blank"
+                                            >
+                                                <div className="logo">
+                                                    <img
+                                                        src="/icon/web.png"
+                                                        alt="web"
+                                                    />
+                                                    {/* <i className="fas fa-phone" />{" "} */}
+                                                </div>
+                                                <div className="content">
+                                                    {account.website}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )}
                                 </ul>
                                 <p className="lorem-text animate__animated animate__zoomIn animate__delay-2-5s">
                                     {_.get(account, "description")}

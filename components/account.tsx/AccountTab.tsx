@@ -16,7 +16,7 @@ import {
 import { handleFlowError } from "../../pkg/errors";
 import { Account } from "../../types/global";
 import AvatarDrop from "../AvatarDrop";
-import InforSetting from "../InforSetting";
+import InforSetting from "./InforSetting";
 
 interface Props {
     account: Account | undefined;
