@@ -49,6 +49,7 @@ const Contact = ({ cardInfo, accountInfo }: Props) => {
                                 </div>
                                 <div className="col-12">
                                     {accountInfo.user_cv && (
+                                        // @ts-ignore
                                         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
                                             <div
                                                 style={{

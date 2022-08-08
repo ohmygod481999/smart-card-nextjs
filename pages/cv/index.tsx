@@ -7,7 +7,7 @@ import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import Viewer, { Worker } from "@phuocng/react-pdf-viewer";
 import "@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css";
-import _ from "lodash"
+import _ from "lodash";
 
 type SelectedFile = {
     name: string;
@@ -80,10 +80,12 @@ function Cv() {
                 )
                 .then((res) => {
                     setMsg("Thành công");
-                    fetchCV()
+                    fetchCV();
                 })
                 .catch((err) => {
-                    setMsg(`Có lỗi xảy ra: ${_.get(err,"response.data.message")}`)
+                    setMsg(
+                        `Có lỗi xảy ra: ${_.get(err, "response.data.message")}`
+                    );
                 });
         } else {
             alert("Vui lòng chọn CV");
@@ -139,7 +141,11 @@ function Cv() {
                                                     </Styles.UploadButton> */}
                                             </Styles.UploadWrapper>
 
-                                            {msg && <p className="text-center">{msg}</p>}
+                                            {msg && (
+                                                <p className="text-center">
+                                                    {msg}
+                                                </p>
+                                            )}
 
                                             <button
                                                 className="full-width-btn"
@@ -149,7 +155,9 @@ function Cv() {
                                             </button>
                                         </Styles.Container>
                                         {/* )} */}
+
                                         {cv && (
+                                            // @ts-ignore
                                             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
                                                 <div
                                                     style={{
