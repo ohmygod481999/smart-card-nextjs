@@ -12,9 +12,9 @@ import {
 } from "react-icons/ai";
 import { CgPerformance } from "react-icons/cg";
 import { FaFingerprint } from "react-icons/fa";
-import { GrPlan } from "react-icons/gr";
 import { BsCodeSlash, BsShieldCheck } from "react-icons/bs";
-const Home = () => {
+import { NextPage } from "next";
+const Home: NextPage = () => {
   const [navbarActive, setNavbarActive] = useState<boolean>(false);
   const [headerActive, setHeaderActive] = useState<boolean>(false);
   return (
@@ -248,10 +248,10 @@ const Home = () => {
                   </i>
                 </div>
                 <div className="step__content">
-                  <p className="title">
+                  <div className="title">
                     <p className="title_primary">Step 1</p>
                     Research and Content Planing
-                  </p>
+                  </div>
                   <p className="description">
                     Progressively foster enterprise-wide systems whereas equity
                     invested web-readiness harness installed base bandwidth.
@@ -265,10 +265,10 @@ const Home = () => {
                   </i>
                 </div>
                 <div className="step__content">
-                  <p className="title">
+                  <div className="title">
                     <p className="title_primary">Step 2</p>
                     Publishing and Execution
-                  </p>
+                  </div>
                   <p className="description">
                     Dramatically administrate progressive metrics without
                     error-free globally simplify standardized alignments
@@ -283,10 +283,10 @@ const Home = () => {
                   </i>
                 </div>
                 <div className="step__content">
-                  <p className="title">
+                  <div className="title">
                     <p className="title_primary">Step 3</p>
                     Product Prototyping
-                  </p>
+                  </div>
                   <p className="description">
                     Interactively whiteboard transparent testing procedures
                     before bricks-and-clicks initiatives administrate
@@ -301,10 +301,10 @@ const Home = () => {
                   </i>
                 </div>
                 <div className="step__content">
-                  <p className="title">
+                  <div className="title">
                     <p className="title_primary">Step 4</p>
                     Deliver the Final Product
-                  </p>
+                  </div>
                   <p className="description">
                     Dramatically plagiarize distributed progressive metrics
                     without error-free globally simplify standardized

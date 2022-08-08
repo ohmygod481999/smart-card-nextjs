@@ -1047,6 +1047,12 @@ footer .container{
 .btn__login.header{
     display: none;
 }
+.header__items{
+    display: none;
+}
+.btn__login.header{
+    display: none;
+}
 @media only screen and (min-width: 769px) {
     .header__container{
         padding-left: 60px;
@@ -1057,6 +1063,9 @@ footer .container{
     }
     .btn__login.header{
         margin-top: 0;
+        display: block;
+    }
+    .header__items{
         display: block;
     }
     .header__items li{
