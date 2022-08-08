@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { edgeConfig } from "@ory/integrations/next";
 import SessionContext from "../context/session-context";
+import { ActiveRoute } from "../types/global";
 
 interface Props {
     id: string | string[] | undefined;
+    activeRoutes?: ActiveRoute[];
 }
 
 function Navigation(props: Props) {
@@ -13,7 +15,9 @@ function Navigation(props: Props) {
     const { session } = useContext(SessionContext);
     const { pathname } = router;
 
-    const { id } = props;
+    const { id, activeRoutes } = props;
+
+    const _activeRoutes = activeRoutes ? activeRoutes : [];
 
     return (
         <div className="header-holder services-section text-center animate__animated animate__zoomIn">
@@ -35,6 +39,26 @@ function Navigation(props: Props) {
                             </a>
                         </Link>
                     </li>
+                    {_activeRoutes.includes(ActiveRoute.USER_CV) && (
+                        <li
+                            className={`list ${
+                                pathname.includes(`/${ActiveRoute.USER_CV}`)
+                                    ? "active"
+                                    : ""
+                            }`}
+                        >
+                            <Link href={`/user/${id}/${ActiveRoute.USER_CV}`}>
+                                <a>
+                                    <span className="icon">
+                                        <i className="far fa-file" />
+                                    </span>
+                                    <div className="social__tooltip social__tooltip-bottom">
+                                        CV của tôi
+                                    </div>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
                     {/* <li
                         className={`list ${
                             pathname.includes("/about") ? "active" : ""

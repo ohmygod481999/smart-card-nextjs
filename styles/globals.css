@@ -75,14 +75,6 @@ h1.left-title {
     background-color: #fcfafa;
 }
 
-input[type=file] {
-    font-size: 100px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0;
-  }
-
 td.child-row__name {
     padding-left: 5px;
 }

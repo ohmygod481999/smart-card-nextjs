@@ -16,6 +16,10 @@ export const GET_CARD = gql`
                 zalo
                 slide_text
                 description
+                user_cv {
+                    id
+                    path
+                }
             }
         }
     }
