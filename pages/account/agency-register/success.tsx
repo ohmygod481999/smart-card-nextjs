@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useCallback, useContext, useEffect } from "react";
 import SessionContext from "../../../context/session-context";
+import { BANK_ACCOUNT } from "../../../utils";
 
 function AgencyRegisterSuccess() {
     const router = useRouter();
@@ -63,16 +64,16 @@ function AgencyRegisterSuccess() {
                                     <thead>
                                         <tr>
                                             <td>Ngân hàng</td>
-                                            <td>Chi nhánh</td>
                                             <td>Số tài khoản</td>
+                                            <td>Chủ tài khoản</td>
                                             <td>Nội dung chuyển khoản</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <th scope="row">MB Bank</th>
-                                            <td>Hà Nội</td>
-                                            <td>0829400301</td>
+                                            <th scope="row">{BANK_ACCOUNT.BANK_NAME}</th>
+                                            <td>{BANK_ACCOUNT.BANK_NUMBER}</td>
+                                            <td>{BANK_ACCOUNT.BANK_ACCOUNT_NAME}</td>
                                             <td>DKDL {session.user.id}</td>
                                         </tr>
                                     </tbody>

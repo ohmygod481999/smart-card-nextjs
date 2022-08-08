@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import SessionContext from "../../../context/session-context";
 import { PaymentMethod, Wallet, WalletType } from "../../../types/global";
-import { formatMoney, getDataGraphqlResult, getWallet } from "../../../utils";
+import { BANK_ACCOUNT, formatMoney, getDataGraphqlResult, getWallet } from "../../../utils";
 import { GET_WALLETS } from "../../../utils/apollo/queries/wallet.queries";
 
 interface Props {
@@ -94,8 +94,9 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
                         <div className="withdraw-receiving-method__content">
                             <div className="title">Chuyển khoản ngân hàng</div>
                             <div className="description">
-                                <div>Ngân hàng: MB BANK</div>
-                                <div>Số tài khoản: 0829400301</div>
+                                <div>Ngân hàng: {BANK_ACCOUNT.BANK_NAME}</div>
+                                <div>Số tài khoản: {BANK_ACCOUNT.BANK_NUMBER}</div>
+                                <div>Chủ tài khoản: {BANK_ACCOUNT.BANK_ACCOUNT_NAME}</div>
                             </div>
                         </div>
                     </div>

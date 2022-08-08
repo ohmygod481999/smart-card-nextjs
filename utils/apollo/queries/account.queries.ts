@@ -44,6 +44,7 @@ export const GET_REFEREES = gql`
                 created_at
             }
             is_agency
+            agency_at
         }
     }
 `;

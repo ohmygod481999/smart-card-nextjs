@@ -34,6 +34,8 @@ import {
     UPDATE_BANK_ACCOUNT,
 } from "../../../utils/apollo/queries/wallet.queries";
 import _ from "lodash";
+import Link from "next/link";
+import Image from "next/image";
 
 function Withdraw() {
     const {
@@ -135,9 +137,7 @@ function Withdraw() {
                 _.get(withdrawalAmountRef, "current.value")
             );
             if (isNaN(withdrawalAmount)) {
-                setErrMsg(
-                    "Số tiền rút không hợp lệ"
-                );
+                setErrMsg("Số tiền rút không hợp lệ");
                 return;
             }
             if (withdrawalAmount > mainWallet.amount) {
@@ -242,7 +242,18 @@ function Withdraw() {
                 <div className="row">
                     <div className="col-12">
                         <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
-                            <h1 className="left-title">Rút tiền</h1>
+                            <h1 className="left-title">
+                                <button className="back-btn">
+                                    <Link href={"/wallet"}>
+                                        <Image
+                                            src="/icon/back.png"
+                                            width={22}
+                                            height={22}
+                                        />
+                                    </Link>
+                                </button>{" "}
+                                Rút tiền
+                            </h1>
                             <div className="animated-bar left" />
                         </div>
                         {called &&

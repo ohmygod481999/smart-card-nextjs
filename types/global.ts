@@ -10,6 +10,7 @@ export interface Account {
     email: string;
     facebook: string;
     zalo: string;
+    website: string;
     slide_text: string;
     description: string;
     is_agency: boolean;
@@ -77,6 +78,7 @@ export enum TransactionType {
     REWARD_NEW_USER = 1,
     REFER_AGENCY = 2,
     WITHDRAW = 3,
+    PLACE_ORDER = 4,
 }
 
 export interface Transaction {
@@ -139,7 +141,7 @@ export enum PaymentMethod {
     SMARTCARD_WALLET = 1,
 }
 
-export interface Order {
+export interface OrderState {
     shipping: Shipping | null;
     paymentMethod: PaymentMethod | null;
 }
@@ -152,4 +154,19 @@ export enum OrderStatus {
 export interface OrderItem {
     product_id: number;
     quantity: number;
+    product: Product;
+}
+
+export interface Order {
+    id: number;
+    status: OrderStatus;
+    agency_id: number;
+    shipping_type: ShippingOption;
+    customer_name: string;
+    customer_phone: string;
+    customer_address: string;
+    payment_type: PaymentMethod;
+    order_items: OrderItem[];
+    created_at: string;
+    totalPrice?: number;
 }

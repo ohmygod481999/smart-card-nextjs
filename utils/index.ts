@@ -1,4 +1,4 @@
-import { Wallet, WalletType } from "../types/global";
+import { OrderStatus, Wallet, WalletType } from "../types/global";
 
 export const getValueFromGraphql = (input: any) => {
     if (!input) {
@@ -38,6 +38,7 @@ export const transactionMapping = {
     1: "Thưởng người dùng mới",
     2: "Doanh thu đại lý",
     3: "Rút tiền vào thẻ ngân hàng",
+    4: "Đặt hàng"
 };
 
 export const paddingId = (id: number) => {
@@ -77,8 +78,17 @@ export const PERCENT_AGENCY: { [x: number]: number } = {
 };
 
 export const BANK_ACCOUNT = {
-    BANK_NAME: "MB Bank",
-    BANK_NUMBER: "0829400301",
+    BANK_NAME: "Vietinbank",
+    BANK_NUMBER: "106881678989",
+    BANK_ACCOUNT_NAME: "Lê Thị Nguyệt",
+    BANK_BRANCH: "",
+};
+
+export const ORDER_STATUS_MAPPING: {
+    [x in OrderStatus]: string;
+} = {
+    [OrderStatus.APPROVE]: "Đã xác nhận",
+    [OrderStatus.CREATED]: "Chờ xác nhận",
 };
 
 export const defaultImg =

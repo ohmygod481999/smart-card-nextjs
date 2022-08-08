@@ -118,8 +118,8 @@ const Home: NextPage = () => {
                                                         <span>Nhập hàng</span>
                                                     </div>
                                                 </Link>
-                                                {/* <Link href="/wallet/withdraw"> */}
-                                                    <div className="section-features__item inactive">
+                                                <Link href="/customers/shop/order-history">
+                                                    <div className="section-features__item">
                                                         <span className="icon">
                                                             <i className="fas fa-boxes"></i>
                                                         </span>
@@ -127,7 +127,7 @@ const Home: NextPage = () => {
                                                             Lịch sử nhập hàng
                                                         </span>
                                                     </div>
-                                                {/* </Link> */}
+                                                </Link>
                                                 {/* <div className="section-features__item">
                                                     <span className="icon">
                                                         <i className="fas fa-tasks"></i>
@@ -158,6 +158,9 @@ const Home: NextPage = () => {
                                                     </th>
                                                     <th scope="col">
                                                         Là đại lý
+                                                    </th>
+                                                    <th scope="col">
+                                                        Ngày thành đại lý
                                                     </th>
                                                     <th scope="col">
                                                         Lượt giới thiệu
