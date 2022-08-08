@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import { Identity } from "@ory/client";
 import Layout from "../../../components/Layout";
@@ -11,7 +11,12 @@ import SessionContext from "../../../context/session-context";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { GET_CARD } from "../../../utils/apollo/queries/card.queries";
 import { getDataGraphqlResult, getValueFromGraphql } from "../../../utils";
-import { Account, AccountInfo, CardInfo } from "../../../types/global";
+import {
+    Account,
+    AccountInfo,
+    ActiveRoute,
+    CardInfo,
+} from "../../../types/global";
 import useGetCardInfo from "../../../hooks/useGetCardInfo";
 import CardDontExist from "../../../components/CardDontExist";
 import Loading from "../../../components/Loading";
@@ -39,9 +44,12 @@ const Home = ({ cardInfo, accountInfo }: HomeProps) => {
 
     const { session, updateSession } = useContext(SessionContext);
     console.log(accountInfo);
-    // const traits = accountInfo?.user_info?.traits
-    //     ? JSON.parse(accountInfo?.user_info?.traits)
-    //     : null;
+
+    const activeRoutes = useMemo(() => {
+        if (accountInfo?.user_cv) {
+            return [ActiveRoute.USER_CV];
+        }
+    }, [accountInfo]);
 
     if (!cardInfo) {
         // The ko ton tai
@@ -62,7 +70,7 @@ const Home = ({ cardInfo, accountInfo }: HomeProps) => {
     }
 
     return (
-        <Layout id={id}>
+        <Layout id={id} activeRoutes={activeRoutes}>
             <AccountCard account={accountInfo} />
         </Layout>
     );
