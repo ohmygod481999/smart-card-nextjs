@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDropzone } from "react-dropzone";
 import Viewer, { Worker } from "@phuocng/react-pdf-viewer";
 import "@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css";
+import _ from "lodash"
 
 type SelectedFile = {
     name: string;
@@ -81,7 +82,9 @@ function Cv() {
                     setMsg("Thành công");
                     fetchCV()
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    setMsg(`Có lỗi xảy ra: ${_.get(err,"response.data.message")}`)
+                });
         } else {
             alert("Vui lòng chọn CV");
         }
