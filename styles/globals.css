@@ -626,6 +626,7 @@ button.full-width-btn:hover {
     color: white;
     cursor: pointer;
 }
+.header__container.active  .account__name,
 .header__container.active .header__toggler{
     color: black;
 }
@@ -1099,6 +1100,7 @@ footer .container{
     }
     .account__name{
         display: block;
+       
     }
     .hero{
         display: flex;
