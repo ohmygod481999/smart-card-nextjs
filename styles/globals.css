@@ -634,7 +634,26 @@ button.full-width-btn:hover {
     font-size: 20px;
     cursor: pointer;
 }
-
+.account__name{
+    color: white;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: none;
+}
+.account__name-navbar{
+    color: #000;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.account--name{
+    padding-left: 10px;
+    color: #000;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: 800;
+}
 .header__navbar{
     position: absolute;
     z-index: 9999999;
@@ -1077,6 +1096,9 @@ footer .container{
     }
     .header__items li:hover{
         color: #95cb28;
+    }
+    .account__name{
+        display: block;
     }
     .hero{
         display: flex;

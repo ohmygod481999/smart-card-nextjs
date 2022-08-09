@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   AiFillCheckCircle,
   AiFillCloseCircle,
@@ -9,14 +9,44 @@ import {
   AiOutlinePlayCircle,
   AiOutlinePullRequest,
   AiOutlineSchedule,
+  AiOutlineUser,
 } from "react-icons/ai";
 import { CgPerformance } from "react-icons/cg";
 import { FaFingerprint } from "react-icons/fa";
 import { BsCodeSlash, BsShieldCheck } from "react-icons/bs";
 import { NextPage } from "next";
+import { Account } from "../types/global";
+import { GET_CARD_BY_ORY_ID } from "../utils/apollo/queries/card.queries";
+import { useLazyQuery } from "@apollo/client";
+import { getDataGraphqlResult } from "../utils";
+import SessionContext from "../context/session-context";
+import Link from "next/link";
+import { CenterLink } from "../pkg";
 const Home: NextPage = () => {
   const [navbarActive, setNavbarActive] = useState<boolean>(false);
   const [headerActive, setHeaderActive] = useState<boolean>(false);
+  const [account, setAccount] = useState<Account>();
+  const [getCardByOryId, { called, loading, data }] =
+    useLazyQuery(GET_CARD_BY_ORY_ID);
+  const { session, updateSession } = useContext(SessionContext);
+  useEffect(() => {
+    if (session) {
+      getCardByOryId({
+        variables: {
+          ory_id: session.identity.id,
+        },
+      });
+    }
+  }, [session]);
+  useEffect(() => {
+    if (data) {
+      const cards = getDataGraphqlResult(data);
+      if (cards && cards.length > 0) {
+        setAccount(cards[0].account);
+      }
+    }
+  }, [data]);
+  console.log(account);
   return (
     <div
       className="home"
@@ -36,7 +66,21 @@ const Home: NextPage = () => {
             <li>Services</li>
             <li>Company</li>
           </ul>
-          <button className="btn__login header">Dang Nhap</button>
+          {account ? (
+            <Link href="/home" passHref>
+              <CenterLink>
+                <div className="account__name">
+                  <AiOutlineUser /> {account.name}
+                </div>
+              </CenterLink>
+            </Link>
+          ) : (
+            <Link href="/login" passHref>
+              <CenterLink>
+                <button className="btn__login header">Dang Nhap</button>
+              </CenterLink>
+            </Link>
+          )}
 
           <div
             className="header__toggler"
@@ -67,7 +111,18 @@ const Home: NextPage = () => {
           </ul>
 
           <div className="navbar__btns">
-            <button className="btn__login">Dang Nhap</button>
+            {account ? (
+              <div className="account__name-navbar">
+                <AiOutlineUser />
+                <p className="account--name"> {account.name}</p>
+              </div>
+            ) : (
+              <Link href="/login" passHref>
+                <CenterLink>
+                  <button className="btn__login">Dang Nhap</button>
+                </CenterLink>
+              </Link>
+            )}
           </div>
         </div>
       </header>
