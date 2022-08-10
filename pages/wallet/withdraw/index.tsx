@@ -346,6 +346,15 @@ function Withdraw() {
                                                 </div>
                                             </div>
                                             <div className="withdraw-receiving-method activate">
+                                                <Link
+                                                    href={
+                                                        "/wallet/withdraw/edit-bank-info"
+                                                    }
+                                                >
+                                                    <div className="withdraw-receiving-method__edit">
+                                                        Sửa
+                                                    </div>
+                                                </Link>
                                                 <div className="withdraw-receiving-method__logo">
                                                     <i className="fas fa-money-check-alt"></i>
                                                 </div>
