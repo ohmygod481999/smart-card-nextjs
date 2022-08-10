@@ -131,8 +131,8 @@ function WalletAdmin() {
                                             </td>
                                             <td>
                                                 {order.order_items.map(
-                                                    (item) => (
-                                                        <div>
+                                                    (item, i) => (
+                                                        <div key={i}>
                                                             {item.product.name}{" "}
                                                             x {item.quantity}
                                                         </div>
