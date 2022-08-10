@@ -49,6 +49,7 @@ function Withdraw() {
 
     const router = useRouter();
     const { session, updateSession } = useContext(SessionContext);
+    const [submitLoading, setSubmitLoading] = useState(false);
     const [unapprovedWithdraws, setUnapprovedWithdraws] = useState<
         null | Registration[]
     >(null);
@@ -95,22 +96,6 @@ function Withdraw() {
         [wallets]
     );
 
-    console.log(mainWallet);
-
-    // useEffect(() => {
-    //     if (mainWallet) {
-    //         console.log(withdrawalAmount, mainWallet.amount);
-    //         if (withdrawalAmount > mainWallet.amount) {
-    //             setErrMsg(
-    //                 "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
-    //             );
-    //         }
-    //         if (withdrawalAmount < 50000) {
-    //             setErrMsg("Số tiền rút tối thiểu là 50,000đ");
-    //         }
-    //     }
-    // }, [withdrawalAmount, mainWallet]);
-
     const onSubmitAddBank = async (values: any) => {
         const { bank_name, bank_number } = values;
         console.log(values);
@@ -154,7 +139,22 @@ function Withdraw() {
                 setErrMsg("Số tiền còn lại trong ví tối thiểu là 50,000đ");
                 return;
             }
+            const unapprovedRegsRes = await apolloClient.query({
+                query: GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID,
+                variables: {
+                    account_id: session.user.id,
+                    approved: false,
+                },
+            });
+            const unapprovedRegs: any[] = unapprovedRegsRes.data.registration;
+            if (unapprovedRegs.length > 0) {
+                setErrMsg(
+                    "Bạn đang có một lệnh rút đang xử lý, vui lòng đợi chúng tôi xử lý xong để tiếp tục rút tiền"
+                );
+                return;
+            }
 
+            setSubmitLoading(true);
             try {
                 if (session && router.isReady) {
                     const res = await apolloClient.mutate({
@@ -175,6 +175,7 @@ function Withdraw() {
                 }
             } catch (error) {
                 console.error(error);
+                setSubmitLoading(false);
             }
         }
     }, [mainWallet, session, router.isReady]);
@@ -371,6 +372,7 @@ function Withdraw() {
                                     </div>
                                     <button
                                         className="full-width-btn"
+                                        disabled={submitLoading}
                                         onClick={onWithdrawSubmit}
                                     >
                                         Tạo lệnh rút tiền

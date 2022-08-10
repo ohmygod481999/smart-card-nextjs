@@ -153,6 +153,11 @@ button.full-width-btn {
     width: 100%;
 }
 
+button.full-width-btn:disabled {
+    background-color: #6a8f1e;
+    cursor: progress;
+}
+
 button.full-width-btn:hover {
     background-color: #81b024;
     color: white;
