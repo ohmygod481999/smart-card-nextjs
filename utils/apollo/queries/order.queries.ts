@@ -1,5 +1,27 @@
 import { gql } from "@apollo/client";
 
+export const GET_ORDERS = gql`
+    query ($status: Int!) {
+        order(where: { status: { _eq: $status } }) {
+            id
+            status
+            customer_name
+            customer_phone
+            customer_address
+            payment_type
+            shipping_type
+            order_items {
+                product {
+                    name
+                    price
+                }
+                quantity
+            }
+            created_at
+        }
+    }
+`;
+
 export const GET_ORDERS_BY_ACCOUNT_ID = gql`
     query getOrderByAccountId($account_id: Int!, $status: Int) {
         order(
