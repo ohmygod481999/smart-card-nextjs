@@ -36,6 +36,7 @@ import {
 import _ from "lodash";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 
 function Withdraw() {
     const {
@@ -157,20 +158,22 @@ function Withdraw() {
             setSubmitLoading(true);
             try {
                 if (session && router.isReady) {
-                    const res = await apolloClient.mutate({
-                        mutation: INSERT_REGISTRATION,
-                        variables: {
+                    const res = await axios.post(
+                        `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/wallet/withdraw`,
+                        {
                             account_id: session.user.id,
-                            type: RegistrationType.WITHDRAW,
-                            payload: {
-                                amount: withdrawalAmount,
-                            },
-                        },
-                    });
-                    // if success
-                    if (res.data?.insert_registration_one) {
-                        const { id } = res.data.insert_registration_one;
-                        router.push(`/wallet/withdraw/success?id=${id}`);
+                            amount: withdrawalAmount,
+                        }
+                    );
+                    if (res.data) {
+                        const { success, message, data } = res.data;
+                        if (success) {
+                            const { id } = data;
+                            router.push(`/wallet/withdraw/success?id=${id}`);
+                        } else {
+                            setErrMsg(message);
+                            setSubmitLoading(false);
+                        }
                     }
                 }
             } catch (error) {
