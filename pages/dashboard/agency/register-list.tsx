@@ -13,7 +13,7 @@ function AgencyAdmin() {
         GET_AGENCY_REGISTRATIONS_ADMIN,
         {
             variables: {
-                limit: 100,
+                limit: 1000,
                 offset: 0,
             },
         }
