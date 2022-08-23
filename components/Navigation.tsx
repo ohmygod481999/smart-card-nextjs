@@ -114,7 +114,7 @@ function Navigation(props: Props) {
                             }`}
                         >
                             {/* <Link href={edgeConfig.basePath + "/ui/login"}> */}
-                            <Link href={`/`}>
+                            <Link href={`/home`}>
                                 <a>
                                     <span className="icon">
                                         <i className="fas fa-blog" />
