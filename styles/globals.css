@@ -629,7 +629,7 @@ button.full-width-btn:hover {
 }
 
 .header__container{
-    width: 100vw;
+    width: 100%;
     padding: 20px 12px;
     display: flex;
     position: relative;
@@ -752,12 +752,7 @@ button.full-width-btn:hover {
     background-color: #95cb28;
     color: white;
 }
-.home > main{
-    width: 100vw;
-}
-.home > footer{
-    width: 100vw;
-}
+
 .hero{
     padding: 85px 0 12px 12px;
     background: linear-gradient(90deg,#021048,#1e38a3);
