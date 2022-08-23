@@ -539,14 +539,17 @@ button.full-width-btn:hover {
     width: 100%;
     overflow: hidden;
 }
-.onboarding-container .steps {
+.onboarding-container .onboarding-steps {
     display: flex;
     width: 300%;
     transition: all 400ms ease;
     margin-bottom: 15px;
 }
-.steps .step {
+.onboarding-steps .step {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .image-container {
     width: 100%;
@@ -979,6 +982,7 @@ button.full-width-btn:hover {
 }
 .steps .step{
     display: flex;
+    /* flex-direction: column; */
 }
 .step .step__icon{
     color: #9c9898;
