@@ -629,7 +629,7 @@ button.full-width-btn:hover {
 }
 
 .header__container{
-    width: 100%;
+    width: 100vw;
     padding: 20px 12px;
     display: flex;
     position: relative;
@@ -689,13 +689,14 @@ button.full-width-btn:hover {
 .header__navbar{
     position: absolute;
     top: 0;
-    right: 0;
+    left: 0;
     z-index: 9999999;
     background-color: white;
     width: 100%;
-    height: 100%;
+    height:  calc(100% + 60px);
     flex-direction: column;
-    transform: translateX(100%);
+    -webkit-transform: translateX(-105%);
+    transform: translateX(-105%);
     opacity: 0;
     display: flex;
     transition: all 0.4s ease-in;
