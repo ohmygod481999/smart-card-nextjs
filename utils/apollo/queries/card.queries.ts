@@ -14,8 +14,13 @@ export const GET_CARD = gql`
                 phone
                 facebook
                 zalo
+                website
                 slide_text
                 description
+                user_cv {
+                    id
+                    path
+                }
             }
         }
     }
@@ -33,6 +38,7 @@ export const GET_CARD_BY_ORY_ID = gql`
                 email
                 facebook
                 zalo
+                website
                 slide_text
                 description
                 is_agency

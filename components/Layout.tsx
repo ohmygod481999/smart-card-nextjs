@@ -1,13 +1,15 @@
 import React from "react";
+import { ActiveRoute } from "../types/global";
 import Navigation from "./Navigation";
 
 interface Props {
     children: any;
     haveNav?: boolean;
     id: string | string[] | undefined;
+    activeRoutes?: ActiveRoute[];
 }
 
-function Layout({ id, haveNav = true, children }: Props) {
+function Layout({ id, haveNav = true, children, activeRoutes }: Props) {
     return (
         <div className="gaspar" data-magic-cursor="show" data-color="crimson">
             {/* Pre-Loader Start*/}
@@ -17,7 +19,7 @@ function Layout({ id, haveNav = true, children }: Props) {
             {/* Pre-Loader end */}
             {/* Style switcher start */}
             {/* Header-section Start*/}
-            {haveNav && <Navigation id={id} />}
+            {haveNav && <Navigation id={id} activeRoutes={activeRoutes}/>}
             {/* Header-section End*/}
             {/* section-part Start */}
             <div className="container ">{children}</div>

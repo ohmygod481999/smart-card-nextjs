@@ -1,3 +1,6 @@
+export enum ActiveRoute {
+    USER_CV = "my-cv",
+}
 export interface Account {
     id: number;
     ory_id: string;
@@ -7,11 +10,16 @@ export interface Account {
     email: string;
     facebook: string;
     zalo: string;
+    website: string;
     slide_text: string;
     description: string;
     is_agency: boolean;
     user_info: {
         traits: string;
+    };
+    user_cv: null | {
+        id: string;
+        path: string;
     };
 }
 

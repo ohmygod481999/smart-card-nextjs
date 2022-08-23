@@ -1,6 +1,9 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import SessionContext from "../../context/session-context";
+import * as Styles from "../cv/CvStyles";
 import { Account } from "../../types/global";
+import axios from "axios"
 
 interface Props {
     account: Account | undefined;
@@ -16,6 +19,7 @@ function SettingTab(props: Props) {
                 marginTop: "40px",
             }}
         >
+
             {!account?.is_agency && (
                 <Link href={"/account/agency-register"}>
                     <button className="full-width-btn">
@@ -23,6 +27,7 @@ function SettingTab(props: Props) {
                     </button>
                 </Link>
             )}
+            
         </div>
     );
 }

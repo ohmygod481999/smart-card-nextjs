@@ -1,12 +1,12 @@
 import { useQuery } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { getDataGraphqlResult } from "../utils";
-import { apolloClient } from "../utils/apollo";
-import { UPDATE_ACCOUNT } from "../utils/apollo/mutations/account.mutation";
-import { GET_ACCOUNT } from "../utils/apollo/queries/account.queries";
-import { GET_CARD } from "../utils/apollo/queries/card.queries";
-import { Account } from "../types/global";
+import { getDataGraphqlResult } from "../../utils";
+import { apolloClient } from "../../utils/apollo";
+import { UPDATE_ACCOUNT } from "../../utils/apollo/mutations/account.mutation";
+import { GET_ACCOUNT } from "../../utils/apollo/queries/account.queries";
+import { GET_CARD } from "../../utils/apollo/queries/card.queries";
+import { Account } from "../../types/global";
 
 interface Props {
     account: Account;
@@ -29,8 +29,16 @@ function InforSetting(props: Props) {
     useEffect(() => {
         if (account) {
             if (account) {
-                const { name, phone, description, email, facebook, zalo, slide_text } =
-                    account;
+                const {
+                    name,
+                    phone,
+                    description,
+                    email,
+                    facebook,
+                    zalo,
+                    slide_text,
+                    website,
+                } = account;
                 setValue("name", name);
                 setValue("phone", phone);
                 setValue("description", description);
@@ -38,6 +46,7 @@ function InforSetting(props: Props) {
                 setValue("facebook", facebook);
                 setValue("zalo", zalo);
                 setValue("slide_text", slide_text);
+                setValue("website", website);
             }
         }
     }, [account]);
@@ -46,7 +55,16 @@ function InforSetting(props: Props) {
         return <div className="text-center">Thẻ chưa kích hoạt</div>;
 
     const onSubmit = async (data: any) => {
-        const { name, phone, description, email, facebook, zalo, slide_text } = data;
+        const {
+            name,
+            phone,
+            description,
+            email,
+            facebook,
+            zalo,
+            slide_text,
+            website,
+        } = data;
         if (account) {
             setMsg("");
             setSubmitLoading(true);
@@ -61,6 +79,7 @@ function InforSetting(props: Props) {
                     facebook,
                     zalo,
                     slide_text,
+                    website,
                 },
             });
             setSubmitLoading(false);
@@ -113,6 +132,13 @@ function InforSetting(props: Props) {
                         {...register("zalo")}
                         className="form-control"
                         placeholder="Số điện thoại Zalo (VD: 082....)"
+                    />
+                </div>
+                <div className="form-group mb-3">
+                    <input
+                        {...register("website")}
+                        className="form-control"
+                        placeholder="Website của bạn"
                     />
                 </div>
                 <div className="form-group mb-3">

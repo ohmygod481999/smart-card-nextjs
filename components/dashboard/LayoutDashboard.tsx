@@ -66,6 +66,13 @@ function LayoutDashboard({ children }: Props) {
                             <span>Quản trị ví</span>
                         </a>
                     </Link>
+
+                    <Link href={"/dashboard/order"}>
+                        <a className="nav-link">
+                            <i className="fas fa-fw fa-cog" />
+                            <span>Quản trị đơn hàng</span>
+                        </a>
+                    </Link>
                 </li>
                 {/* Nav Item - Utilities Collapse Menu */}
                 {/* <li className="nav-item">

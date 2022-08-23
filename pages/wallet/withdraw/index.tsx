@@ -36,6 +36,7 @@ import {
 import _ from "lodash";
 import Link from "next/link";
 import Image from "next/image";
+import axios from "axios";
 
 function Withdraw() {
     const {
@@ -49,6 +50,7 @@ function Withdraw() {
 
     const router = useRouter();
     const { session, updateSession } = useContext(SessionContext);
+    const [submitLoading, setSubmitLoading] = useState(false);
     const [unapprovedWithdraws, setUnapprovedWithdraws] = useState<
         null | Registration[]
     >(null);
@@ -95,22 +97,6 @@ function Withdraw() {
         [wallets]
     );
 
-    console.log(mainWallet);
-
-    // useEffect(() => {
-    //     if (mainWallet) {
-    //         console.log(withdrawalAmount, mainWallet.amount);
-    //         if (withdrawalAmount > mainWallet.amount) {
-    //             setErrMsg(
-    //                 "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
-    //             );
-    //         }
-    //         if (withdrawalAmount < 50000) {
-    //             setErrMsg("Số tiền rút tối thiểu là 50,000đ");
-    //         }
-    //     }
-    // }, [withdrawalAmount, mainWallet]);
-
     const onSubmitAddBank = async (values: any) => {
         const { bank_name, bank_number } = values;
         console.log(values);
@@ -154,27 +140,45 @@ function Withdraw() {
                 setErrMsg("Số tiền còn lại trong ví tối thiểu là 50,000đ");
                 return;
             }
+            const unapprovedRegsRes = await apolloClient.query({
+                query: GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID,
+                variables: {
+                    account_id: session.user.id,
+                    approved: false,
+                },
+            });
+            const unapprovedRegs: any[] = unapprovedRegsRes.data.registration;
+            if (unapprovedRegs.length > 0) {
+                setErrMsg(
+                    "Bạn đang có một lệnh rút đang xử lý, vui lòng đợi chúng tôi xử lý xong để tiếp tục rút tiền"
+                );
+                return;
+            }
 
+            setSubmitLoading(true);
             try {
                 if (session && router.isReady) {
-                    const res = await apolloClient.mutate({
-                        mutation: INSERT_REGISTRATION,
-                        variables: {
+                    const res = await axios.post(
+                        `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/wallet/withdraw`,
+                        {
                             account_id: session.user.id,
-                            type: RegistrationType.WITHDRAW,
-                            payload: {
-                                amount: withdrawalAmount,
-                            },
-                        },
-                    });
-                    // if success
-                    if (res.data?.insert_registration_one) {
-                        const { id } = res.data.insert_registration_one;
-                        router.push(`/wallet/withdraw/success?id=${id}`);
+                            amount: withdrawalAmount,
+                        }
+                    );
+                    if (res.data) {
+                        const { success, message, data } = res.data;
+                        if (success) {
+                            const { id } = data;
+                            router.push(`/wallet/withdraw/success?id=${id}`);
+                        } else {
+                            setErrMsg(message);
+                            setSubmitLoading(false);
+                        }
                     }
                 }
             } catch (error) {
                 console.error(error);
+                setSubmitLoading(false);
             }
         }
     }, [mainWallet, session, router.isReady]);
@@ -345,6 +349,15 @@ function Withdraw() {
                                                 </div>
                                             </div>
                                             <div className="withdraw-receiving-method activate">
+                                                <Link
+                                                    href={
+                                                        "/wallet/withdraw/edit-bank-info"
+                                                    }
+                                                >
+                                                    <div className="withdraw-receiving-method__edit">
+                                                        Sửa
+                                                    </div>
+                                                </Link>
                                                 <div className="withdraw-receiving-method__logo">
                                                     <i className="fas fa-money-check-alt"></i>
                                                 </div>
@@ -371,6 +384,7 @@ function Withdraw() {
                                     </div>
                                     <button
                                         className="full-width-btn"
+                                        disabled={submitLoading}
                                         onClick={onWithdrawSubmit}
                                     >
                                         Tạo lệnh rút tiền

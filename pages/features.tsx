@@ -92,6 +92,17 @@ function Features() {
                                             </span>
                                         </div>
                                     </Link>
+                                    <Link href={"/cv"}>
+                                        <div className="section-features__item">
+                                            <span className="icon">
+                                                <i className="far fa-file"></i>
+                                            </span>
+                                            <span>
+                                                Quản lý
+                                                <br /> CV
+                                            </span>
+                                        </div>
+                                    </Link>
                                     <div className="section-features__item inactive">
                                         <span className="icon">
                                             <i className="fas fa-shopping-bag"></i>
