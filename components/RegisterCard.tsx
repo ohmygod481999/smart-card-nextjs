@@ -32,7 +32,7 @@ function RegisterCard(props: Props) {
                             <div className="home-content text-center">
                                 <div className="onboarding-container">
                                     <div
-                                        className="steps"
+                                        className="onboarding-steps"
                                         style={{
                                             transform: `translateX(${
                                                 -(100 / 3) * (active - 1)
