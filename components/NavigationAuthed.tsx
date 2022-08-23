@@ -13,8 +13,8 @@ function NavigationAuthed() {
         <div className="header-holder services-section text-center animate__animated animate__zoomIn">
             <div className="navigation">
                 <ul className="nav">
-                    <li className={`list ${pathname === "/" ? "active" : ""}`}>
-                        <Link href={`/`}>
+                    <li className={`list ${pathname === "/home" ? "active" : ""}`}>
+                        <Link href={`/home`}>
                             <a className="active">
                                 <span className="icon">
                                     <i className="fas fa-house-user" />
