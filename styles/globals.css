@@ -951,6 +951,7 @@ button.full-width-btn:hover {
     background-color: white;
     position: relative;
     margin-right: 20px;
+    min-height: 100px;
 }
 .step__icon i{
     width: 60px;
@@ -995,6 +996,7 @@ button.full-width-btn:hover {
     border-radius: 6%;
     overflow: hidden;
     margin-top: 20px;
+    flex-basis: 50%;
 }
 footer .container{
 padding: 60px 12px;
@@ -1108,6 +1110,9 @@ footer .container{
         justify-content: center;
         align-items: center;
     }
+    .hero__images {
+        flex-basis: 50%;
+    }
     .feature{
         padding: 80px 60px;
     }
@@ -1125,11 +1130,15 @@ footer .container{
     .why-choose-us .title{
         font-size: 2.5rem;
     }
-    .item1 .container{
+    .item1 .item1-container{
         display: flex;
-        flex-direction: row;
-        margin: 0;
        
+    }
+    .item1-container .left {
+        flex-basis: 50%;
+    }
+    .item1-container .right {
+        flex-basis: 50%;
     }
     .item2{
         display: flex;

@@ -62,7 +62,7 @@ const Home: NextPage = () => {
                         headerActive ? "active" : ""
                     }`}
                 >
-                    <div className="header__branch">SCard</div>
+                    <div className="header__branch">Smartcard</div>
 
                     <ul className="header__items">
                         <li>Home</li>
@@ -139,12 +139,12 @@ const Home: NextPage = () => {
                 <div className="hero">
                     <div className="hero__content">
                         <p className="content__title">
-                            Get Fully Control and Visibility your Company
+                            Smartcard - Hệ sinh thái thông minh
                         </p>
                         <p className="content__description">
-                            Proactively coordinate quality quality vectors
-                            vis-a-vis supply chains. Quickly engage
-                            client-centric web services.
+                            Smart card là thẻ thông minh cho cá nhân và doanh
+                            nghiệp tiện lợi chia sẻ thông tin cho khách hàng cá
+                            nhân và tích hợp quản trị doanh nghiệp
                         </p>
                         <div className="content__btns">
                             <button className="btn__request">
@@ -158,15 +158,13 @@ const Home: NextPage = () => {
                     <div className="hero__images">
                         <img
                             className="hero__image"
-                            src="/images/hero-1.png"
+                            src="/images/connect.png"
                             alt=""
                         />
                     </div>
                 </div>
                 <div className="feature">
-                    <p className="feature__title">
-                        With all the Features You Need
-                    </p>
+                    <p className="feature__title">Điểm nổi bật của Smartcard</p>
                     <p className="feature__description">
                         Credibly grow premier ideas rather than
                         bricks-and-clicks strategic theme areas distributed for
@@ -177,69 +175,93 @@ const Home: NextPage = () => {
                             <div className="performance">
                                 <CgPerformance size={30} />
                             </div>
-                            <p className="item__title">Good Performance</p>
+                            <p className="item__title">
+                                Chia sẻ thông tin 1 chạm
+                            </p>
                             <p className="item__description">
-                                Appropriately grow competitive leadership rather
-                                than strategic technically sound processes
-                                without state.
+                                Chỉ với một thao tác chạm, smartcard có thể chia
+                                sẻ một cách đầy đủ và chuyên nghiệp các thông
+                                tin bạn có, thay thế hoàn toàn cho card visit.
                             </p>
                         </div>
                         <div>
                             <div className="secure">
                                 <BsShieldCheck size={30} />
                             </div>
-                            <p className="item__title">Highly Secure</p>
+                            <p className="item__title">
+                                Tích hợp quản trị doanh nghiệp
+                            </p>
                             <p className="item__description">
-                                Appropriately grow competitive leadership rather
-                                than strategic technically sound processes
-                                without state.
+                                Bạn là chủ doanh nghiệp ? Smart card tích hợp
+                                sẵn hệ thống ERP chuyên nghiệp. Quản trị nhà
+                                hàng, quản trị nhân viên, quản trị bán hàng,...
                             </p>
                         </div>
                         <div>
                             <div className="development">
                                 <BsCodeSlash size={30} />
                             </div>
-                            <p className="item__title">Fast Development</p>
+                            <p className="item__title">
+                                Hệ sinh thái thông minh
+                            </p>
                             <p className="item__description">
-                                Appropriately grow competitive leadership rather
-                                than strategic technically sound processes
-                                without state.
+                                Với smartcard, bạn được tham gia hoàn toàn các
+                                tiện ích từ hệ sinh thái smartcard như
+                                smartmart, smartschool, ...
                             </p>
                         </div>
                     </div>
                 </div>
                 <div className="why-choose-us">
                     <div className="item1">
-                        <div className="container">
+                        <div className="item1-container">
                             <div className="left">
                                 <div className="icon">
                                     <BsShieldCheck size={30} />
                                 </div>
                                 <p className="title">
-                                    Advanced Analytics, Understand Business
+                                    Chia sẻ thông tin dễ dàng
                                 </p>
                                 <p className="description">
-                                    Distinctively promote parallel vortals with
-                                    ubiquitous e-markets. Proactively benchmark
-                                    turnkey optimize next-generation strategic
-                                    leadership without resource sucking ideas.
+                                    Thẻ smartcard là thẻ cứng có tích hợp chip
+                                    NFC thông minh, thiết kế với phong cách
+                                    chuyên nghiệp, hiện đại, cho phép người dùng
+                                    mang theo mọi nơi để chia sẻ thông tin của
+                                    mình
                                 </p>
                                 <div className="lists">
                                     <ul className="list1">
                                         <li>
                                             <AiFillCheckCircle />{" "}
-                                            <p>Thought leadership</p>
+                                            <p>
+                                                Thông tin cá nhân: Số điện
+                                                thoại, email, website,...
+                                            </p>
                                         </li>
                                         <li>
                                             <AiFillCheckCircle />{" "}
-                                            <p>Personal branding</p>
+                                            <p>
+                                                Thông tin các nền tảng mạng xã
+                                                hội
+                                            </p>
                                         </li>
                                         <li>
                                             <AiFillCheckCircle />{" "}
-                                            <p>Modernized prospecting</p>
+                                            <p>
+                                                Thông tin của shop: Shopee,
+                                                Lazada
+                                            </p>
+                                        </li>
+                                        <li>
+                                            <AiFillCheckCircle />{" "}
+                                            <p>
+                                                Truyền thông thương hiệu, cũng
+                                                như hình ảnh cá nhân một cách
+                                                chuyên nghiệp
+                                            </p>
                                         </li>
                                     </ul>
-                                    <ul className="list2">
+                                    {/* <ul className="list2">
                                         <li>
                                             <AiFillCheckCircle />{" "}
                                             <p>Better win rates</p>
@@ -252,11 +274,15 @@ const Home: NextPage = () => {
                                             <AiFillCheckCircle />{" "}
                                             <p>Sales compliance</p>
                                         </li>
-                                    </ul>
+                                    </ul> */}
                                 </div>
                             </div>
                             <div className="right">
-                                <img src="/images/widget-11.png" alt="" />
+                                <img
+                                    src="/images/social-media-social.png"
+                                    alt=""
+                                />
+                                {/* <img src="/images/widget-11.png" alt="" /> */}
                             </div>
                         </div>
                     </div>
@@ -266,27 +292,28 @@ const Home: NextPage = () => {
                                 <FaFingerprint size={20} />
                             </div>
                             <p className="title">
-                                Match Everything to Brand and Style
+                                Tích hợp hệ thống quản trị doanh nghiệp
                             </p>
                             <p className="description">
-                                Intrinsicly pontificate reliable metrics with
-                                enabled. Holisticly maintain clicks-and-mortar
-                                manufactured products empower viral customer
-                                service through resource deliverables.
+                                Là giải pháp ERP dành cho doanh nghiệp
+                                sản xuất vừa và nhỏ, Smartcard ERP lưu
+                                trữ tập trung các cơ sở dữ liệu và nguồn lực để
+                                tự động hóa và tối ưu khâu quản lý và kế toán
+                                quản trị.
                             </p>
-                            <p className="description">
+                            {/* <p className="description">
                                 Customer service through resource pontificate
                                 reliable metrics with enabled expedite resource
                                 maximizing information maintain manufactured
                                 products.
-                            </p>
+                            </p> */}
                         </div>
                         <div className="right">
                             <img src="/images/widget-12.png" alt="" />
                         </div>
                     </div>
                 </div>
-                <div className="customer__review">
+                {/* <div className="customer__review">
                     <div className="title">
                         <p className="title_primary">Testimonial</p>
                         What They Say About Us
@@ -321,16 +348,14 @@ const Home: NextPage = () => {
                             <p className="career">Visual Designer</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="work-process">
                     <div className="title">
                         <p className="title_primary">Process</p>
-                        We Follow Our Work Process
+                        Cách thức sử dụng
                     </div>
                     <p className="description">
-                        Enthusiastically engage cross-media leadership skills
-                        for alternative experiences. Proactively drive vertical
-                        systems than intuitive architectures.
+                        How to use.
                     </p>
                     <div className="step__container">
                         <div className="steps">
@@ -343,13 +368,13 @@ const Home: NextPage = () => {
                                 <div className="step__content">
                                     <div className="title">
                                         <p className="title_primary">Step 1</p>
-                                        Research and Content Planing
+                                        Đặt hàng tại website
                                     </div>
                                     <p className="description">
-                                        Progressively foster enterprise-wide
+                                        {/* Progressively foster enterprise-wide
                                         systems whereas equity invested
                                         web-readiness harness installed base
-                                        bandwidth.
+                                        bandwidth. */}
                                     </p>
                                 </div>
                             </div>
@@ -362,14 +387,14 @@ const Home: NextPage = () => {
                                 <div className="step__content">
                                     <div className="title">
                                         <p className="title_primary">Step 2</p>
-                                        Publishing and Execution
+                                        Nhận thẻ tại nhà
                                     </div>
-                                    <p className="description">
+                                    {/* <p className="description">
                                         Dramatically administrate progressive
                                         metrics without error-free globally
                                         simplify standardized alignments
                                         plagiarize distributed.
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
                             <div className="step">
@@ -381,14 +406,14 @@ const Home: NextPage = () => {
                                 <div className="step__content">
                                     <div className="title">
                                         <p className="title_primary">Step 3</p>
-                                        Product Prototyping
+                                        Kích hoạt thẻ
                                     </div>
-                                    <p className="description">
+                                    {/* <p className="description">
                                         Interactively whiteboard transparent
                                         testing procedures before
                                         bricks-and-clicks initiatives
                                         administrate competencies.
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
                             <div className="step">
@@ -402,19 +427,19 @@ const Home: NextPage = () => {
                                 <div className="step__content">
                                     <div className="title">
                                         <p className="title_primary">Step 4</p>
-                                        Deliver the Final Product
+                                        Tùy biến thông tin cá nhân và sẵn sàng sử dụng
                                     </div>
-                                    <p className="description">
+                                    {/* <p className="description">
                                         Dramatically plagiarize distributed
                                         progressive metrics without error-free
                                         globally simplify standardized
                                         alignments.
-                                    </p>
+                                    </p> */}
                                 </div>
                             </div>
                         </div>
                         <div className="step__image">
-                            <img src="/images/office-img-1.jpg" alt="" />
+                            <img src="/images/design.png" alt="" />
                         </div>
                     </div>
                 </div>
@@ -422,7 +447,7 @@ const Home: NextPage = () => {
             <footer>
                 <div className="container">
                     <div className="footer__top">
-                        <div className="header__branch">SCard</div>
+                        <div className="header__branch">Smartcard</div>
                         <p>
                             Our latest news, articles, and resources, we will
                             sent to your inbox weekly.
