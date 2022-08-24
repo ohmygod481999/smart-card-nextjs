@@ -121,13 +121,18 @@ const Home: NextPage = () => {
                         {account ? (
                             <div className="account__name-navbar">
                                 <AiOutlineUser />
-                                <p className="account--name"> {account.name}</p>
+                                <Link href="/home">
+                                    <a className="account--name">
+                                        {" "}
+                                        {account.name}
+                                    </a>
+                                </Link>
                             </div>
                         ) : (
                             <Link href="/login" passHref>
                                 <CenterLink>
                                     <button className="btn__login">
-                                        Dang Nhap
+                                        Đăng nhập
                                     </button>
                                 </CenterLink>
                             </Link>
@@ -295,11 +300,10 @@ const Home: NextPage = () => {
                                 Tích hợp hệ thống quản trị doanh nghiệp
                             </p>
                             <p className="description">
-                                Là giải pháp ERP dành cho doanh nghiệp
-                                sản xuất vừa và nhỏ, Smartcard ERP lưu
-                                trữ tập trung các cơ sở dữ liệu và nguồn lực để
-                                tự động hóa và tối ưu khâu quản lý và kế toán
-                                quản trị.
+                                Là giải pháp ERP dành cho doanh nghiệp sản xuất
+                                vừa và nhỏ, Smartcard ERP lưu trữ tập trung các
+                                cơ sở dữ liệu và nguồn lực để tự động hóa và tối
+                                ưu khâu quản lý và kế toán quản trị.
                             </p>
                             {/* <p className="description">
                                 Customer service through resource pontificate
@@ -354,9 +358,7 @@ const Home: NextPage = () => {
                         <p className="title_primary">Process</p>
                         Cách thức sử dụng
                     </div>
-                    <p className="description">
-                        How to use.
-                    </p>
+                    <p className="description">How to use.</p>
                     <div className="step__container">
                         <div className="steps">
                             <div className="step">
@@ -427,7 +429,8 @@ const Home: NextPage = () => {
                                 <div className="step__content">
                                     <div className="title">
                                         <p className="title_primary">Step 4</p>
-                                        Tùy biến thông tin cá nhân và sẵn sàng sử dụng
+                                        Tùy biến thông tin cá nhân và sẵn sàng
+                                        sử dụng
                                     </div>
                                     {/* <p className="description">
                                         Dramatically plagiarize distributed
