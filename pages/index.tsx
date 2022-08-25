@@ -253,8 +253,7 @@ const Home: NextPage = () => {
                                         <li>
                                             <AiFillCheckCircle />{" "}
                                             <p>
-                                                Thông tin của shop: Shopee,
-                                                Lazada
+                                                Thông tin của shop: Smartmart
                                             </p>
                                         </li>
                                         <li>
