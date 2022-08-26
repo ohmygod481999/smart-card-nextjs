@@ -451,18 +451,17 @@ const Home: NextPage = () => {
                     <div className="footer__top">
                         <div className="header__branch">Smartcard</div>
                         <p>
-                            Our latest news, articles, and resources, we will
-                            sent to your inbox weekly.
+                            Đăng ký để nhận thêm thông tin từ chúng tôi.
                         </p>
                         <div className="form__input">
                             <input
                                 type="text"
                                 className="input-custom"
-                                placeholder="Enter your email"
+                                placeholder="Nhập email của bạn"
                             />
-                            <button className="button-submit">Subscribe</button>
+                            <button className="button-submit">Gửi</button>
                         </div>
-                        <div className="rating-block">
+                        {/* <div className="rating-block">
                             <p>10/10 Overall rating</p>
                             <div className="rating__list">
                                 <AiFillStar />
@@ -471,10 +470,17 @@ const Home: NextPage = () => {
                                 <AiFillStar />
                                 <AiFillStar />
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="footer__bottom">
-                        <ul>
+                        {/* <ul>
+                            <li className="title">Primary Pages</li>
+                            <li>Home</li>
+                            <li>About us</li>
+                            <li>Career</li>
+                            <li>Service</li>
+                        </ul> */}
+                        {/* <ul>
                             <li className="title">Primary Pages</li>
                             <li>Home</li>
                             <li>About us</li>
@@ -487,14 +493,7 @@ const Home: NextPage = () => {
                             <li>About us</li>
                             <li>Career</li>
                             <li>Service</li>
-                        </ul>
-                        <ul>
-                            <li className="title">Primary Pages</li>
-                            <li>Home</li>
-                            <li>About us</li>
-                            <li>Career</li>
-                            <li>Service</li>
-                        </ul>
+                        </ul> */}
                     </div>
                 </div>
             </footer>
