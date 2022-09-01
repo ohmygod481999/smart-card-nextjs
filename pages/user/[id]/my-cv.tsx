@@ -21,7 +21,7 @@ const Contact = ({ cardInfo, accountInfo }: Props) => {
     console.log(accountInfo);
 
     const activeRoutes = useMemo(() => {
-        if (accountInfo.user_cv) {
+        if (accountInfo.resume) {
             return [ActiveRoute.USER_CV];
         }
     }, [accountInfo]);
@@ -48,7 +48,7 @@ const Contact = ({ cardInfo, accountInfo }: Props) => {
                                     </div>
                                 </div>
                                 <div className="col-12">
-                                    {accountInfo.user_cv && (
+                                    {accountInfo.resume && (
                                         // @ts-ignore
                                         <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
                                             <div
@@ -60,7 +60,7 @@ const Contact = ({ cardInfo, accountInfo }: Props) => {
                                             >
                                                 <Viewer
                                                     fileUrl={
-                                                        accountInfo.user_cv.path
+                                                        accountInfo.resume.path
                                                     }
                                                 />
                                             </div>

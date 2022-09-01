@@ -34,7 +34,8 @@ function ShippingStep({ onNext, setShipping }: Props) {
                     <div className="form-check">
                         <input
                             onChange={(e) =>
-                                setShippingOption(parseInt(e.target.value))
+                                // @ts-ignore
+                                setShippingOption(e.target.value)
                             }
                             checked={shippingOption === ShippingOption.SELF_GET}
                             className="form-check-input"
@@ -58,7 +59,8 @@ function ShippingStep({ onNext, setShipping }: Props) {
                     >
                         <input
                             onChange={(e) =>
-                                setShippingOption(parseInt(e.target.value))
+                                // @ts-ignore
+                                setShippingOption(e.target.value)
                             }
                             checked={shippingOption === ShippingOption.SHIP}
                             className="form-check-input"

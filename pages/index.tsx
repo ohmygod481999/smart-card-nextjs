@@ -74,7 +74,7 @@ const Home: NextPage = () => {
                         <Link href="/home" passHref>
                             <CenterLink>
                                 <div className="account__name">
-                                    <AiOutlineUser /> {account.name}
+                                    <AiOutlineUser /> {account.account_info.name || "Trang cá nhân"}
                                 </div>
                             </CenterLink>
                         </Link>
@@ -124,7 +124,7 @@ const Home: NextPage = () => {
                                 <Link href="/home">
                                     <a className="account--name">
                                         {" "}
-                                        {account.name}
+                                        {account.account_info.name}
                                     </a>
                                 </Link>
                             </div>

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import LayoutAuthed from "../../components/LayoutAuthed";
 import * as Styles from "../../components/cv/CvStyles";
 import SessionContext from "../../context/session-context";
@@ -8,6 +8,9 @@ import { useDropzone } from "react-dropzone";
 import Viewer, { Worker } from "@phuocng/react-pdf-viewer";
 import "@phuocng/react-pdf-viewer/cjs/react-pdf-viewer.css";
 import _ from "lodash";
+import { useLazyQuery } from "@apollo/client";
+import { GET_RESUME } from "../../utils/apollo/queries/resume.queries";
+import { getDataGraphqlResult } from "../../utils";
 
 type SelectedFile = {
     name: string;
@@ -32,7 +35,7 @@ function Cv() {
         },
     });
 
-    const [cv, setCV] = useState<any>("");
+    // const [cv, setCV] = useState<any>("");
 
     const [selectedFile, setSelectedFile] = useState<any>({
         name: "",
@@ -42,24 +45,19 @@ function Cv() {
 
     const [showCV, setShowCV] = useState<boolean>(false);
 
-    const fetchCV = useCallback(() => {
-        if (session?.user) {
-            axios
-                .get(
-                    `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/cv/get?account=${session.user.id}`
-                )
-                .then((res) => {
-                    setCV(res.data.path);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-    }, [session]);
+    const [getResume, {data, loading, refetch}] = useLazyQuery(GET_RESUME)
 
     useEffect(() => {
-        fetchCV();
-    }, [session]);
+      if (session) {
+          getResume({
+              variables: {
+                account_id: session.user.id
+              }
+          })
+      }
+    }, [session])
+    
+
 
     const [isSelected, setIsSelected] = useState(false);
     const changeHandler = (event: any) => {
@@ -74,13 +72,18 @@ function Cv() {
             formData.append("file", file);
             axios
                 .post(
-                    `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/cv/upload`,
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/resume/upload`,
                     formData,
-                    { headers: { account_id: session.user.id } }
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        withCredentials: true,
+                    }
                 )
                 .then((res) => {
                     setMsg("Thành công");
-                    fetchCV();
+                    refetch();
                 })
                 .catch((err) => {
                     setMsg(
@@ -91,6 +94,17 @@ function Cv() {
             alert("Vui lòng chọn CV");
         }
     };
+
+    const resume = useMemo(() => {
+        if (data) {
+            const resumes = getDataGraphqlResult(data)
+            if (resumes.length > 0) {
+                return resumes[0].path
+            }
+            return ""
+        }
+        return ""
+    }, [data])
     return (
         <LayoutAuthed>
             <Head>
@@ -156,7 +170,7 @@ function Cv() {
                                         </Styles.Container>
                                         {/* )} */}
 
-                                        {cv && (
+                                        {resume && (
                                             // @ts-ignore
                                             <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
                                                 <div
@@ -166,7 +180,7 @@ function Cv() {
                                                         marginTop: "20px",
                                                     }}
                                                 >
-                                                    <Viewer fileUrl={cv} />
+                                                    <Viewer fileUrl={resume} />
                                                 </div>
                                             </Worker>
                                         )}

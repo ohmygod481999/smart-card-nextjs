@@ -5,18 +5,16 @@ export const GET_TRANSATION = gql`
         transaction(
             where: {
                 _or: [
-                    { wallet: { account_id: { _eq: $account_id } } }
-                    { walletFromWalletId: { account_id: { _eq: $account_id } } }
+                    { source_id: { _eq: $account_id } }
+                    { target_id: { _eq: $account_id } }
                 ]
             }
-            order_by: { date: desc }
+            order_by: { created_at: desc }
         ) {
             id
             amount
             type
-            date
-            wallet_id
-            from_wallet_id
+            created_at
         }
     }
 `;

@@ -23,7 +23,7 @@ export const GET_ORDERS = gql`
 `;
 
 export const GET_ORDERS_BY_ACCOUNT_ID = gql`
-    query getOrderByAccountId($account_id: Int!, $status: Int) {
+    query getOrderByAccountId($account_id: Int!, $status: order_status_enum) {
         order(
             where: { agency_id: { _eq: $account_id }, status: { _eq: $status } }
         ) {

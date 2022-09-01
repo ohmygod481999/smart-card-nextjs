@@ -21,7 +21,7 @@ function AccountCard({ account }: Props) {
                                     className="main-avatar animate__animated animate__fadeInLeft animate__delay-1s"
                                     style={{
                                         backgroundImage: `url(${
-                                            account?.avatar || defaultImg
+                                            account?.account_info?.avatar || defaultImg
                                         })`,
                                         // width: 150,
                                         // height: 150,
@@ -49,8 +49,8 @@ function AccountCard({ account }: Props) {
                                     {/* {getUserName(session?.identity) ||
                                             "Unknown"} */}
                                     {/* {_.get(traits, "email")} */}
-                                    {_.get(account, "name")}{" "}
-                                    {_.get(account, "is_agency") && (
+                                    {_.get(account, "account_info.name")}{" "}
+                                    {_.get(account, "account_info.is_agency") && (
                                         <i
                                             style={{
                                                 color: "khaki",
@@ -62,10 +62,10 @@ function AccountCard({ account }: Props) {
                                 </h1>
                                 <div className="animated-bar animate__animated animate__fadeInDown animate__delay-2s" />
                                 <div className="animated-text animate__animated animate__fadeInDown animate__delay-2s">
-                                    {_.get(account, "slide_text") &&
-                                        _.get(account, "slide_text")
+                                    {_.get(account, "account_info.slide_text") &&
+                                        _.get(account, "account_info.slide_text")
                                             ?.split(",")
-                                            .map((text, i) => (
+                                            .map((text: string, i: number) => (
                                                 <h3 key={i}>{text.trim()}</h3>
                                             ))}
                                 </div>
@@ -100,7 +100,7 @@ function AccountCard({ account }: Props) {
                                         </ul>
                                     </div> */}
                                 <ul className="account-infor-list animate__animated animate__fadeInDown animate__delay-1s">
-                                    {_.get(account, "phone") && (
+                                    {_.get(account, "account_info.phone") && (
                                         <li>
                                             <a
                                                 href={`tel:${_.get(
@@ -116,19 +116,19 @@ function AccountCard({ account }: Props) {
                                                     {/* <i className="fas fa-phone" />{" "} */}
                                                 </div>
                                                 <div className="content">
-                                                    {_.get(account, "phone")}
+                                                    {_.get(account, "account_info.phone")}
                                                 </div>
                                             </a>
                                         </li>
                                     )}
-                                    {_.get(account, "facebook") && (
+                                    {_.get(account, "account_info.facebook") && (
                                         <li>
                                             <a
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 href={_.get(
                                                     account,
-                                                    "facebook"
+                                                    "account_info.facebook"
                                                 )}
                                             >
                                                 <div className="logo">
@@ -144,7 +144,7 @@ function AccountCard({ account }: Props) {
                                             </a>
                                         </li>
                                     )}
-                                    {_.get(account, "zalo") && (
+                                    {_.get(account, "account_info.zalo") && (
                                         <li>
                                             <a
                                                 target="_blank"
@@ -198,15 +198,15 @@ function AccountCard({ account }: Props) {
                                             </a>
                                         </li>
                                     )}
-                                    {account?.website && (
+                                    {account?.account_info?.website && (
                                         <li>
                                             <a
                                                 href={
-                                                    account.website.includes(
+                                                    account.account_info.website.includes(
                                                         "http"
                                                     )
-                                                        ? account.website
-                                                        : `https://${account.website}`
+                                                        ? account.account_info.website
+                                                        : `https://${account.account_info.website}`
                                                 }
                                                 target="_blank"
                                                 rel="noreferrer"
@@ -219,14 +219,14 @@ function AccountCard({ account }: Props) {
                                                     {/* <i className="fas fa-phone" />{" "} */}
                                                 </div>
                                                 <div className="content">
-                                                    {account.website}
+                                                    {account.account_info.website}
                                                 </div>
                                             </a>
                                         </li>
                                     )}
                                 </ul>
                                 <p className="lorem-text animate__animated animate__zoomIn animate__delay-2-5s">
-                                    {_.get(account, "description")}
+                                    {_.get(account, "account_info.description")}
                                 </p>
                                 {/* <div className="home-btn">
                                         <a

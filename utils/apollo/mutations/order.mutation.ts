@@ -3,10 +3,10 @@ import { gql } from "@apollo/client";
 export const ADD_ORDER = gql`
     mutation (
         $account_id: Int!
-        $order_items: order_item_arr_rel_insert_input!
-        $status: Int!
-        $shipping_type: Int!
-        $payment_type: Int!
+        $order_items: order_items_arr_rel_insert_input!
+        $status: order_status_enum!
+        $shipping_type: order_shipping_type_enum!
+        $payment_type: order_payment_type_enum!
         $customer_phone: String
         $customer_name: String
         $customer_address: String

@@ -12,8 +12,8 @@ export const UPDATE_ACCOUNT = gql`
         $slide_text: String
         $website: String
     ) {
-        update_account_by_pk(
-            pk_columns: { id: $id }
+        update_account_info(
+            where: { account: { id: { _eq: $id } } }
             _set: {
                 name: $name
                 phone: $phone
@@ -25,15 +25,7 @@ export const UPDATE_ACCOUNT = gql`
                 website: $website
             }
         ) {
-            id
-            name
-            phone
-            description
-            email
-            facebook
-            zalo
-            slide_text
-            website
+            affected_rows
         }
     }
 `;

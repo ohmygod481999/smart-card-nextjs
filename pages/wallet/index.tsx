@@ -1,4 +1,4 @@
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,7 +7,7 @@ import LayoutAuthed from "../../components/LayoutAuthed";
 import SessionContext from "../../context/session-context";
 import {
     Transaction,
-    TransactionType,
+    TransactionTypeEnum,
     Wallet,
     WalletType,
 } from "../../types/global";
@@ -20,27 +20,43 @@ import {
 } from "../../utils";
 import { apolloClient } from "../../utils/apollo";
 import { GET_TRANSATION } from "../../utils/apollo/queries/transaction.queries";
-import { GET_WALLETS } from "../../utils/apollo/queries/wallet.queries";
+import { GET_WALLET } from "../../utils/apollo/queries/wallet.queries";
 
 function WalletPage() {
     const router = useRouter();
 
     const { session, updateSession } = useContext(SessionContext);
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
-    const [mainWalletTransactions, setMainWalletTransactions] = useState<
-        Transaction[] | null
-    >(null);
+
+    const [wallet, setWallet] = useState<Wallet | null>(null);
+    // const [mainWalletTransactions, setMainWalletTransactions] = useState<
+    //     Transaction[] | null
+    // >(null);
     const [secondaryWalletTransactions, setSecondaryWalletTransactions] =
         useState<Transaction[] | null>(null);
 
     const [walletTab, setWalletTab] = useState<WalletType>(WalletType.Main);
 
-    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+    const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET, {
+        fetchPolicy: "network-only"
+    });
+
+    const [getTransactions, queryTransactionValues] =
+        useLazyQuery(GET_TRANSATION);
 
     useEffect(() => {
         if (session) {
             console.log(session);
-            getWallets({
+            getWallet({
+                variables: {
+                    account_id: session.user.id,
+                },
+                context: {
+                    headers: {
+                        "x-hasura-user-id": session.user.id,
+                    },
+                },
+            });
+            getTransactions({
                 variables: {
                     account_id: session.user.id,
                 },
@@ -52,53 +68,17 @@ function WalletPage() {
 
     useEffect(() => {
         if (data) {
-            const wallets = getDataGraphqlResult(data);
-            setWallets(wallets);
+            const _wallet = getDataGraphqlResult(data);
+            setWallet(_wallet);
         }
     }, [data]);
 
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
-
-    const secondaryWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Secondary),
-        [wallets]
-    );
-
-    useEffect(() => {
-        if (session && mainWallet && secondaryWallet) {
-            apolloClient
-                .query({
-                    query: GET_TRANSATION,
-                    variables: {
-                        account_id: session.user.id,
-                    },
-                })
-                .then(({ data }) => {
-                    const transactions = getDataGraphqlResult(data);
-                    console.log(transactions);
-                    const mainTransactions: Transaction[] = [];
-                    const secondaryTransactions: Transaction[] = [];
-                    transactions.forEach((transaction: Transaction) => {
-                        if (
-                            transaction.wallet_id === mainWallet.id ||
-                            transaction.from_wallet_id === mainWallet.id
-                        ) {
-                            mainTransactions.push(transaction);
-                        } else if (
-                            transaction.wallet_id === secondaryWallet.id ||
-                            transaction.from_wallet_id === secondaryWallet.id
-                        ) {
-                            secondaryTransactions.push(transaction);
-                        }
-                    });
-                    setMainWalletTransactions(mainTransactions);
-                    setSecondaryWalletTransactions(secondaryTransactions);
-                });
+    const mainWalletTransactions = useMemo(() => {
+        if (!queryTransactionValues.data) {
+            return [];
         }
-    }, [data, mainWallet, secondaryWallet]);
+        return getDataGraphqlResult(queryTransactionValues.data);
+    }, [queryTransactionValues.data]);
 
     // console.log(transactions);
 
@@ -156,8 +136,7 @@ function WalletPage() {
                                         Số tiền hiện có
                                     </div>
                                     <div className="wallet-amount__money">
-                                        {mainWallet &&
-                                            formatMoney(mainWallet.amount)}
+                                        {wallet && formatMoney(wallet.balance)}
                                     </div>
                                 </div>
                             )}
@@ -167,8 +146,12 @@ function WalletPage() {
                                         Số tiền hiện có
                                     </div>
                                     <div className="wallet-amount__money">
-                                        {secondaryWallet &&
-                                            formatMoney(secondaryWallet.amount)}
+                                        {wallet &&
+                                            formatMoney(
+                                                wallet.secondary_balance
+                                            )}
+                                        {/* {secondaryWallet &&
+                                            formatMoney(secondaryWallet.amount)} */}
                                     </div>
                                 </div>
                             )}
@@ -236,16 +219,17 @@ function WalletPage() {
                                                         >
                                                             <div className="wallet-transaction__item__left">
                                                                 <div className="wallet-transaction__item__left__title">
-                                                                    {
-                                                                        transactionMapping[
-                                                                            transaction
-                                                                                .type
-                                                                        ]
-                                                                    }
+                                                                    {transaction.type in
+                                                                    transactionMapping
+                                                                        ? transactionMapping[
+                                                                              transaction
+                                                                                  .type
+                                                                          ]
+                                                                        : transaction.type}
                                                                 </div>
                                                                 <div className="wallet-transaction__item__left__description">
                                                                     {formatDateTime(
-                                                                        transaction.date
+                                                                        transaction.created_at
                                                                     )}
                                                                 </div>
                                                             </div>
@@ -253,9 +237,9 @@ function WalletPage() {
                                                                 <div>
                                                                     {`${
                                                                         transaction.type !==
-                                                                            TransactionType.WITHDRAW &&
+                                                                            TransactionTypeEnum.WITHDRAW &&
                                                                         transaction.type !==
-                                                                            TransactionType.PLACE_ORDER
+                                                                            TransactionTypeEnum.PAYMENT
                                                                             ? "+ "
                                                                             : "- "
                                                                     }${formatMoney(

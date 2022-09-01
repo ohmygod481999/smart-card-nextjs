@@ -8,18 +8,20 @@ export const GET_CARD = gql`
             account {
                 id
                 ory_id
-                avatar
                 email
-                name
-                phone
-                facebook
-                zalo
-                website
-                slide_text
-                description
-                user_cv {
+                resume {
                     id
                     path
+                }
+                account_info {
+                    avatar
+                    name
+                    phone
+                    facebook
+                    zalo
+                    website
+                    slide_text
+                    description
                 }
             }
         }
@@ -32,16 +34,17 @@ export const GET_CARD_BY_ORY_ID = gql`
             id
             account {
                 id
-                name
-                avatar
-                phone
                 email
-                facebook
-                zalo
-                website
-                slide_text
-                description
-                is_agency
+                account_info {
+                    name
+                    avatar
+                    phone
+                    facebook
+                    zalo
+                    website
+                    slide_text
+                    description
+                }
             }
         }
     }

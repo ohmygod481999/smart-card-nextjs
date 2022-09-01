@@ -1,13 +1,10 @@
 import { gql } from "@apollo/client";
 
-export const GET_WALLETS = gql`
-    query getWallet($account_id: Int!) {
-        wallet(where: { account_id: { _eq: $account_id } }) {
-            id
-            amount
-            type
-            bank_name
-            bank_number
+export const GET_WALLET = gql`
+    query getWallet {
+        wallet {
+            balance
+            secondary_balance
         }
     }
 `;

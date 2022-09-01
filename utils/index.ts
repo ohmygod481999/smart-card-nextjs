@@ -33,12 +33,12 @@ export const formatDateTime = (date: string, isHaveTime: boolean = true) => {
     )}`;
 };
 
-export const transactionMapping = {
-    0: "Doanh thu bán hàng",
-    1: "Thưởng người dùng mới",
-    2: "Doanh thu đại lý",
-    3: "Rút tiền vào thẻ ngân hàng",
-    4: "Đặt hàng"
+export const transactionMapping: any = {
+    "reward-refer": "Doanh thu bán hàng",
+    "1": "Thưởng người dùng mới",
+    "reward-refer-agency": "Doanh thu đại lý",
+    "withdraw": "Rút tiền vào thẻ ngân hàng",
+    "4": "Đặt hàng",
 };
 
 export const paddingId = (id: number) => {
@@ -95,8 +95,9 @@ export const BANK_ACCOUNT = {
 export const ORDER_STATUS_MAPPING: {
     [x in OrderStatus]: string;
 } = {
-    [OrderStatus.APPROVE]: "Đã xác nhận",
     [OrderStatus.CREATED]: "Chờ xác nhận",
+    [OrderStatus.PAID]: "Đã thanh toán",
+    [OrderStatus.SUCCESS]: "Thành công",
 };
 
 export const defaultImg =

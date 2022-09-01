@@ -26,6 +26,7 @@ import {
 import { apolloClient } from "../../../utils/apollo";
 import { ADD_ORDER } from "../../../utils/apollo/mutations/order.mutation";
 import _ from "lodash";
+import axios from "axios";
 
 enum CheckoutStep {
     SHIPPING = 0,
@@ -99,10 +100,10 @@ function Checkout() {
                 }));
 
                 try {
-                    const res = await apolloClient.mutate({
-                        mutation: ADD_ORDER,
-                        variables: {
-                            account_id: session.user.id,
+                    const res = await axios.post(
+                        `${process.env.NEXT_PUBLIC_SERVER_URL}/order/create`,
+                        {
+                            agency_id: session.user.id,
                             customer_phone: order.shipping.payload.phone
                                 ? order.shipping.payload.phone
                                 : "N/A",
@@ -112,19 +113,41 @@ function Checkout() {
                             customer_address: order.shipping.payload.address
                                 ? order.shipping.payload.address
                                 : "N/A",
-                            status: OrderStatus.CREATED,
+                            // status: OrderStatus.CREATED,
                             shipping_type: order.shipping.shippingOption,
                             payment_type: order.paymentMethod,
-                            order_items: {
-                                data: orderItems.map(item => ({
-                                    product_id: item.product_id,
-                                    quantity: item.quantity
-                                })),
-                            },
-                        },
-                    });
+                            order_items: orderItems.map((item) => ({
+                                product_id: item.product_id,
+                                quantity: item.quantity,
+                            })),
+                        }
+                    );
+                    // const res = await apolloClient.mutate({
+                    //     mutation: ADD_ORDER,
+                    //     variables: {
+                    //         account_id: session.user.id,
+                    //         customer_phone: order.shipping.payload.phone
+                    //             ? order.shipping.payload.phone
+                    //             : "N/A",
+                    //         customer_name: order.shipping.payload.name
+                    //             ? order.shipping.payload.name
+                    //             : "N/A",
+                    //         customer_address: order.shipping.payload.address
+                    //             ? order.shipping.payload.address
+                    //             : "N/A",
+                    //         status: OrderStatus.CREATED,
+                    //         shipping_type: order.shipping.shippingOption,
+                    //         payment_type: order.paymentMethod,
+                    //         order_items: {
+                    //             data: orderItems.map(item => ({
+                    //                 product_id: item.product_id,
+                    //                 quantity: item.quantity
+                    //             })),
+                    //         },
+                    //     },
+                    // });
 
-                    if (res.data && _.get(res, "data.insert_order_one.id")) {
+                    if (res.data && _.get(res, "data.success")) {
                         // success
                         setCurrentStep(currentStep + 1);
                     } else {
@@ -142,6 +165,15 @@ function Checkout() {
             }
         }
     }, [currentStep, order]);
+
+    const totalPrice = useMemo(() => {
+        if (cartItems) {
+            return cartItems.reduce((prev, cur) => {
+                return prev + cur.quantity * cur.product.price;
+            }, 0);
+        }
+        return 0;
+    }, [cartItems]);
 
     return (
         <LayoutAuthed>
@@ -192,6 +224,7 @@ function Checkout() {
                 )}
                 {currentStep === CheckoutStep.PAYMENT && (
                     <PaymentStep
+                        totalPrice={totalPrice}
                         onNext={onNext}
                         paymentMethod={order.paymentMethod}
                         setPaymentMethod={setPaymentMethod}

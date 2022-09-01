@@ -60,7 +60,7 @@ const Home: NextPage = () => {
     console.log(referees);
 
     const isAgency =
-        referees && referees.length > 0 ? referees[0].is_agency : false;
+        referees && referees.length > 0 ? referees[0].agency : false;
 
     return (
         <LayoutAuthed>
@@ -152,6 +152,7 @@ const Home: NextPage = () => {
                                                 <tr>
                                                     {/* <th scope="col">#</th> */}
                                                     <th scope="col">Tên</th>
+                                                    <th scope="col">ID</th>
                                                     <th scope="col">Email</th>
                                                     <th scope="col">
                                                         Ngày tham gia
@@ -175,7 +176,7 @@ const Home: NextPage = () => {
                                                             level={0}
                                                             referee={referee}
                                                             moreExpand={
-                                                                referee.is_agency
+                                                                referee.agency !== null
                                                             }
                                                             // name={referee.name}
                                                             // refereeChildren={referee.referees}

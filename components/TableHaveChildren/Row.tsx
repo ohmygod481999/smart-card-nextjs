@@ -3,19 +3,24 @@ import { formatDateTime, getDataGraphqlResult } from "../../utils";
 import { apolloClient } from "../../utils/apollo";
 import { GET_REFEREES } from "../../utils/apollo/queries/account.queries";
 
-interface UserInfo {
-    traits: string;
+interface AccountInfo {
+    name: string
 }
 
 export interface RefereeRecord {
     id: number;
     ory_id: string;
-    name: string;
-    user_info: UserInfo;
+    // name: string;
+    email: string;
+    account_info: AccountInfo;
     created_at: string;
     agency_at: string;
-    referees: RefereeRecord[];
+    accounts: RefereeRecord[];
     is_agency: boolean;
+    agency: {
+        id: string;
+        join_at: string;
+    }
 }
 
 interface Props {
@@ -26,11 +31,11 @@ interface Props {
 
 function Row(props: Props) {
     const { level, referee, moreExpand } = props;
-    const haveChild = referee.referees ? referee.referees.length > 0 : false;
+    const haveChild = referee.accounts ? referee.accounts.length > 0 : false;
     const [toggleLoading, setToggleLoading] = useState(false);
 
     const [childrenWithKids, setChildrenWithKids] = useState(
-        referee.referees ? referee.referees : []
+        referee.accounts ? referee.accounts : []
     );
 
     const [toggled, setToggled] = useState(false);
@@ -40,7 +45,7 @@ function Row(props: Props) {
             if (moreExpand) {
                 setToggleLoading(true);
                 const childrenWithTheirKids = await Promise.all(
-                    referee.referees.map(async (child) => {
+                    referee.accounts.map(async (child) => {
                         const data = await apolloClient.query({
                             query: GET_REFEREES,
                             variables: {
@@ -57,9 +62,9 @@ function Row(props: Props) {
         setToggled(!toggled);
     };
 
-    const traits: any = referee?.user_info?.traits
-        ? JSON.parse(referee.user_info.traits)
-        : {};
+    // const traits: any = referee?.user_info?.traits
+    //     ? JSON.parse(referee.user_info.traits)
+    //     : {};
 
     return (
         <>
@@ -82,13 +87,14 @@ function Row(props: Props) {
                         </div>
                     )}
                     <div className="togglable-td__name">
-                        {referee.name || "N/A"}
+                        {referee.account_info.name || "N/A"}
                     </div>
                 </td>
-                <td>{traits.email}</td>
+                <td>{referee.id}</td>
+                <td>{referee.email}</td>
                 <td>{formatDateTime(referee.created_at, false)}</td>
                 <td>
-                    {referee.is_agency ? (
+                    {referee.agency ? (
                         <span
                             style={{
                                 color: "#95cb28",
@@ -100,7 +106,7 @@ function Row(props: Props) {
                         "Không"
                     )}
                 </td>
-                <td>{referee.agency_at ? formatDateTime(referee.agency_at, false) : "N/A"}</td>
+                <td>{referee.agency ? formatDateTime(referee.agency.join_at, false) : "N/A"}</td>
                 <td className="">{childrenWithKids.length}</td>
             </tr>
             {toggleLoading && (

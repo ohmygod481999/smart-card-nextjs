@@ -6,6 +6,7 @@ export const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
     headers: {
         "content-type": "application/json",
+        // "x-hasura-user-id": "40",
         // "x-hasura-admin-secret":
         //     process.env.NEXT_PUBLIC_HASURA_ADMIN_SECRET || "",
     },

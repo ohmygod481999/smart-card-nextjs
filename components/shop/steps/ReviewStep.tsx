@@ -22,7 +22,7 @@ import {
     getDataGraphqlResult,
     getWallet,
 } from "../../../utils";
-import { GET_WALLETS } from "../../../utils/apollo/queries/wallet.queries";
+import { GET_WALLET } from "../../../utils/apollo/queries/wallet.queries";
 
 interface Props {
     order: OrderState;
@@ -33,9 +33,11 @@ function ReviewStep({ order, onNext }: Props) {
     const router = useRouter();
 
     const { session, updateSession } = useContext(SessionContext);
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
+    const [wallet, setWallet] = useState<Wallet | null>(null);
 
-    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+    const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET, {
+        fetchPolicy: "network-only"
+    });
 
     // const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     //     PaymentMethod.BANK_TRANSFER
@@ -43,9 +45,14 @@ function ReviewStep({ order, onNext }: Props) {
 
     useEffect(() => {
         if (session) {
-            getWallets({
+            getWallet({
                 variables: {
                     account_id: session.user.id,
+                },
+                context: {
+                    headers: {
+                        "x-hasura-user-id": session.user.id,
+                    },
                 },
             });
         } else if (session === null) {
@@ -55,20 +62,10 @@ function ReviewStep({ order, onNext }: Props) {
 
     useEffect(() => {
         if (data) {
-            const wallets = getDataGraphqlResult(data);
-            setWallets(wallets);
+            const _wallet = getDataGraphqlResult(data);
+            setWallet(_wallet);
         }
     }, [data]);
-
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
-
-    const secondaryWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Secondary),
-        [wallets]
-    );
 
     const cartItems: CartItem[] | null = useMemo(() => {
         const cartItemsJson = localStorage.getItem("cart");
@@ -193,14 +190,14 @@ function ReviewStep({ order, onNext }: Props) {
                             </>
                         )}
                         {order.paymentMethod ===
-                            PaymentMethod.SMARTCARD_WALLET &&
-                            mainWallet && (
+                            PaymentMethod.WALLET &&
+                            wallet && (
                                 <>
                                     <p>
                                         Ví smartcard - Số dư{" "}
-                                        {formatMoney(mainWallet.amount)}
+                                        {formatMoney(wallet.balance)}
                                     </p>
-                                    {mainWallet.amount - 50000 < totalPrice && (
+                                    {wallet.balance - 50000 < totalPrice && (
                                         <>
                                             <p>
                                                 Số tiền trong ví không đủ, vui
@@ -209,7 +206,7 @@ function ReviewStep({ order, onNext }: Props) {
                                                 <strong>
                                                     {formatMoney(
                                                         totalPrice -
-                                                            mainWallet.amount -
+                                                            wallet.balance -
                                                             50000
                                                     )}
                                                 </strong>{" "}
@@ -225,12 +222,12 @@ function ReviewStep({ order, onNext }: Props) {
                                             </p>
                                         </>
                                     )}
-                                    {mainWallet.amount - 50000 >=
+                                    {wallet.balance - 50000 >=
                                         totalPrice && (
                                         <p>
                                             Số tiền còn lại trong ví:{" "}
                                             {formatMoney(
-                                                mainWallet.amount - totalPrice
+                                                wallet.balance - totalPrice
                                             )}
                                         </p>
                                     )}

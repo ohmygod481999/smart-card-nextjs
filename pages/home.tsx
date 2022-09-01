@@ -55,7 +55,7 @@ const Home: NextPage = () => {
     return (
         <LayoutAuthed>
             <Head>
-                <title>Smartcardnp{account?.name ? ` - ${account?.name}` : ""}</title>
+                <title>Smartcardnp{account?.account_info?.name ? ` - ${account?.account_info?.name}` : ""}</title>
             </Head>
             <AccountCard account={account} />
         </LayoutAuthed>

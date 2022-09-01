@@ -22,8 +22,8 @@ function AvatarDrop(props: Props) {
     const [submitLoading, setSubmitLoading] = useState(false);
 
     useEffect(() => {
-        if (account?.avatar) {
-            setImgUrl(account?.avatar);
+        if (account?.account_info?.avatar) {
+            setImgUrl(account?.account_info?.avatar);
         }
     }, [account]);
 
@@ -63,7 +63,7 @@ function AvatarDrop(props: Props) {
 
                 const response = await axios.post(
                     // "http://localhost:3003/storage/upload",
-                    `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/storage/upload` ||
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/storage/upload-avatar` ||
                         "",
                     formData,
                     {
@@ -74,23 +74,30 @@ function AvatarDrop(props: Props) {
                         withCredentials: true,
                     }
                 );
+                setMsg("Cập nhật thành công");
     
-                if (_.get(response, "data.success")) {
-                    const imgUrl = _.get(response, "data.data.location");
-                    console.log(imgUrl);
+                // if (_.get(response, "data.success")) {
+                //     const imgUrl = _.get(response, "data.data.location");
+                //     console.log(imgUrl);
     
-                    await apolloClient.mutate({
-                        mutation: UPDATE_AVATAR_ACCOUNT,
-                        variables: {
-                            id: account.id,
-                            avatar: imgUrl,
-                        },
-                    });
-                    setMsg("Cập nhật thành công");
-                }
+                //     await apolloClient.mutate({
+                //         mutation: UPDATE_AVATAR_ACCOUNT,
+                //         variables: {
+                //             id: account.id,
+                //             avatar: imgUrl,
+                //         },
+                //     });
+                //     setMsg("Cập nhật thành công");
+                // }
             }
             catch(err) {
-                setMsg("File không được quá 1 MB");
+                if (_.get(err,"response.data")) {
+                    setMsg(_.get(err,"response.data.message"));
+                }
+                else {
+                    setMsg("Có lỗi xảy ra");
+
+                }
             }
             setSubmitLoading(false);
         }

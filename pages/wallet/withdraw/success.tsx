@@ -80,7 +80,7 @@ function WithdrawSuccess() {
                                     fontSize: 17,
                                 }}
                             >
-                                 <Link href={"/"}>Về trang chủ</Link>
+                                 <Link href={"/home"}>Về trang chủ</Link>
                             </p>
                         </div>
                     </div>

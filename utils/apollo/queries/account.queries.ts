@@ -32,19 +32,28 @@ export const GET_REFEREES = gql`
         account(where: { ory_id: { _eq: $ory_id } }) {
             id
             ory_id
-            name
-            user_info {
-                traits
+            email
+            agency {
+                id
+                join_at
+            }
+            account_info {
+                name
             }
             created_at
-            referees {
+            accounts {
                 id
                 ory_id
-                name
                 created_at
+                email
+                account_info {
+                    name
+                }
+                agency {
+                    id
+                    join_at
+                }
             }
-            is_agency
-            agency_at
         }
     }
 `;
@@ -77,7 +86,11 @@ export const GET_ACCOUNTS = gql`
                 count
             }
         }
-        account(limit: $limit, offset: $offset, order_by: {created_at: desc}) {
+        account(
+            limit: $limit
+            offset: $offset
+            order_by: { created_at: desc }
+        ) {
             id
             name
             email

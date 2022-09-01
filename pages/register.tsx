@@ -101,7 +101,7 @@ function Register() {
 
         try {
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/registration` || "",
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/account/register` || "",
                 // "https://faas-sgp1-18bc02ac.doserverless.co/api/v1/web/fn-a916d45e-b515-4ffa-8656-7131ef8f4d20/smartcard/registration",
                 body,
                 {

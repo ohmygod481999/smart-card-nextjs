@@ -46,7 +46,7 @@ const Home = ({ cardInfo, accountInfo }: HomeProps) => {
     console.log(accountInfo);
 
     const activeRoutes = useMemo(() => {
-        if (accountInfo?.user_cv) {
+        if (accountInfo?.resume) {
             return [ActiveRoute.USER_CV];
         }
     }, [accountInfo]);

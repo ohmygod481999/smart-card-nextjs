@@ -9,22 +9,35 @@ import React, {
 } from "react";
 import SessionContext from "../../../context/session-context";
 import { PaymentMethod, Wallet, WalletType } from "../../../types/global";
-import { BANK_ACCOUNT, formatMoney, getDataGraphqlResult, getWallet } from "../../../utils";
-import { GET_WALLETS } from "../../../utils/apollo/queries/wallet.queries";
+import {
+    BANK_ACCOUNT,
+    formatMoney,
+    getDataGraphqlResult,
+    getWallet,
+} from "../../../utils";
+import { GET_WALLET } from "../../../utils/apollo/queries/wallet.queries";
 
 interface Props {
     onNext: () => void;
     paymentMethod: PaymentMethod | null;
     setPaymentMethod: (paymentMethod: PaymentMethod) => void;
+    totalPrice: number;
 }
 
-function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
+function PaymentStep({
+    onNext,
+    setPaymentMethod,
+    paymentMethod,
+    totalPrice,
+}: Props) {
     const router = useRouter();
 
     const { session, updateSession } = useContext(SessionContext);
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
+    const [wallet, setWallet] = useState<Wallet | null>(null);
 
-    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+    const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET, {
+        fetchPolicy: "network-only",
+    });
 
     // const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(
     //     PaymentMethod.BANK_TRANSFER
@@ -32,9 +45,14 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
 
     useEffect(() => {
         if (session) {
-            getWallets({
+            getWallet({
                 variables: {
                     account_id: session.user.id,
+                },
+                context: {
+                    headers: {
+                        "x-hasura-user-id": session.user.id,
+                    },
                 },
             });
         } else if (session === null) {
@@ -44,28 +62,27 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
 
     useEffect(() => {
         if (data) {
-            const wallets = getDataGraphqlResult(data);
-            setWallets(wallets);
+            const _wallet = getDataGraphqlResult(data);
+            setWallet(_wallet);
         }
     }, [data]);
 
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
-
-    const secondaryWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Secondary),
-        [wallets]
-    );
-
     const onSubmit = useCallback(() => {
-        if (paymentMethod !== null) {
-            onNext();
+        if (paymentMethod !== null && wallet) {
+            if (
+                paymentMethod === PaymentMethod.WALLET &&
+                wallet.balance < totalPrice + 50000
+            ) {
+                alert(
+                    "Giá trị đơn hàng lớn hơn số dư ví có thể chi trả, vui lòng chọn phương thức thanh toán khác"
+                );
+            } else {
+                onNext();
+            }
         } else {
             alert("Vui lòng chọn phương thức thanh toán");
         }
-    }, [paymentMethod]);
+    }, [paymentMethod, wallet]);
 
     console.log(paymentMethod);
 
@@ -95,20 +112,23 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
                             <div className="title">Chuyển khoản ngân hàng</div>
                             <div className="description">
                                 <div>Ngân hàng: {BANK_ACCOUNT.BANK_NAME}</div>
-                                <div>Số tài khoản: {BANK_ACCOUNT.BANK_NUMBER}</div>
-                                <div>Chủ tài khoản: {BANK_ACCOUNT.BANK_ACCOUNT_NAME}</div>
+                                <div>
+                                    Số tài khoản: {BANK_ACCOUNT.BANK_NUMBER}
+                                </div>
+                                <div>
+                                    Chủ tài khoản:{" "}
+                                    {BANK_ACCOUNT.BANK_ACCOUNT_NAME}
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div
                         className={`withdraw-receiving-method ${
-                            paymentMethod === PaymentMethod.SMARTCARD_WALLET
+                            paymentMethod === PaymentMethod.WALLET
                                 ? "activate"
                                 : ""
                         }`}
-                        onClick={() =>
-                            setPaymentMethod(PaymentMethod.SMARTCARD_WALLET)
-                        }
+                        onClick={() => setPaymentMethod(PaymentMethod.WALLET)}
                     >
                         <div className="withdraw-receiving-method__logo">
                             <i className="fas fa-wallet" />
@@ -118,16 +138,12 @@ function PaymentStep({ onNext, setPaymentMethod, paymentMethod }: Props) {
                             <div className="description">
                                 <div>
                                     Số dư ví chính:{" "}
-                                    {formatMoney(
-                                        mainWallet ? mainWallet.amount : 0
-                                    )}
+                                    {formatMoney(wallet ? wallet.balance : 0)}
                                 </div>
                                 <div>
                                     Số dư ví phụ:{" "}
                                     {formatMoney(
-                                        secondaryWallet
-                                            ? secondaryWallet.amount
-                                            : 0
+                                        wallet ? wallet.secondary_balance : 0
                                     )}
                                 </div>
                             </div>

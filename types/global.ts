@@ -4,15 +4,21 @@ export enum ActiveRoute {
 export interface Account {
     id: number;
     ory_id: string;
-    name: string;
-    avatar: string;
-    phone: string;
     email: string;
-    facebook: string;
-    zalo: string;
-    website: string;
-    slide_text: string;
-    description: string;
+    resume: {
+        id: number;
+        path: string;
+    }
+    account_info: {
+        name: string;
+        avatar: string;
+        phone: string;
+        facebook: string;
+        zalo: string;
+        website: string;
+        slide_text: string;
+        description: string;
+    };
     is_agency: boolean;
     user_info: {
         traits: string;
@@ -66,28 +72,38 @@ export enum WalletType {
     Secondary = 1,
 }
 export interface Wallet {
-    id: number;
-    amount: number;
-    type: WalletType;
-    bank_name: string;
-    bank_number: string;
+    balance: number;
+    secondary_balance: number;
+}
+export enum TransactionStatusEnum {
+    SUCCESS = 'success',
+    FAILED = 'failed'
 }
 
-export enum TransactionType {
-    REFER = 0,
-    REWARD_NEW_USER = 1,
-    REFER_AGENCY = 2,
-    WITHDRAW = 3,
-    PLACE_ORDER = 4,
+export enum TransactionTypeEnum {
+    REWARD_REFER = 'reward-refer',
+    REWARD_REFER_AGENCY = 'reward-refer-agency',
+    TRANSFER = 'transfer',
+    PAYMENT = 'payment',
+    WITHDRAW = 'withdraw',
+}
+
+export enum TransactionSourceType {
+    ACCOUNT = 'account',
+    SYSTEM = 'system'
+}
+
+export enum TransactionTargetType {
+    ACCOUNT = 'account',
+    SYSTEM = 'system',
+    WITHDRAW = 'withdraw',
 }
 
 export interface Transaction {
     amount: number;
-    date: string;
-    id: number;
-    type: TransactionType;
-    wallet_id: number;
-    from_wallet_id: number;
+    created_at: string;
+    id: string;
+    type: TransactionTypeEnum;
 }
 
 export enum RegistrationType {
@@ -123,8 +139,8 @@ export interface CartItem {
 }
 
 export enum ShippingOption {
-    SELF_GET = 0,
-    SHIP = 1,
+    SHIP = 'ship',
+    SELF_GET = 'self-get',
 }
 
 export interface Shipping {
@@ -137,8 +153,8 @@ export interface Shipping {
 }
 
 export enum PaymentMethod {
-    BANK_TRANSFER = 0,
-    SMARTCARD_WALLET = 1,
+    WALLET = 'wallet',
+    BANK_TRANSFER = 'bank-transfer',
 }
 
 export interface OrderState {
@@ -147,8 +163,9 @@ export interface OrderState {
 }
 
 export enum OrderStatus {
-    CREATED = 0,
-    APPROVE = 1,
+    CREATED = 'created',
+    PAID = 'paid',
+    SUCCESS = 'success',
 }
 
 export interface OrderItem {

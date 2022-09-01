@@ -29,16 +29,16 @@ function InforSetting(props: Props) {
     useEffect(() => {
         if (account) {
             if (account) {
+                const { email, account_info } = account;
                 const {
                     name,
                     phone,
                     description,
-                    email,
                     facebook,
                     zalo,
                     slide_text,
                     website,
-                } = account;
+                } = account_info;
                 setValue("name", name);
                 setValue("phone", phone);
                 setValue("description", description);
