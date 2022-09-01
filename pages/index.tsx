@@ -252,9 +252,7 @@ const Home: NextPage = () => {
                                         </li>
                                         <li>
                                             <AiFillCheckCircle />{" "}
-                                            <p>
-                                                Thông tin của shop: Smartmart
-                                            </p>
+                                            <p>Thông tin của shop: Smartmart</p>
                                         </li>
                                         <li>
                                             <AiFillCheckCircle />{" "}
@@ -450,9 +448,7 @@ const Home: NextPage = () => {
                 <div className="container">
                     <div className="footer__top">
                         <div className="header__branch">Smartcard</div>
-                        <p>
-                            Đăng ký để nhận thêm thông tin từ chúng tôi.
-                        </p>
+                        <p>Đăng ký để nhận thêm thông tin từ chúng tôi.</p>
                         <div className="form__input">
                             <input
                                 type="text"
@@ -473,6 +469,63 @@ const Home: NextPage = () => {
                         </div> */}
                     </div>
                     <div className="footer__bottom">
+                        <div>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                CÔNG TY TNHH TƯ VẤN ĐẦU TƯ PHÁT TRIỂN ỨNG DỤNG
+                                CÔNG NGHỆ NYP
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Mã số thuế: 2400929470
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Địa chỉ đăng ký: 461 Bãi Ổi, Xã Dĩnh Trì, Thành
+                                Phố Bắc Giang, Tỉnh Bắc Giang, Việt Nam
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Ngày cấp phép: 17/12/2021
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Email: vfotruyenhinh@gmail.com
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Điện thoại: 0981616685
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
+                                Điện thoại: 0981616685
+                            </p>
+                            <small>
+                                &copy; Copyright 2022, Smartcardnp. All right
+                                reserved
+                            </small>
+                        </div>
                         {/* <ul>
                             <li className="title">Primary Pages</li>
                             <li>Home</li>
