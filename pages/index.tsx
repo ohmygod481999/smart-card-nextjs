@@ -498,6 +498,13 @@ const Home: NextPage = () => {
                                     color: "white",
                                 }}
                             >
+                                Văn phòng giao dịch: Số 1 Ngõ 1 Nguyễn Văn Huyên, Quan Hoa, Cầu Giấy, Hà Nội
+                            </p>
+                            <p
+                                style={{
+                                    color: "white",
+                                }}
+                            >
                                 Ngày cấp phép: 17/12/2021
                             </p>
                             <p
