@@ -161,7 +161,7 @@ function Register() {
                                 <div className="col-12">
                                     <div className="section-title animate__animated animate__bounceInDown animate__delay-1s">
                                         <h1 className="common-title">
-                                            Đăng ký
+                                            Hệ thống đang bảo trì
                                         </h1>
                                         <div className="animated-bar" />
                                     </div>
@@ -170,156 +170,18 @@ function Register() {
                         </div>
                         <div className="blog-section animate__animated animate__fadeInUp animate__delay-2s">
                             <div className="row justify-content-center">
-                                <form
-                                    className="register-form row"
-                                    onSubmit={handleSubmit(onSubmit)}
-                                    autoComplete="off"
-                                >
-                                    <input
-                                        autoComplete="false"
-                                        name="hidden"
-                                        type="text"
-                                        style={{
-                                            display: "none",
-                                        }}
-                                    />
-                                    {flow?.ui?.nodes
-                                        .filter((node) => {
-                                            if (
-                                                invisibleInputs.includes(
-                                                    _.get(
-                                                        node,
-                                                        "attributes.name"
-                                                    )
-                                                )
-                                            )
-                                                return false;
-                                            return true;
-                                        })
-                                        .map((node, i) => {
-                                            if (
-                                                _.get(
-                                                    node,
-                                                    "attributes.type"
-                                                ) === "checkbox"
-                                            ) {
-                                                return (
-                                                    <div className="form-check mb-3">
-                                                        <input
-                                                            {...register(
-                                                                _.get(
-                                                                    node,
-                                                                    "attributes.name"
-                                                                )
-                                                            )}
-                                                            autoComplete="off"
-                                                            className="form-check-input"
-                                                            type="checkbox"
-                                                            value=""
-                                                            id="flexCheckChecked"
-                                                        />
-                                                        <label
-                                                            className="form-check-label"
-                                                            htmlFor="flexCheckChecked"
-                                                        >
-                                                            {
-                                                                node.meta.label
-                                                                    ?.text
-                                                            }
-                                                        </label>
-                                                    </div>
-                                                );
-                                            }
-                                            return (
-                                                <div
-                                                    key={i}
-                                                    className="form-group mb-3"
-                                                >
-                                                    <label>
-                                                        {node.meta.label?.text}
-                                                    </label>
-                                                    <input
-                                                        {...register(
-                                                            _.get(
-                                                                node,
-                                                                "attributes.name"
-                                                            )
-                                                        )}
-                                                        autoComplete="off"
-                                                        className="form-control"
-                                                        placeholder={
-                                                            node.meta.label
-                                                                ?.text
-                                                        }
-                                                        defaultValue={_.get(
-                                                            node,
-                                                            "attributes.value"
-                                                        )}
-                                                        type={_.get(
-                                                            node,
-                                                            "attributes.type"
-                                                        )}
-                                                    />
-                                                </div>
-                                            );
-                                        })}
-                                    <div className="form-group mb-3">
-                                        <label>Mã thẻ</label>
-                                        <input
-                                            {...register("myData.cardId")}
-                                            autoComplete="off"
-                                            className="form-control"
-                                            placeholder="Mã thẻ"
-                                            value={card_id}
-                                            disabled={card_id ? true : false}
-                                        />
-                                    </div>
-                                    <div className="form-group mb-3">
-                                        <label>Mã người giới thiệu</label>
-                                        <input
-                                            {...register("myData.referrerCode")}
-                                            autoComplete="off"
-                                            className="form-control"
-                                            placeholder="Mã người giới thiệu"
-                                        />
-                                    </div>
-                                    <div className="form-group mb-3">
-                                        <label>Mật khẩu</label>
-                                        <input
-                                            {...register("password")}
-                                            autoComplete="off"
-                                            className="form-control"
-                                            placeholder="Password"
-                                            type="password"
-                                        />
-                                    </div>
-                                    <div className="form-group mb-3">
-                                        <label>Xác nhận mật khẩu</label>
-                                        <input
-                                            {...register(
-                                                "myData.confirmPassword"
-                                            )}
-                                            autoComplete="off"
-                                            className="form-control"
-                                            placeholder="Confirm password"
-                                            type="password"
-                                        />
-                                    </div>
-                                    {messages.map((msg) => (
-                                        <div className="error-msg" key={msg.id}>
-                                            {msg.text}
-                                        </div>
-                                    ))}
-                                    <div className="form-submit">
-                                        <button
-                                            {...register("method")}
-                                            value={"password"}
-                                            className="clickbtn"
-                                        >
-                                            Đăng ký
-                                        </button>
-                                    </div>
-                                </form>
+                                <p className="text-center">
+                                    Xin lỗi quý khách vì sự bất tiện này, hệ
+                                    thống đang trong quá trình nâng cấp và chỉnh
+                                    sửa
+                                </p>
+                                <p className="text-center">
+                                    Chúng tôi đang khắc phục và cố gắng phục vụ
+                                    lại quý khách trong vòng vài ngày tới
+                                </p>
+                                <img src="/images/maintainance.png" style={{
+                                    width : "200px"
+                                }}/>
                             </div>
                         </div>
                     </div>
