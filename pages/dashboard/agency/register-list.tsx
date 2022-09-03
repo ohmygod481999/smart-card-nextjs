@@ -33,9 +33,10 @@ function AgencyAdmin() {
         try {
             setLoadingApprove(true);
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/agency/approve`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/agency/accept`,
                 {
-                    registrationId: agencyRegister.id,
+                    agency_register_id: agencyRegister.id,
+                    accept: true,
                 }
             );
             setLoadingApprove(false);
@@ -103,11 +104,19 @@ function AgencyAdmin() {
                                                 false
                                             )}
                                         </td>
-                                        <td>{agencyRegister.account.is_agency ? "Rồi" : "chưa"}</td>
+                                        <td>
+                                            {agencyRegister.account.is_agency
+                                                ? "Rồi"
+                                                : "chưa"}
+                                        </td>
                                         <td>
                                             {!agencyRegister.approved && (
                                                 <button
-                                                    disabled={loadingApprove || agencyRegister.account.is_agency}
+                                                    disabled={
+                                                        loadingApprove ||
+                                                        agencyRegister.account
+                                                            .is_agency
+                                                    }
                                                     className="btn btn-sm btn-primary shadow-sm"
                                                     onClick={() =>
                                                         approveAgencyHandler(

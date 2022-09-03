@@ -30,15 +30,15 @@ const Home: NextPage = () => {
         useLazyQuery(GET_CARD_BY_ORY_ID);
 
     useEffect(() => {
-        if (session) {
-            getCardByOryId({
-                variables: {
-                    ory_id: session.identity.id,
-                },
-            });
-        } else if (session === null) {
-            router.push("/login");
-        }
+        getCardByOryId({
+            variables: {
+                ory_id: session?.identity.id,
+            },
+        });
+        // if (session) {
+        // } else if (session === null) {
+        //     router.push("/login");
+        // }
     }, [session]);
 
     useEffect(() => {

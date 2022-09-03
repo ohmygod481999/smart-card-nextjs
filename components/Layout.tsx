@@ -5,7 +5,7 @@ import Navigation from "./Navigation";
 interface Props {
     children: any;
     haveNav?: boolean;
-    id: string | string[] | undefined;
+    id?: string | string[] | undefined;
     activeRoutes?: ActiveRoute[];
 }
 

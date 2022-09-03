@@ -16,6 +16,7 @@ import { Flow, ActionCard, CenterLink, MarginCard } from "../pkg";
 import { handleFlowError } from "../pkg/errors";
 import ory from "../pkg/sdk";
 import _ from "lodash";
+import Layout from "../components/Layout";
 
 const Recovery: NextPage = () => {
     const [flow, setFlow] = useState<SelfServiceRecoveryFlow>();
@@ -84,7 +85,7 @@ const Recovery: NextPage = () => {
             );
 
     return (
-        <LayoutAuthed>
+        <Layout>
             <SectionLayout>
                 <div className="row">
                     <div className="col-12">
@@ -102,7 +103,7 @@ const Recovery: NextPage = () => {
                     </div>
                 </div>
             </SectionLayout>
-        </LayoutAuthed>
+        </Layout>
     );
 };
 

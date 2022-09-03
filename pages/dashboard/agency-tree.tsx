@@ -10,21 +10,25 @@ import {
     formatDateTime,
     formatMoney,
     getDataGraphqlResult,
-    getWallet,
     PERCENT_AGENCY,
     transactionMapping,
 } from "../../utils";
 import {
     Transaction,
-    TransactionType,
     Wallet,
     WalletType,
+    Withdrawal,
 } from "../../types/global";
-import { GET_TRANSATION } from "../../utils/apollo/queries/transaction.queries";
-import { GET_WALLETS } from "../../utils/apollo/queries/wallet.queries";
+import {
+    GET_PAYMENT_TRANSATION,
+    GET_TRANSATIONS,
+    GET_TRANSFER_TRANSATION,
+} from "../../utils/apollo/queries/transaction.queries";
+import { GET_WALLET } from "../../utils/apollo/queries/wallet.queries";
 import axios from "axios";
 import AgencyStatistic from "../../components/dashboard/AgencyStatistic";
 import { useRouter } from "next/router";
+import { GET_WITHDRAWALS_BY_ACCOUNT_ID } from "../../utils/apollo/queries/withdrawal.queries";
 
 function AgencyTree() {
     const router = useRouter();
@@ -38,11 +42,15 @@ function AgencyTree() {
     const [agencyTree, setAgencyTree] = useState<any[] | null>(null);
 
     const [referees, setReferees] = useState<RefereeRecord[] | null>(null);
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
+    const [wallet, setWallet] = useState<Wallet | null>(null);
 
-    const [mainWalletTransactions, setMainWalletTransactions] = useState<
-        Transaction[] | null
-    >(null);
+    const [paymentTransactions, setPaymentTransactions] = useState<
+        Transaction[]
+    >([]);
+    const [transferTransactions, setTransferTransactions] = useState<
+        Transaction[]
+    >([]);
+    const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
 
     useEffect(() => {
         if (id && router.isReady && idUserRef && idUserRef.current) {
@@ -55,61 +63,57 @@ function AgencyTree() {
         if (userId) {
             apolloClient
                 .query({
-                    query: GET_WALLETS,
+                    query: GET_WALLET,
+                    variables: {
+                        account_id: userId,
+                    },
+                    context: {
+                        headers: {
+                            "x-hasura-user-id": userId,
+                        },
+                    },
+                    fetchPolicy: "network-only",
+                })
+                .then(({ data }) => {
+                    const wallet = getDataGraphqlResult(data);
+                    setWallet(wallet);
+                });
+
+            apolloClient
+                .query({
+                    query: GET_WITHDRAWALS_BY_ACCOUNT_ID,
                     variables: {
                         account_id: userId,
                     },
                 })
                 .then(({ data }) => {
-                    const wallets = getDataGraphqlResult(data);
-                    setWallets(wallets);
-                    const mainWallet = getWallet(
-                        wallets || [],
-                        WalletType.Main
-                    );
-                    const secondaryWallet = getWallet(
-                        wallets || [],
-                        WalletType.Secondary
-                    );
+                    if (data) {
+                        setWithdrawals(getDataGraphqlResult(data));
+                    }
+                });
 
-                    if (mainWallet && secondaryWallet) {
-                        apolloClient
-                            .query({
-                                query: GET_TRANSATION,
-                                variables: {
-                                    account_id: userId,
-                                },
-                            })
-                            .then(({ data }) => {
-                                const transactions = getDataGraphqlResult(data);
-                                const mainTransactions: Transaction[] = [];
-                                const secondaryTransactions: Transaction[] = [];
-                                transactions.forEach(
-                                    (transaction: Transaction) => {
-                                        if (
-                                            transaction.wallet_id ===
-                                                mainWallet.id ||
-                                            transaction.from_wallet_id ===
-                                                mainWallet.id
-                                        ) {
-                                            mainTransactions.push(transaction);
-                                        } else if (
-                                            transaction.wallet_id ===
-                                                secondaryWallet.id ||
-                                            transaction.from_wallet_id ===
-                                                secondaryWallet.id
-                                        ) {
-                                            secondaryTransactions.push(
-                                                transaction
-                                            );
-                                        }
-                                    }
-                                );
-                                setMainWalletTransactions(mainTransactions);
-                                // setSecondaryWalletTransactions(
-                                //     secondaryTransactions
-                                // );
-                            });
+            apolloClient
+                .query({
+                    query: GET_PAYMENT_TRANSATION,
+                    variables: {
+                        account_id: userId,
+                    },
+                })
+                .then(({ data }) => {
+                    if (data) {
+                        setPaymentTransactions(getDataGraphqlResult(data));
+                    }
+                });
+            apolloClient
+                .query({
+                    query: GET_TRANSFER_TRANSATION,
+                    variables: {
+                        account_id: userId,
+                    },
+                })
+                .then(({ data }) => {
+                    if (data) {
+                        setTransferTransactions(getDataGraphqlResult(data));
                     }
                 });
         }
@@ -127,27 +131,31 @@ function AgencyTree() {
                 .then(({ data }) => {
                     const _referees = getDataGraphqlResult(data);
                     if (_referees && _referees.length > 0) {
-                        setIsAgency(_referees[0].is_agency);
+                        setIsAgency(_referees[0].agency);
                     }
                     setReferees(_referees);
                 });
         }
     }, [userId]);
 
+    console.log(isAgency);
+
     useEffect(() => {
-        if (userId && isAgency !== null) {
+        if (userId) {
             axios
-                .get(`${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/agency/children/${userId}`)
+                .get(
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/account/decendants/${userId}`
+                    // http://longvb.ddns.net:3010/account/decendants/35
+                )
                 .then((res) => {
                     if (res.data) {
-                        const children = res.data.data;
+                        const children = res.data;
+
+                        // console.log(res.data);
                         const tree = [[children[0]]];
                         let currentLevel = 0;
                         let currentItems = [];
-                        const limit =
-                            children.length < 2
-                                ? 1
-                                : children.length;
+                        const limit = children.length < 2 ? 1 : children.length;
 
                         for (let i = 1; i < limit; i++) {
                             if (
@@ -163,6 +171,7 @@ function AgencyTree() {
                             }
                         }
                         tree.push(currentItems);
+                        console.log(tree);
                         setAgencyTree(tree);
                     }
                 });
@@ -173,11 +182,6 @@ function AgencyTree() {
         const idUser = parseInt(_.get(idUserRef, "current.value"));
         setUserId(idUser);
     };
-
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
 
     return (
         <LayoutDashboard>
@@ -216,7 +220,7 @@ function AgencyTree() {
                         <div className="mb-3">
                             <h3 className="h5 mb-0 text-gray-800">
                                 Số dư ví hiện tại:{" "}
-                                {mainWallet && formatMoney(mainWallet.amount)}
+                                {wallet && formatMoney(wallet.balance)}
                             </h3>
                         </div>
                         <div className="table-responsive">
@@ -224,9 +228,11 @@ function AgencyTree() {
                                 <thead>
                                     <tr>
                                         <th scope="col">Tên</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Ngày tham gia</th>
                                         <th scope="col">Là đại lý</th>
+                                        <th scope="col">Ngày thành đại lý</th>
                                         <th scope="col">Lượt giới thiệu</th>
                                     </tr>
                                 </thead>
@@ -237,7 +243,11 @@ function AgencyTree() {
                                                 key={referee.id}
                                                 level={0}
                                                 referee={referee}
-                                                moreExpand={referee.is_agency}
+                                                moreExpand={
+                                                    referee.agency
+                                                        ? true
+                                                        : false
+                                                }
                                             />
                                         ))}
                                 </tbody>
@@ -247,23 +257,16 @@ function AgencyTree() {
                             <h3 className="h5 mb-0 text-gray-800">
                                 Thống kê:{" "}
                             </h3>
-                            {isAgency !== null &&
-                                agencyTree &&
-                                mainWalletTransactions && (
-                                    <AgencyStatistic
-                                        agencyTree={agencyTree}
-                                        withdrawTransactions={
-                                            mainWalletTransactions
-                                                ? mainWalletTransactions.filter(
-                                                      (tst) =>
-                                                          tst.type ===
-                                                          TransactionType.WITHDRAW
-                                                  )
-                                                : null
-                                        }
-                                        isAgency={isAgency}
-                                    />
-                                )}
+                            {agencyTree && withdrawals && (
+                                <AgencyStatistic
+                                    account_id={userId}
+                                    agencyTree={agencyTree}
+                                    withdrawTransactions={withdrawals}
+                                    paymentTransactions={paymentTransactions}
+                                    transferTransactions={transferTransactions}
+                                    isAgency={isAgency ? true : false}
+                                />
+                            )}
                         </div>
 
                         <div className="mb-3">
@@ -280,34 +283,127 @@ function AgencyTree() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {mainWalletTransactions &&
-                                            mainWalletTransactions
-                                                .filter(
-                                                    (tst) =>
-                                                        tst.type ===
-                                                        TransactionType.WITHDRAW
-                                                )
-                                                .map((tst, i) => (
-                                                    <tr key={tst.id}>
-                                                        <td>{i + 1}</td>
-                                                        <td>
-                                                            -{" "}
-                                                            {formatMoney(
-                                                                tst.amount
-                                                            )}
-                                                        </td>
-                                                        <td>
-                                                            {formatDateTime(
-                                                                tst.date
-                                                            )}
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                        {withdrawals &&
+                                            withdrawals.map((withdrawal, i) => (
+                                                <tr key={withdrawal.id}>
+                                                    <td>{i + 1}</td>
+                                                    <td>
+                                                        -{" "}
+                                                        {formatMoney(
+                                                            withdrawal.amount
+                                                        )}
+                                                    </td>
+                                                    <td>
+                                                        {formatDateTime(
+                                                            withdrawal.created_at
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div className="">
+
+                        <div className="mb-3">
+                            <h3 className="h5 mb-0 text-gray-800">
+                                Giao dịch thanh toán
+                            </h3>
+                            <div className="table-responsive">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">
+                                                Số tiền thanh toán
+                                            </th>
+                                            <th scope="col">Ngày</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {paymentTransactions &&
+                                            paymentTransactions.map(
+                                                (transaction, i) => (
+                                                    <tr key={transaction.id}>
+                                                        <td>{i + 1}</td>
+                                                        <td>
+                                                            -{" "}
+                                                            {formatMoney(
+                                                                transaction.amount
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            {formatDateTime(
+                                                                transaction.created_at
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div className="mb-3">
+                            <h3 className="h5 mb-0 text-gray-800">
+                                Giao dịch chuyển tiền
+                            </h3>
+                            <div className="table-responsive">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">STT</th>
+                                            <th scope="col">Loại</th>
+                                            <th scope="col">Từ ID</th>
+                                            <th scope="col">Đến ID</th>
+                                            <th scope="col">Số tiền</th>
+                                            <th scope="col">Ngày</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {transferTransactions &&
+                                            transferTransactions.map(
+                                                (transaction, i) => (
+                                                    <tr key={transaction.id}>
+                                                        <td>{i + 1}</td>
+                                                        <td>
+                                                            {transaction.source_id ===
+                                                            userId
+                                                                ? "Chuyển tiền"
+                                                                : "Nhận tiền"}
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                transaction.source_id
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {
+                                                                transaction.target_id
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            {transaction.source_id ===
+                                                            userId
+                                                                ? "-"
+                                                                : "+"}{" "}
+                                                            {formatMoney(
+                                                                transaction.amount
+                                                            )}
+                                                        </td>
+                                                        <td>
+                                                            {formatDateTime(
+                                                                transaction.created_at
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {/* <div className="">
                             <h3 className="h5 mb-0 text-gray-800">
                                 Danh sách giao dịch
                             </h3>
@@ -361,7 +457,7 @@ function AgencyTree() {
                                     </div>
                                 )}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 )}
             </div>

@@ -11,12 +11,12 @@ export const GET_WALLET = gql`
 
 export const UPDATE_BANK_ACCOUNT = gql`
     mutation updateBankAccount(
-        $wallet_id: Int!
+        $account_info_id: Int!
         $bank_name: String!
         $bank_number: String!
     ) {
-        update_wallet_by_pk(
-            pk_columns: { id: $wallet_id }
+        update_account_info_by_pk(
+            pk_columns: { id: $account_info_id }
             _set: { bank_name: $bank_name, bank_number: $bank_number }
         ) {
             id

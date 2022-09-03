@@ -50,7 +50,7 @@ function AccountCard({ account }: Props) {
                                             "Unknown"} */}
                                     {/* {_.get(traits, "email")} */}
                                     {_.get(account, "account_info.name")}{" "}
-                                    {_.get(account, "account_info.is_agency") && (
+                                    {_.get(account, "agency") && (
                                         <i
                                             style={{
                                                 color: "khaki",

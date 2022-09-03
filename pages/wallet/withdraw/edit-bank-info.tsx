@@ -9,10 +9,10 @@ import LayoutAuthed from "../../../components/LayoutAuthed";
 import SectionLayout from "../../../components/SectionLayout";
 import SessionContext from "../../../context/session-context";
 import { Wallet, WalletType } from "../../../types/global";
-import { getDataGraphqlResult, getWallet } from "../../../utils";
+import { getDataGraphqlResult } from "../../../utils";
 import { apolloClient } from "../../../utils/apollo";
 import {
-    GET_WALLETS,
+    GET_WALLET,
     UPDATE_BANK_ACCOUNT,
 } from "../../../utils/apollo/queries/wallet.queries";
 
@@ -27,17 +27,22 @@ function EditBankInfo() {
 
     const { session, updateSession } = useContext(SessionContext);
 
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
-    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+    const [wallet, setWallet] = useState<Wallet[] | null>(null);
+    const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET);
 
     const [submitLoading, setSubmitLoading] = useState(false);
     const [msg, setMsg] = useState("");
 
     useEffect(() => {
         if (session) {
-            getWallets({
+            getWallet({
                 variables: {
                     account_id: session.user.id,
+                },
+                context: {
+                    headers: {
+                        "x-hasura-user-id": session.user.id,
+                    },
                 },
             });
         } else if (session === null) {
@@ -47,26 +52,21 @@ function EditBankInfo() {
 
     useEffect(() => {
         if (data) {
-            const wallets = getDataGraphqlResult(data);
-            setWallets(wallets);
+            const _wallet = getDataGraphqlResult(data);
+            setWallet(_wallet);
         }
     }, [data]);
-
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
 
     const onSubmitEditBank = async (values: any) => {
         const { bank_name, bank_number } = values;
         console.log(values);
-        if (mainWallet) {
+        if (session) {
             setSubmitLoading(true);
             try {
                 const updateRes = await apolloClient.mutate({
                     mutation: UPDATE_BANK_ACCOUNT,
                     variables: {
-                        wallet_id: mainWallet.id,
+                        account_info_id: session?.user.account_info.id,
                         bank_name,
                         bank_number,
                     },

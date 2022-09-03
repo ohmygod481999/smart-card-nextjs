@@ -4,6 +4,7 @@ import _ from "lodash";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Layout from "../components/Layout";
 import LayoutAuthed from "../components/LayoutAuthed";
 import SessionContext from "../context/session-context";
 import { ory } from "../pkg";
@@ -150,7 +151,7 @@ function Register() {
     };
 
     return (
-        <LayoutAuthed>
+        <Layout>
             <section id="blog" className="section active">
                 <div className="homecolor-box" />
                 <div className="common_bg animate__animated animate__fadeInDown">
@@ -325,7 +326,7 @@ function Register() {
                     </div>
                 </div>
             </section>
-        </LayoutAuthed>
+        </Layout>
     );
 }
 

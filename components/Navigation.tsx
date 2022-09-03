@@ -6,7 +6,7 @@ import SessionContext from "../context/session-context";
 import { ActiveRoute } from "../types/global";
 
 interface Props {
-    id: string | string[] | undefined;
+    id?: string | string[] | undefined;
     activeRoutes?: ActiveRoute[];
 }
 
@@ -23,23 +23,39 @@ function Navigation(props: Props) {
         <div className="header-holder services-section text-center animate__animated animate__zoomIn">
             <div className="navigation">
                 <ul className="nav">
-                    <li
-                        className={`list ${
-                            pathname.includes("/home") ? "active" : ""
-                        }`}
-                    >
-                        <Link href={`/user/${id}/home`}>
-                            <a className="active">
-                                <span className="icon">
-                                    <i className="fas fa-house-user" />
-                                </span>
-                                <div className="social__tooltip social__tooltip-bottom">
-                                    Home
-                                </div>
-                            </a>
-                        </Link>
-                    </li>
-                    {_activeRoutes.includes(ActiveRoute.USER_CV) && (
+                    {id && (
+                        <li
+                            className={`list ${
+                                pathname.includes("/home") ? "active" : ""
+                            }`}
+                        >
+                            <Link href={`/user/${id}/home`}>
+                                <a className="active">
+                                    <span className="icon">
+                                        <i className="fas fa-house-user" />
+                                    </span>
+                                    <div className="social__tooltip social__tooltip-bottom">
+                                        Home
+                                    </div>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
+                    {!id && (
+                        <li className={`list`}>
+                            <Link href={`/`}>
+                                <a className="active">
+                                    <span className="icon">
+                                        <i className="fas fa-house-user" />
+                                    </span>
+                                    <div className="social__tooltip social__tooltip-bottom">
+                                        Trang chủ
+                                    </div>
+                                </a>
+                            </Link>
+                        </li>
+                    )}
+                    {_activeRoutes.includes(ActiveRoute.USER_CV) && id && (
                         <li
                             className={`list ${
                                 pathname.includes(`/${ActiveRoute.USER_CV}`)
@@ -135,7 +151,7 @@ function Navigation(props: Props) {
                             <Link href={`/login`}>
                                 <a>
                                     <span className="icon">
-                                        <i className="fas fa-blog" />
+                                        <i className="fas fa-sign-in-alt" />
                                     </span>
                                     <div className="social__tooltip social__tooltip-bottom">
                                         Login

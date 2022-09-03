@@ -17,7 +17,7 @@ function AgencyRegisterSuccess() {
 
 
     const onComplete = useCallback(() => {
-        router.push("/")
+        router.push("/home")
     }, []);
 
     if (!session) {

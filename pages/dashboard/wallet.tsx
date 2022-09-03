@@ -2,12 +2,12 @@ import { useQuery } from "@apollo/client";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import LayoutDashboard from "../../components/dashboard/LayoutDashboard";
-import { Wallet, WalletType } from "../../types/global";
+import { Wallet, WalletType, Withdrawal, WithdrawalStatus } from "../../types/global";
 import { formatDateTime, formatMoney, getDataGraphqlResult } from "../../utils";
 import { GET_WITHDRAW_REGISTRATIONS_ADMIN } from "../../utils/apollo/queries/registration.queries";
 
 function WalletAdmin() {
-    const [agencyRegisters, setAgencyRegisters] = useState<any>([]);
+    const [withdrawals, setWithdrawals] = useState<Withdrawal[]>([]);
 
     const { data, loading, error, refetch } = useQuery(
         GET_WITHDRAW_REGISTRATIONS_ADMIN,
@@ -22,18 +22,18 @@ function WalletAdmin() {
     // console.log(data, loading);
     useEffect(() => {
         if (!loading && data) {
-            const _registrations = getDataGraphqlResult(data);
-            console.log(_registrations);
-            setAgencyRegisters(_registrations);
+            const _withdrawals: Withdrawal[] = getDataGraphqlResult(data);
+            console.log(_withdrawals);
+            setWithdrawals(_withdrawals);
         }
     }, [data, loading]);
 
-    const approveAgencyHandler = useCallback(async (agencyRegister: any) => {
+    const approveAgencyHandler = useCallback(async (withdrawal: Withdrawal) => {
         try {
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/wallet/approve-withdraw`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/withdrawal/accept`,
                 {
-                    registrationId: agencyRegister.id,
+                    withdrawal_id: withdrawal.id,
                 }
             );
             if (res.data) {
@@ -91,61 +91,52 @@ function WalletAdmin() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {agencyRegisters.map((agencyRegister: any) => {
-                                    let mainWallet: Wallet = {
-                                        amount: 0,
-                                        bank_name: "N/A",
-                                        bank_number: "N/A",
-                                        type: 0,
-                                        id: 0,
-                                    };
-                                    agencyRegister.account.wallets.forEach(
-                                        (wallet: any) => {
-                                            if (
-                                                wallet.type === WalletType.Main
-                                            ) {
-                                                mainWallet = wallet;
-                                            }
-                                        }
-                                    );
+                                {withdrawals.map((withdrawal: Withdrawal) => {
+                                    // let mainWallet: Wallet = {
+                                    //     amount: 0,
+                                    //     bank_name: "N/A",
+                                    //     bank_number: "N/A",
+                                    //     type: 0,
+                                    //     id: 0,
+                                    // };
+                                    // agencyRegister.account.wallets.forEach(
+                                    //     (wallet: any) => {
+                                    //         if (
+                                    //             wallet.type === WalletType.Main
+                                    //         ) {
+                                    //             mainWallet = wallet;
+                                    //         }
+                                    //     }
+                                    // );
                                     return (
-                                        <tr key={agencyRegister.id}>
-                                            <td>{agencyRegister.account.id}</td>
+                                        <tr key={withdrawal.id}>
+                                            <td>{withdrawal.account.id}</td>
+                                            <td>{withdrawal.account.account_info.name}</td>
+                                            <td>{withdrawal.account.email}</td>
+                                            <td>{withdrawal.account.account_info.phone}</td>
                                             <td>
-                                                {agencyRegister.account.name}
+                                                {formatMoney(withdrawal.amount)}
                                             </td>
                                             <td>
-                                                {agencyRegister.account.email}
-                                            </td>
-                                            <td>
-                                                {agencyRegister.account.phone}
-                                            </td>
-                                            <td>
-                                                {formatMoney(
-                                                    agencyRegister.payload
-                                                        .amount
-                                                )}
-                                            </td>
-                                            <td>
-                                                {formatMoney(
+                                                {/* {formatMoney(
                                                     mainWallet.amount
-                                                )}
+                                                )} */}
                                             </td>
-                                            <td>{mainWallet.bank_name}</td>
-                                            <td>{mainWallet.bank_number}</td>
+                                            <td>{withdrawal.account.account_info.bank_name}</td>
+                                            <td>{withdrawal.account.account_info.bank_number}</td>
                                             <td>
                                                 {formatDateTime(
-                                                    agencyRegister.created_at,
+                                                    withdrawal.created_at,
                                                     false
                                                 )}
                                             </td>
                                             <td>
-                                                {!agencyRegister.approved && (
+                                                {withdrawal.status !== WithdrawalStatus.SUCCESS && (
                                                     <button
                                                         className="btn btn-sm btn-primary shadow-sm"
                                                         onClick={() =>
                                                             approveAgencyHandler(
-                                                                agencyRegister
+                                                                withdrawal
                                                             )
                                                         }
                                                     >

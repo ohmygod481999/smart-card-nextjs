@@ -1,10 +1,26 @@
 import { gql } from "@apollo/client";
 
+export const GET_ORDER_BY_ID = gql`
+    query getOrderById($id: uuid!) {
+        order_by_pk(id: $id) {
+            id
+            order_items {
+                quantity
+                product {
+                    name
+                    price
+                }
+            }
+        }
+    }
+`;
+
 export const GET_ORDERS = gql`
-    query ($status: Int!) {
-        order(where: { status: { _eq: $status } }) {
+    query ($statuses: [order_status_enum!]) {
+        order(where: { status: { _in: $statuses } }) {
             id
             status
+            agency_id
             customer_name
             customer_phone
             customer_address

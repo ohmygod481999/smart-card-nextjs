@@ -19,7 +19,7 @@ function WalletAdmin() {
 
     const { data, loading, error, refetch } = useQuery(GET_ORDERS, {
         variables: {
-            status: OrderStatus.CREATED,
+            statuses: [OrderStatus.CREATED, OrderStatus.PAID],
             limit: 100,
             offset: 0,
         },
@@ -37,7 +37,7 @@ function WalletAdmin() {
     const approveOrderHandler = useCallback(async (order: Order) => {
         try {
             const res = await axios.post(
-                `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/order/approve`,
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/order/approve`,
                 {
                     order_id: order.id,
                 }
@@ -84,6 +84,7 @@ function WalletAdmin() {
                             <thead>
                                 <tr>
                                     {/* <th scope="col">#</th> */}
+                                    <th scope="col">ID Đơn hàng</th>
                                     <th scope="col">ID</th>
                                     <th scope="col">Tên</th>
                                     <th scope="col">Số điện thoại</th>
@@ -92,6 +93,7 @@ function WalletAdmin() {
                                     <th scope="col">Nhận hàng</th>
                                     <th scope="col">Sản phẩm</th>
                                     <th scope="col">Giá trị đơn hàng</th>
+                                    <th scope="col">Trạng thái</th>
                                     <th scope="col">Ngày đặt</th>
                                     <th scope="col">Tùy chọn</th>
                                 </tr>
@@ -110,6 +112,7 @@ function WalletAdmin() {
                                     return (
                                         <tr key={order.id}>
                                             <td>{order.id}</td>
+                                            <td>{order.agency_id}</td>
                                             <td>{order.customer_name}</td>
                                             <td>{order.customer_phone}</td>
                                             <td>{order.customer_address}</td>
@@ -118,7 +121,7 @@ function WalletAdmin() {
                                                     PaymentMethod.BANK_TRANSFER &&
                                                     "chuyển khoản"}
                                                 {order.payment_type ===
-                                                    PaymentMethod.SMARTCARD_WALLET &&
+                                                    PaymentMethod.WALLET &&
                                                     "Ví smartcard"}
                                             </td>
                                             <td>
@@ -142,13 +145,25 @@ function WalletAdmin() {
 
                                             <td>{formatMoney(totalPrice)}</td>
                                             <td>
+                                                {
+                                                    {
+                                                        [OrderStatus.CREATED]:
+                                                            "Mới tạo",
+                                                        [OrderStatus.PAID]:
+                                                            "Đã thanh toán",
+                                                        [OrderStatus.SUCCESS]:
+                                                            "Thành công",
+                                                    }[order.status]
+                                                }
+                                            </td>
+                                            <td>
                                                 {formatDateTime(
                                                     order.created_at
                                                 )}
                                             </td>
                                             <td>
                                                 {order.status !==
-                                                    OrderStatus.APPROVE && (
+                                                    OrderStatus.SUCCESS && (
                                                     <button
                                                         className="btn btn-sm btn-primary shadow-sm"
                                                         onClick={() =>

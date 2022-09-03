@@ -242,7 +242,7 @@ function Checkout() {
                         />
                         <h5>Đặt hàng thành công</h5>
                         <div>
-                            Về <Link href={"/"}>trang chủ</Link>
+                            Về <Link href={"/home"}>trang chủ</Link>
                         </div>
                     </div>
                 )}

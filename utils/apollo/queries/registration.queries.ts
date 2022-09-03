@@ -2,30 +2,34 @@ import { gql } from "@apollo/client";
 
 export const GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID = gql`
     query getRegistrationByAccountId($account_id: Int!) {
-        registration(
-            where: { account_id: { _eq: $account_id }, type: { _eq: 0 } }
+        agency_register(
+            where: {
+                account_id: { _eq: $account_id }
+                status: { _eq: "created" }
+            }
         ) {
             id
             account_id
-            type
+            status
         }
     }
 `;
 
 export const GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID = gql`
-    query getRegistrationByAccountId($account_id: Int!, $approved: Boolean) {
-        registration(
+    query getRegistrationByAccountId(
+        $account_id: Int!
+        $status: withdrawal_status_enum
+    ) {
+        withdrawal(
             where: {
                 account_id: { _eq: $account_id }
-                type: { _eq: 1 }
-                approved: { _eq: $approved }
+                status: { _eq: $status }
             }
         ) {
             id
             account_id
-            type
-            approved
-            payload
+            status
+            amount
             created_at
         }
     }
@@ -44,22 +48,21 @@ export const GET_REGISTRATION_BY_ID = gql`
 
 export const GET_AGENCY_REGISTRATIONS_ADMIN = gql`
     query getRegistration($limit: Int!, $offset: Int!) {
-        registration(
+        agency_register(
             limit: $limit
             offset: $offset
             order_by: { created_at: desc }
-            where: { approved: { _eq: false }, type: { _eq: 0 } }
+            where: { status: { _eq: "created" } }
         ) {
             id
             account_id
-            approved
             created_at
             account {
                 id
-                name
                 email
-                phone
-                is_agency
+                account_info {
+                    phone
+                }
             }
         }
     }
@@ -67,26 +70,22 @@ export const GET_AGENCY_REGISTRATIONS_ADMIN = gql`
 
 export const GET_WITHDRAW_REGISTRATIONS_ADMIN = gql`
     query getRegistration($limit: Int!, $offset: Int!) {
-        registration(
+        withdrawal(
             limit: $limit
             offset: $offset
             order_by: { created_at: desc }
-            where: { approved: { _eq: false }, type: { _eq: 1 } }
+            where: { status: { _eq: "pending" } }
         ) {
             id
             account_id
-            approved
+            amount
             created_at
-            payload
             account {
                 id
-                name
                 email
-                phone
-                wallets {
-                    id
-                    type
-                    amount
+                account_info {
+                    name
+                    phone
                     bank_name
                     bank_number
                 }

@@ -1,4 +1,7 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
+import axios from "axios";
+import _ from "lodash";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import SectionLayout from "../../../components/SectionLayout";
@@ -36,16 +39,22 @@ function AgencyRegister() {
     const onNext = useCallback(async () => {
         if (agree && session) {
             try {
-                const res = await apolloClient.mutate({
-                    mutation: INSERT_REGISTRATION,
-                    variables: {
+                // const res = await apolloClient.mutate({
+                //     mutation: INSERT_REGISTRATION,
+                //     variables: {
+                //         account_id: session.user.id,
+                //         type: RegistrationType.AGENCY,
+                //     },
+                // });
+                const res = await axios.post(
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/agency/register`,
+                    {
                         account_id: session.user.id,
-                        type: RegistrationType.AGENCY,
-                    },
-                });
+                    }
+                );
                 router.push("/account/agency-register/success");
             } catch (err) {
-                alert("Có lỗi xảy ra");
+                alert(`Có lỗi xảy ra\n${_.get(err, "response.data.message")}`);
             }
         } else {
             alert("Vui lòng đồng ý với điều khoản");
@@ -56,7 +65,7 @@ function AgencyRegister() {
         return <SectionLayout>Loading</SectionLayout>;
     }
 
-    if (called && !loading && data?.registration?.length > 0) {
+    if (called && !loading && data?.agency_register?.length > 0) {
         return (
             <SectionLayout>
                 <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
@@ -76,6 +85,9 @@ function AgencyRegister() {
                         chắc chắn bạn đã chuyển khoản cho chúng tôi. Quá trình
                         xử lý chậm nhất trong 24 giờ từ khi bạn chuyển khoản
                         thành công
+                    </p>
+                    <p className="text-center">
+                        Trở lại <Link href={"/home"}>trang chủ</Link>
                     </p>
                 </div>
             </SectionLayout>

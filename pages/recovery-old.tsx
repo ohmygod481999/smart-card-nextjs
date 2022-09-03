@@ -11,6 +11,7 @@ import { ory } from "../pkg";
 import { handleFlowError, handleGetFlowError } from "../pkg/errors";
 import _ from "lodash";
 import axios, { AxiosError } from "axios";
+import Layout from "../components/Layout";
 
 const invisibleInputs = ["method"];
 
@@ -123,7 +124,7 @@ function RecoveryPage() {
     };
 
     return (
-        <LayoutAuthed>
+        <Layout>
             <SectionLayout>
                 <div className="row">
                     <div className="col-12">
@@ -207,7 +208,7 @@ function RecoveryPage() {
                     </div>
                 </div>
             </SectionLayout>
-        </LayoutAuthed>
+        </Layout>
     );
 }
 

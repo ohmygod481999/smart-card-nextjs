@@ -113,13 +113,13 @@ function InforSetting(props: Props) {
                         placeholder="Số điện thoại..."
                     />
                 </div>
-                <div className="form-group mb-3">
+                {/* <div className="form-group mb-3">
                     <input
                         {...register("email")}
                         className="form-control"
                         placeholder="Email..."
                     />
-                </div>
+                </div> */}
                 <div className="form-group mb-3">
                     <input
                         {...register("facebook")}

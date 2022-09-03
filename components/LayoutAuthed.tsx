@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
+import SessionContext from "../context/session-context";
 import NavigationAuthed from "./NavigationAuthed";
+import Router from 'next/router'
 
 interface Props {
     children: any;
 }
 
 function LayoutAuthed(props: Props) {
+    const { session, updateSession } = useContext(SessionContext);
+
+    if (session === null) {
+        Router.push('/login')
+
+    }
+    
+    if (!session) {
+        return (
+            <div id="preloader">
+                <div className="loader_line" />
+            </div>
+        );
+    }
+
     return (
         <div className="gaspar" data-magic-cursor="show" data-color="crimson">
             {/* Pre-Loader Start*/}

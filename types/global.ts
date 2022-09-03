@@ -1,6 +1,12 @@
 export enum ActiveRoute {
     USER_CV = "my-cv",
 }
+
+export interface Agency {
+    id: string;
+    join_at: string;
+}
+
 export interface Account {
     id: number;
     ory_id: string;
@@ -8,8 +14,9 @@ export interface Account {
     resume: {
         id: number;
         path: string;
-    }
+    };
     account_info: {
+        id: number;
         name: string;
         avatar: string;
         phone: string;
@@ -18,8 +25,10 @@ export interface Account {
         website: string;
         slide_text: string;
         description: string;
+        bank_name: string;
+        bank_number: string;
     };
-    is_agency: boolean;
+    agency: Agency;
     user_info: {
         traits: string;
     };
@@ -27,6 +36,7 @@ export interface Account {
         id: string;
         path: string;
     };
+    created_at: string;
 }
 
 export interface CardInfo {
@@ -76,34 +86,70 @@ export interface Wallet {
     secondary_balance: number;
 }
 export enum TransactionStatusEnum {
-    SUCCESS = 'success',
-    FAILED = 'failed'
+    SUCCESS = "success",
+    FAILED = "failed",
 }
 
 export enum TransactionTypeEnum {
-    REWARD_REFER = 'reward-refer',
-    REWARD_REFER_AGENCY = 'reward-refer-agency',
-    TRANSFER = 'transfer',
-    PAYMENT = 'payment',
-    WITHDRAW = 'withdraw',
+    REWARD_REFER = "reward-refer",
+    REWARD_REFER_AGENCY = "reward-refer-agency",
+    TRANSFER = "transfer",
+    PAYMENT = "payment",
+    WITHDRAW = "withdraw",
+    RECHARGE = "recharge",
 }
 
 export enum TransactionSourceType {
-    ACCOUNT = 'account',
-    SYSTEM = 'system'
+    ACCOUNT = "account",
+    SYSTEM = "system",
 }
 
 export enum TransactionTargetType {
-    ACCOUNT = 'account',
-    SYSTEM = 'system',
-    WITHDRAW = 'withdraw',
+    ACCOUNT = "account",
+    SYSTEM = "system",
+    WITHDRAW = "withdraw",
 }
 
+export interface Referral {
+    id: string;
+    target_id: number;
+    accountByTargetId: Account;
+    referee_id: number;
+    account: Account;
+    referer_id: number;
+    accountByRefererId: Account;
+    level: number;
+}
+
+export interface Vendor {
+    id: string;
+    name: string;
+}
 export interface Transaction {
     amount: number;
     created_at: string;
+    vendor: Vendor;
+    order_id: string;
     id: string;
+    source_id: number;
+    account: Account; // source account
+    target_id: number;
+    accountByTargetId: Account;
     type: TransactionTypeEnum;
+    referral: Referral | null;
+}
+
+export enum SecondaryTransactionType {
+    DEFAULT = "default",
+}
+
+export interface SecondaryTransaction {
+    amount: number;
+    created_at: string;
+    id: string;
+    account_id: number;
+    account: Account; // source account
+    type: SecondaryTransactionType;
 }
 
 export enum RegistrationType {
@@ -139,8 +185,8 @@ export interface CartItem {
 }
 
 export enum ShippingOption {
-    SHIP = 'ship',
-    SELF_GET = 'self-get',
+    SHIP = "ship",
+    SELF_GET = "self-get",
 }
 
 export interface Shipping {
@@ -153,8 +199,8 @@ export interface Shipping {
 }
 
 export enum PaymentMethod {
-    WALLET = 'wallet',
-    BANK_TRANSFER = 'bank-transfer',
+    WALLET = "wallet",
+    BANK_TRANSFER = "bank-transfer",
 }
 
 export interface OrderState {
@@ -163,9 +209,9 @@ export interface OrderState {
 }
 
 export enum OrderStatus {
-    CREATED = 'created',
-    PAID = 'paid',
-    SUCCESS = 'success',
+    CREATED = "created",
+    PAID = "paid",
+    SUCCESS = "success",
 }
 
 export interface OrderItem {
@@ -186,4 +232,19 @@ export interface Order {
     order_items: OrderItem[];
     created_at: string;
     totalPrice?: number;
+}
+
+export interface Withdrawal {
+    id: string;
+    account_id: number;
+    amount: number;
+    created_at: string;
+    account: Account;
+    status: WithdrawalStatus;
+}
+
+export enum WithdrawalStatus {
+    CREATED = "created",
+    PENDING = "pending",
+    SUCCESS = "success",
 }

@@ -1,4 +1,10 @@
-import { OrderStatus, Wallet, WalletType } from "../types/global";
+import {
+    OrderStatus,
+    TransactionTypeEnum,
+    Wallet,
+    WalletType,
+    Transaction,
+} from "../types/global";
 
 export const getValueFromGraphql = (input: any) => {
     if (!input) {
@@ -37,7 +43,7 @@ export const transactionMapping: any = {
     "reward-refer": "Doanh thu bán hàng",
     "1": "Thưởng người dùng mới",
     "reward-refer-agency": "Doanh thu đại lý",
-    "withdraw": "Rút tiền vào thẻ ngân hàng",
+    withdraw: "Rút tiền vào thẻ ngân hàng",
     "4": "Đặt hàng",
 };
 
@@ -45,18 +51,18 @@ export const paddingId = (id: number) => {
     return String(id).padStart(6, "0");
 };
 
-export const getWallet = (
-    wallets: Wallet[],
-    walletType: WalletType
-): Wallet | null => {
-    let result = null;
-    wallets.forEach((wallet) => {
-        if (wallet.type === walletType) {
-            result = wallet;
-        }
-    });
-    return result;
-};
+// export const getWallet = (
+//     wallets: Wallet[],
+//     walletType: WalletType
+// ): Wallet | null => {
+//     let result = null;
+//     wallets.forEach((wallet) => {
+//         if (wallet.type === walletType) {
+//             result = wallet;
+//         }
+//     });
+//     return result;
+// };
 
 export const CARD_PRICE = 300000;
 export const AGENCY_PRICE = 2000000;
@@ -98,6 +104,36 @@ export const ORDER_STATUS_MAPPING: {
     [OrderStatus.CREATED]: "Chờ xác nhận",
     [OrderStatus.PAID]: "Đã thanh toán",
     [OrderStatus.SUCCESS]: "Thành công",
+};
+
+export const getTransactionName = (
+    transaction: Transaction | null,
+    account_id?: number
+) => {
+    if (!transaction || !account_id) return "N/A";
+    if (transaction.type === TransactionTypeEnum.WITHDRAW) {
+        return "Rút tiền";
+    }
+    if (transaction.type === TransactionTypeEnum.REWARD_REFER) {
+        if (transaction.source_id === account_id) return "Trả doanh thu thẻ";
+        return "Doanh thu thẻ";
+    }
+    if (transaction.type === TransactionTypeEnum.REWARD_REFER_AGENCY) {
+        if (transaction.source_id === account_id) return "Trả doanh đại lý";
+        return "Doanh thu đại lý";
+    }
+    if (transaction.type === TransactionTypeEnum.PAYMENT) {
+        if (transaction.source_id === account_id) return "Thanh toán đơn hàng";
+        return "Doanh thu bán hàng";
+    }
+    if (transaction.type === TransactionTypeEnum.TRANSFER) {
+        if (transaction.source_id === account_id)
+            return "Chuyển tiền đến " + transaction.accountByTargetId.email;
+        return "Nhận tiền từ " + transaction.account.email;
+    }
+    if (transaction.type === TransactionTypeEnum.RECHARGE) {
+        return "Nạp tiền";
+    }
 };
 
 export const defaultImg =

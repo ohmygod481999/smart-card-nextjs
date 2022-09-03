@@ -34,6 +34,10 @@ export const GET_CARD_BY_ORY_ID = gql`
             id
             account {
                 id
+                agency {
+                    id
+                    join_at
+                }
                 email
                 account_info {
                     name

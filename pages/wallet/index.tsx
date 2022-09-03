@@ -6,6 +6,8 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import LayoutAuthed from "../../components/LayoutAuthed";
 import SessionContext from "../../context/session-context";
 import {
+    SecondaryTransaction,
+    SecondaryTransactionType,
     Transaction,
     TransactionTypeEnum,
     Wallet,
@@ -15,11 +17,14 @@ import {
     formatDateTime,
     formatMoney,
     getDataGraphqlResult,
-    getWallet,
+    getTransactionName,
     transactionMapping,
 } from "../../utils";
 import { apolloClient } from "../../utils/apollo";
-import { GET_TRANSATION } from "../../utils/apollo/queries/transaction.queries";
+import {
+    GET_SECONDARY_TRANSATIONS,
+    GET_TRANSATIONS,
+} from "../../utils/apollo/queries/transaction.queries";
 import { GET_WALLET } from "../../utils/apollo/queries/wallet.queries";
 
 function WalletPage() {
@@ -37,11 +42,14 @@ function WalletPage() {
     const [walletTab, setWalletTab] = useState<WalletType>(WalletType.Main);
 
     const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET, {
-        fetchPolicy: "network-only"
+        fetchPolicy: "network-only",
     });
 
     const [getTransactions, queryTransactionValues] =
-        useLazyQuery(GET_TRANSATION);
+        useLazyQuery(GET_TRANSATIONS);
+
+    const [getSecondaryTransactions, querySecondaryTransactionValues] =
+        useLazyQuery(GET_SECONDARY_TRANSATIONS);
 
     useEffect(() => {
         if (session) {
@@ -61,6 +69,11 @@ function WalletPage() {
                     account_id: session.user.id,
                 },
             });
+            getSecondaryTransactions({
+                variables: {
+                    account_id: session.user.id,
+                },
+            });
         } else if (session === null) {
             router.push("/login");
         }
@@ -74,13 +87,39 @@ function WalletPage() {
     }, [data]);
 
     const mainWalletTransactions = useMemo(() => {
+        if (!session) {
+            return [];
+        }
         if (!queryTransactionValues.data) {
             return [];
         }
-        return getDataGraphqlResult(queryTransactionValues.data);
-    }, [queryTransactionValues.data]);
+        return getDataGraphqlResult(queryTransactionValues.data).filter(
+            (transaction: Transaction) => {
+                if (
+                    transaction.source_id === transaction.target_id &&
+                    transaction.source_id === session.user.id
+                ) {
+                    return false;
+                }
 
-    // console.log(transactions);
+                return true;
+            }
+        );
+    }, [queryTransactionValues.data, session]);
+
+    const secondaryTransactions: SecondaryTransaction[] = useMemo(() => {
+        if (!session) {
+            return [];
+        }
+        if (!querySecondaryTransactionValues.data) {
+            return [];
+        }
+        return getDataGraphqlResult(querySecondaryTransactionValues.data);
+    }, [querySecondaryTransactionValues.data, session]);
+
+    console.log(secondaryTransactions);
+
+    console.log(mainWalletTransactions);
 
     return (
         <LayoutAuthed>
@@ -204,91 +243,130 @@ function WalletPage() {
                                 let transactions: Transaction[] | null = null;
                                 if (walletTab === WalletType.Main) {
                                     transactions = mainWalletTransactions;
-                                } else if (walletTab === WalletType.Secondary) {
-                                    transactions = secondaryWalletTransactions;
-                                }
-                                return (
-                                    <div className="wallet-transaction">
-                                        {transactions ? (
-                                            transactions.length > 0 ? (
-                                                transactions.map(
-                                                    (transaction) => (
-                                                        <div
-                                                            key={transaction.id}
-                                                            className="wallet-transaction__item"
-                                                        >
-                                                            <div className="wallet-transaction__item__left">
-                                                                <div className="wallet-transaction__item__left__title">
-                                                                    {transaction.type in
-                                                                    transactionMapping
-                                                                        ? transactionMapping[
-                                                                              transaction
-                                                                                  .type
-                                                                          ]
-                                                                        : transaction.type}
+                                    return (
+                                        <div className="wallet-transaction">
+                                            {transactions ? (
+                                                transactions.length > 0 ? (
+                                                    transactions.map(
+                                                        (transaction) => {
+                                                            let sign = "+";
+                                                            if (
+                                                                session?.user
+                                                                    .id ===
+                                                                transaction.source_id
+                                                            ) {
+                                                                sign = "-";
+                                                            }
+                                                            return (
+                                                                <div
+                                                                    key={
+                                                                        transaction.id
+                                                                    }
+                                                                    className="wallet-transaction__item"
+                                                                >
+                                                                    <div className="wallet-transaction__item__left">
+                                                                        <div className="wallet-transaction__item__left__title">
+                                                                            <Link
+                                                                                href={
+                                                                                    "/wallet/transaction/" +
+                                                                                    transaction.id
+                                                                                }
+                                                                            >
+                                                                                {getTransactionName(
+                                                                                    transaction,
+                                                                                    session
+                                                                                        ?.user
+                                                                                        .id
+                                                                                )}
+                                                                                {/* {transaction.type in
+                                                                            transactionMapping
+                                                                                ? transactionMapping[
+                                                                                      transaction
+                                                                                          .type
+                                                                                  ]
+                                                                                : transaction.type} */}
+                                                                            </Link>
+                                                                        </div>
+                                                                        <div className="wallet-transaction__item__left__description">
+                                                                            {formatDateTime(
+                                                                                transaction.created_at
+                                                                            )}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="wallet-transaction__item__right">
+                                                                        <div>
+                                                                            {`${
+                                                                                // transaction.type !==
+                                                                                //     TransactionTypeEnum.WITHDRAW &&
+                                                                                // transaction.type !==
+                                                                                //     TransactionTypeEnum.PAYMENT
+                                                                                //     ? "+ "
+                                                                                //     : "- "
+                                                                                sign
+                                                                            }${formatMoney(
+                                                                                transaction.amount
+                                                                            )}`}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="wallet-transaction__item__left__description">
-                                                                    {formatDateTime(
-                                                                        transaction.created_at
-                                                                    )}
-                                                                </div>
-                                                            </div>
-                                                            <div className="wallet-transaction__item__right">
-                                                                <div>
-                                                                    {`${
-                                                                        transaction.type !==
-                                                                            TransactionTypeEnum.WITHDRAW &&
-                                                                        transaction.type !==
-                                                                            TransactionTypeEnum.PAYMENT
-                                                                            ? "+ "
-                                                                            : "- "
-                                                                    }${formatMoney(
-                                                                        transaction.amount
-                                                                    )}`}
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                            );
+                                                        }
                                                     )
+                                                ) : (
+                                                    <div className="wallet-transaction__item justify-content-center">
+                                                        <div>Trống</div>
+                                                    </div>
                                                 )
                                             ) : (
                                                 <div className="wallet-transaction__item justify-content-center">
-                                                    <div>Trống</div>
+                                                    <div>Loading...</div>
                                                 </div>
-                                            )
-                                        ) : (
-                                            <div className="wallet-transaction__item justify-content-center">
-                                                <div>Loading...</div>
-                                            </div>
-                                        )}
+                                            )}
+                                        </div>
+                                    );
+                                }
 
-                                        {/* <div className="wallet-transaction__item">
-                                    <div className="wallet-transaction__item__left">
-                                        <div className="wallet-transaction__item__left__title">
-                                            Food for lunch
+                                if (walletTab === WalletType.Secondary) {
+                                    return (
+                                        <div className="wallet-transaction">
+                                            {secondaryTransactions.map(
+                                                (transaction) => (
+                                                    <div className="wallet-transaction__item">
+                                                        <div className="wallet-transaction__item__left">
+                                                            <div className="wallet-transaction__item__left__title">
+                                                                {
+                                                                    {
+                                                                        [SecondaryTransactionType.DEFAULT]:
+                                                                            "Thưởng người dùng mới",
+                                                                    }[
+                                                                        transaction
+                                                                            .type
+                                                                    ]
+                                                                }
+                                                            </div>
+                                                            <div className="wallet-transaction__item__left__description">
+                                                                {formatDateTime(
+                                                                    transaction.created_at
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div className="wallet-transaction__item__right">
+                                                            <div>
+                                                                {transaction.amount >
+                                                                0
+                                                                    ? "+"
+                                                                    : "-"}{" "}
+                                                                {formatMoney(
+                                                                    transaction.amount
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
                                         </div>
-                                        <div className="wallet-transaction__item__left__description">
-                                            3:00 20/07/2022
-                                        </div>
-                                    </div>
-                                    <div className="wallet-transaction__item__right">
-                                        <div>- 300,000đ</div>
-                                    </div>
-                                </div>
-                                <div className="wallet-transaction__item">
-                                    <div className="wallet-transaction__item__left">
-                                        <div className="wallet-transaction__item__left__title">
-                                            Food for lunch
-                                        </div>
-                                        <div className="wallet-transaction__item__left__description">
-                                            3:00 20/07/2022
-                                        </div>
-                                    </div>
-                                    <div className="wallet-transaction__item__right">
-                                        <div>- 300,000đ</div>
-                                    </div>
-                                </div> */}
-                                    </div>
-                                );
+                                    );
+                                }
                             })()}
                         </div>
                         {/* Contact-page End */}

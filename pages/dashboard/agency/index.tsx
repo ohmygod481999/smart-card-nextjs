@@ -5,6 +5,7 @@ import LayoutDashboard from "../../../components/dashboard/LayoutDashboard";
 import { formatDateTime, getDataGraphqlResult } from "../../../utils";
 import { GET_ACCOUNTS } from "../../../utils/apollo/queries/account.queries";
 import ReactPaginate from "react-paginate";
+import { Account } from "../../../types/global";
 
 function Index() {
     const { data, loading, refetch } = useQuery(GET_ACCOUNTS, {
@@ -38,7 +39,7 @@ function Index() {
         }
     }, [totalCount, itemOffset, limit]);
 
-    const accounts = useMemo(() => {
+    const accounts: Account[] = useMemo(() => {
         if (data) {
             return data.account;
         }
@@ -116,12 +117,12 @@ function Index() {
                             </thead>
                             <tbody>
                                 {accounts &&
-                                    accounts.map((account: any) => (
+                                    accounts.map((account: Account) => (
                                         <tr key={account.id}>
                                             <td>{account.id}</td>
-                                            <td>{account.name}</td>
+                                            <td>{account.account_info.name}</td>
                                             <td>{account.email}</td>
-                                            <td>{account.phone}</td>
+                                            <td>{account.account_info.phone}</td>
                                             <td>
                                                 {formatDateTime(
                                                     account.created_at,
@@ -129,7 +130,7 @@ function Index() {
                                                 )}
                                             </td>
                                             <td>
-                                                {account.is_agency
+                                                {account.agency
                                                     ? "Rồi"
                                                     : "chưa"}
                                             </td>

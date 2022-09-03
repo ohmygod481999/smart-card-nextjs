@@ -108,7 +108,7 @@ const Login: NextPage = () => {
             });
 
     return (
-        <LayoutAuthed>
+        <Layout>
             <section id="blog" className="section active">
                 <div className="homecolor-box" />
                 <div className="common_bg animate__animated animate__fadeInDown">
@@ -175,7 +175,7 @@ const Login: NextPage = () => {
                     </div>
                 </div>
             </section>
-        </LayoutAuthed>
+        </Layout>
     );
 };
 

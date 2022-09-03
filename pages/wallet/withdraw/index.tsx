@@ -18,6 +18,8 @@ import {
     RegistrationType,
     Wallet,
     WalletType,
+    Withdrawal,
+    WithdrawalStatus,
 } from "../../../types/global";
 import {
     formatDateTime,
@@ -30,7 +32,7 @@ import { apolloClient } from "../../../utils/apollo";
 import { INSERT_REGISTRATION } from "../../../utils/apollo/mutations/registration.mutation";
 import { GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/registration.queries";
 import {
-    GET_WALLETS,
+    GET_WALLET,
     UPDATE_BANK_ACCOUNT,
 } from "../../../utils/apollo/queries/wallet.queries";
 import _ from "lodash";
@@ -52,19 +54,24 @@ function Withdraw() {
     const { session, updateSession } = useContext(SessionContext);
     const [submitLoading, setSubmitLoading] = useState(false);
     const [unapprovedWithdraws, setUnapprovedWithdraws] = useState<
-        null | Registration[]
+        null | Withdrawal[]
     >(null);
     // const [withdrawalAmount, setWithdrawalAmount] = useState(50000);
     const [errMsg, setErrMsg] = useState("");
 
-    const [wallets, setWallets] = useState<Wallet[] | null>(null);
-    const [getWallets, { called, loading, data }] = useLazyQuery(GET_WALLETS);
+    const [wallet, setWallet] = useState<Wallet| null>(null);
+    const [getWallet, { called, loading, data }] = useLazyQuery(GET_WALLET);
 
     useEffect(() => {
         if (session) {
-            getWallets({
+            getWallet({
                 variables: {
                     account_id: session.user.id,
+                },
+                context: {
+                    headers: {
+                        "x-hasura-user-id": session.user.id,
+                    },
                 },
             });
             apolloClient
@@ -72,7 +79,7 @@ function Withdraw() {
                     query: GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID,
                     variables: {
                         account_id: session.user.id,
-                        approved: false,
+                        status: WithdrawalStatus.PENDING,
                     },
                     fetchPolicy: "network-only",
                 })
@@ -87,25 +94,20 @@ function Withdraw() {
 
     useEffect(() => {
         if (data) {
-            const wallets = getDataGraphqlResult(data);
-            setWallets(wallets);
+            const _wallet = getDataGraphqlResult(data);
+            setWallet(_wallet);
         }
     }, [data]);
-
-    const mainWallet: Wallet | null = useMemo(
-        () => getWallet(wallets || [], WalletType.Main),
-        [wallets]
-    );
 
     const onSubmitAddBank = async (values: any) => {
         const { bank_name, bank_number } = values;
         console.log(values);
-        if (mainWallet) {
+        if (session) {
             try {
                 const updateRes = await apolloClient.mutate({
                     mutation: UPDATE_BANK_ACCOUNT,
                     variables: {
-                        wallet_id: mainWallet.id,
+                        account_info_id: session?.user.account_info.id,
                         bank_name,
                         bank_number,
                     },
@@ -118,7 +120,7 @@ function Withdraw() {
     };
 
     const onWithdrawSubmit = useCallback(async () => {
-        if (mainWallet) {
+        if (wallet && session) {
             const withdrawalAmount = parseInt(
                 _.get(withdrawalAmountRef, "current.value")
             );
@@ -126,7 +128,7 @@ function Withdraw() {
                 setErrMsg("Số tiền rút không hợp lệ");
                 return;
             }
-            if (withdrawalAmount > mainWallet.amount) {
+            if (withdrawalAmount > wallet.balance) {
                 setErrMsg(
                     "Số tiền rút lớn hơn số dư trong ví, vui lòng thử lại"
                 );
@@ -136,30 +138,30 @@ function Withdraw() {
                 setErrMsg("Số tiền rút tối thiểu là 50,000đ");
                 return;
             }
-            if (mainWallet.amount - withdrawalAmount < 50000) {
+            if (wallet.balance - withdrawalAmount < 50000) {
                 setErrMsg("Số tiền còn lại trong ví tối thiểu là 50,000đ");
                 return;
             }
-            const unapprovedRegsRes = await apolloClient.query({
-                query: GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID,
-                variables: {
-                    account_id: session.user.id,
-                    approved: false,
-                },
-            });
-            const unapprovedRegs: any[] = unapprovedRegsRes.data.registration;
-            if (unapprovedRegs.length > 0) {
-                setErrMsg(
-                    "Bạn đang có một lệnh rút đang xử lý, vui lòng đợi chúng tôi xử lý xong để tiếp tục rút tiền"
-                );
-                return;
-            }
+            // const unapprovedRegsRes = await apolloClient.query({
+            //     query: GET_WITHDRAW_REGISTRATION_BY_ACCOUNT_ID,
+            //     variables: {
+            //         account_id: session.user.id,
+            //         approved: false,
+            //     },
+            // });
+            // const unapprovedRegs: any[] = unapprovedRegsRes.data.registration;
+            // if (unapprovedRegs.length > 0) {
+            //     setErrMsg(
+            //         "Bạn đang có một lệnh rút đang xử lý, vui lòng đợi chúng tôi xử lý xong để tiếp tục rút tiền"
+            //     );
+            //     return;
+            // }
 
             setSubmitLoading(true);
             try {
                 if (session && router.isReady) {
                     const res = await axios.post(
-                        `${process.env.NEXT_PUBLIC_FILE_SERVER_URL}/wallet/withdraw`,
+                        `${process.env.NEXT_PUBLIC_SERVER_URL}/withdrawal/register-withdraw`,
                         {
                             account_id: session.user.id,
                             amount: withdrawalAmount,
@@ -181,7 +183,7 @@ function Withdraw() {
                 setSubmitLoading(false);
             }
         }
-    }, [mainWallet, session, router.isReady]);
+    }, [wallet, session, router.isReady]);
 
     if (unapprovedWithdraws && unapprovedWithdraws.length > 0) {
         return (
@@ -212,7 +214,7 @@ function Withdraw() {
                                         <h5 className="mb-1">
                                             Rút{" "}
                                             {formatMoney(
-                                                withdraw.payload?.amount || 0
+                                                withdraw.amount || 0
                                             )}
                                         </h5>
                                         <small>
@@ -224,7 +226,7 @@ function Withdraw() {
                                     <p className="mb-1">
                                         Mã lệnh rút tiền:{" "}
                                         <span className="referer-code">
-                                            #{paddingId(withdraw.id)}
+                                            {withdraw.id}
                                         </span>
                                     </p>
                                     <small>Trạng thái: đang xử lý.</small>
@@ -262,8 +264,8 @@ function Withdraw() {
                         </div>
                         {called &&
                             !loading &&
-                            (!mainWallet?.bank_name ||
-                                !mainWallet.bank_number) && (
+                            (!session?.user.account_info.bank_name ||
+                                !session?.user.account_info.bank_number) && (
                                 <div>
                                     <p className="text-center">
                                         Tài khoản chưa có thông tin thẻ ngân
@@ -307,8 +309,8 @@ function Withdraw() {
 
                         {called &&
                             !loading &&
-                            mainWallet?.bank_name &&
-                            mainWallet?.bank_number && (
+                            session?.user.account_info.bank_name &&
+                            session?.user.account_info.bank_number && (
                                 <div className="section-withdraw">
                                     <div>
                                         <div className="withdraw-balance">
@@ -318,7 +320,7 @@ function Withdraw() {
                                             />
                                             <span>
                                                 Số dư:{" "}
-                                                {formatMoney(mainWallet.amount)}
+                                                {wallet?.balance && formatMoney(wallet?.balance)}
                                             </span>
                                         </div>
                                         <div className="withdraw-quantity">
@@ -369,13 +371,15 @@ function Withdraw() {
                                                     <div className="description">
                                                         <div>
                                                             Ngân hàng:{" "}
-                                                            {mainWallet.bank_name.toUpperCase()}
+                                                            {session.user.account_info.bank_name}
+                                                            {/* {wallet?.balance.toUpperCase()} */}
                                                         </div>
                                                         <div>
                                                             Số tài khoản:{" "}
-                                                            {
-                                                                mainWallet.bank_number
-                                                            }
+                                                            {session.user.account_info.bank_number}
+                                                            {/* {
+                                                                wallet.bank_number
+                                                            } */}
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Transaction } from "../../types/global";
+import { Transaction, Withdrawal } from "../../types/global";
 import {
     AGENCY_PRICE,
     CARD_PRICE,
@@ -9,20 +9,31 @@ import {
 } from "../../utils";
 
 interface Props {
+    account_id: number;
     agencyTree: any[] | null;
-    withdrawTransactions: Transaction[] | null;
-    isAgency: boolean
+    withdrawTransactions: Withdrawal[] | null;
+    isAgency: boolean;
+    paymentTransactions: Transaction[];
+    transferTransactions: Transaction[];
 }
 
-function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) {
+function AgencyStatistic({
+    account_id,
+    agencyTree,
+    withdrawTransactions,
+    isAgency,
+    paymentTransactions,
+    transferTransactions,
+}: Props) {
     const totalCardIncome = agencyTree
         ? agencyTree
               .filter((item, i) => i !== 0)
               .reduce((previousValue: any, currentValue: any, i) => {
-                  const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
+                  const percent = isAgency
+                      ? PERCENT_AGENCY[i]
+                      : PERCENT_NON_AGENCY;
                   return (
-                      previousValue +
-                      currentValue.length * CARD_PRICE * percent
+                      previousValue + currentValue.length * CARD_PRICE * percent
                   );
               }, 0)
         : 0;
@@ -33,18 +44,17 @@ function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) 
               .reduce((previousValue: any, currentValue: any, i) => {
                   const numAgency = currentValue.reduce(
                       (previousValue: any, currentValue: any) => {
-                          if (currentValue.is_agency) {
+                          if (currentValue.agency) {
                               return previousValue + 1;
                           }
                           return previousValue;
                       },
                       0
                   );
-                  const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
-                  return (
-                      previousValue +
-                      numAgency * AGENCY_PRICE * percent
-                  );
+                  const percent = isAgency
+                      ? PERCENT_AGENCY[i]
+                      : PERCENT_NON_AGENCY;
+                  return previousValue + numAgency * AGENCY_PRICE * percent;
               }, 0)
         : 0;
 
@@ -52,6 +62,28 @@ function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) 
         ? withdrawTransactions.reduce(
               (previousValue: any, currentValue: any, i) => {
                   return previousValue + currentValue.amount;
+              },
+              0
+          )
+        : 0;
+
+    const totalPayment = paymentTransactions
+        ? paymentTransactions.reduce(
+              (previousValue: any, currentValue: any, i) => {
+                  return previousValue + currentValue.amount;
+              },
+              0
+          )
+        : 0;
+
+    const totalTransfer = transferTransactions
+        ? transferTransactions.reduce(
+              (previousValue: any, currentValue: Transaction, i) => {
+                  const amount =
+                      currentValue.source_id === account_id
+                          ? -currentValue.amount
+                          : currentValue.amount;
+                  return previousValue + amount;
               },
               0
           )
@@ -77,14 +109,16 @@ function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) 
                             .map((itemLevel, i: number) => {
                                 const numAgency = itemLevel.reduce(
                                     (previousValue: any, currentValue: any) => {
-                                        if (currentValue.is_agency) {
+                                        if (currentValue.agency) {
                                             return previousValue + 1;
                                         }
                                         return previousValue;
                                     },
                                     0
                                 );
-                                const percent = isAgency ? PERCENT_AGENCY[i] : PERCENT_NON_AGENCY
+                                const percent = isAgency
+                                    ? PERCENT_AGENCY[i]
+                                    : PERCENT_NON_AGENCY;
                                 return (
                                     <tr key={i}>
                                         <td>{i + 1}</td>
@@ -109,8 +143,31 @@ function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) 
                                 );
                             })}
                 </tbody>
+
                 {agencyTree && (
                     <tfoot>
+                        <tr>
+                            <th id="total" colSpan={4}>
+                                Tổng cộng :
+                            </th>
+                            <td>{formatMoney(totalCardIncome)}</td>
+                            <td>{formatMoney(totalAgencyIncome)}</td>
+                        </tr>
+
+                        <tr>
+                            <th id="total" colSpan={4}>
+                                Tổng cộng :
+                            </th>
+                            <td>
+                                {formatMoney(totalCardIncome)} +{" "}
+                                {formatMoney(totalAgencyIncome)} ={" "}
+                            </td>
+                            <td>
+                                {formatMoney(
+                                    totalCardIncome + totalAgencyIncome
+                                )}
+                            </td>
+                        </tr>
                         <tr>
                             <th id="total" colSpan={4}>
                                 Tổng cộng sau rút:
@@ -129,33 +186,50 @@ function AgencyStatistic({ agencyTree, withdrawTransactions, isAgency }: Props) 
                                 )}
                             </td>
                         </tr>
-                    </tfoot>
-                )}
-                {agencyTree && (
-                    <tfoot>
                         <tr>
                             <th id="total" colSpan={4}>
-                                Tổng cộng :
-                            </th>
-                            <td>{formatMoney(totalCardIncome)}</td>
-                            <td>{formatMoney(totalAgencyIncome)}</td>
-                        </tr>
-                    </tfoot>
-                )}
-                {agencyTree && (
-                    <tfoot>
-                        <tr>
-                            <th id="total" colSpan={4}>
-                                Tổng cộng :
+                                Tổng cộng sau thanh toán:
                             </th>
                             <td>
-                                {formatMoney(totalCardIncome)} +{" "}
-                                {formatMoney(totalAgencyIncome)} ={" "}
+                                {formatMoney(
+                                    totalCardIncome +
+                                        totalAgencyIncome -
+                                        totalWithdraw
+                                )}{" "}
+                                - {formatMoney(totalPayment)} ={" "}
                             </td>
                             <td>
                                 {formatMoney(
-                                    totalCardIncome + totalAgencyIncome
+                                    totalCardIncome +
+                                        totalAgencyIncome -
+                                        totalWithdraw -
+                                        totalPayment
                                 )}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th id="total" colSpan={4}>
+                                Tổng cộng sau chuyển tiền:
+                            </th>
+                            <td>
+                                {formatMoney(
+                                    totalCardIncome +
+                                        totalAgencyIncome -
+                                        totalWithdraw -
+                                        totalPayment
+                                )}{" "}
+                                + ({formatMoney(totalTransfer)}) ={" "}
+                            </td>
+                            <td>
+                                <strong>
+                                    {formatMoney(
+                                        totalCardIncome +
+                                            totalAgencyIncome -
+                                            totalWithdraw -
+                                            totalPayment +
+                                            totalTransfer
+                                    )}
+                                </strong>
                             </td>
                         </tr>
                     </tfoot>

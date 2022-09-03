@@ -4,6 +4,7 @@ import { Configuration, V0alpha2Api, Session, Identity } from "@ory/client";
 import { apolloClient } from "../utils/apollo";
 import { GET_ACCOUNT_BY_ORY_ID } from "../utils/apollo/queries/account.queries";
 import { getDataGraphqlResult } from "../utils";
+import { Account } from "../types/global";
 // import { edgeConfig } from "@ory/integrations/next";
 
 // const ory = new V0alpha2Api(new Configuration(edgeConfig));
@@ -18,7 +19,12 @@ interface Action {
 }
 
 interface State {
-    session: any;
+    session: {
+        user: Account,
+        identity: {
+            id: string
+        }
+    } | undefined;
     updateSession: Function;
     dispatch: Dispatch<Action> | null;
 }

@@ -23,6 +23,11 @@ export const GET_ACCOUNT_BY_ORY_ID = gql`
     query getAccountByOryId($ory_id: uuid) {
         account(where: { ory_id: { _eq: $ory_id } }) {
             id
+            account_info {
+                id
+                bank_name
+                bank_number
+            }
         }
     }
 `;
@@ -63,18 +68,26 @@ export const GET_REFEREES_BY_ACCOUNT_ID = gql`
         account(where: { id: { _eq: $id } }) {
             id
             ory_id
-            name
-            user_info {
-                traits
+            email
+            account_info {
+                name
+                phone
             }
             created_at
-            referees {
+            agency {
+                id
+                join_at
+            }
+            accounts {
                 id
                 ory_id
-                name
+                email
+                account_info {
+                    name
+                    phone
+                }
                 created_at
             }
-            is_agency
         }
     }
 `;
@@ -92,10 +105,15 @@ export const GET_ACCOUNTS = gql`
             order_by: { created_at: desc }
         ) {
             id
-            name
             email
-            phone
-            is_agency
+            account_info {
+                name
+                phone
+            }
+            agency {
+                id
+                join_at
+            }
             created_at
         }
     }
