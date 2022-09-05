@@ -25,7 +25,8 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ApolloProvider client={apolloClient}>
             <SessionProvider>
                 <ReactTooltip className="my-tooltip" effect="solid" eventOff="hover" place="bottom" />
-                <Component {...pageProps} />
+                <div>Hệ thống đang bảo trì</div>
+                {/* <Component {...pageProps} /> */}
             </SessionProvider>
         </ApolloProvider>
     );
