@@ -38,7 +38,7 @@ const Home: NextPage = () => {
     }, [session]);
 
     useEffect(() => {
-        if (data) {
+        if (data && session) {
             const referees = getDataGraphqlResult(data);
             setReferees(
                 referees.map((referee: any) => {
@@ -55,7 +55,7 @@ const Home: NextPage = () => {
             //     setAccount(cards[0].account);
             // }
         }
-    }, [data]);
+    }, [data, session]);
 
     console.log(referees);
 

@@ -92,7 +92,7 @@ function Checkout() {
             setCurrentStep(currentStep + 1);
         } else {
             // Place order
-            if (order.shipping && order.paymentMethod !== null && cartItems) {
+            if (order.shipping && order.paymentMethod !== null && cartItems && session) {
                 const orderItems: OrderItem[] = cartItems.map((item) => ({
                     product_id: item.product.id,
                     quantity: item.quantity,
@@ -164,7 +164,7 @@ function Checkout() {
                 );
             }
         }
-    }, [currentStep, order]);
+    }, [currentStep, order, session]);
 
     const totalPrice = useMemo(() => {
         if (cartItems) {

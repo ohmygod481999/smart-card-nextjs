@@ -25,8 +25,6 @@ import {
     formatDateTime,
     formatMoney,
     getDataGraphqlResult,
-    getWallet,
-    paddingId,
 } from "../../../utils";
 import { apolloClient } from "../../../utils/apollo";
 import { INSERT_REGISTRATION } from "../../../utils/apollo/mutations/registration.mutation";

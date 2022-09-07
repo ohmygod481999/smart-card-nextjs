@@ -113,8 +113,8 @@ function DetailTransaction() {
                     label: "chi tiết",
                     value: order ? (
                         <>
-                            {order.order_items.map((item) => (
-                                <div>
+                            {order.order_items.map((item, i) => (
+                                <div key={i}>
                                     - {item.product.name} x {item.quantity}
                                 </div>
                             ))}
@@ -194,8 +194,8 @@ function DetailTransaction() {
 
                         {attributes.length > 0 && (
                             <div className="detail-transaction-more">
-                                {attributes.map((attribute) => (
-                                    <div className="detail-transaction-more_item">
+                                {attributes.map((attribute, i) => (
+                                    <div key={i} className="detail-transaction-more_item">
                                         <div className="detail-transaction-more_label">
                                             {attribute.label}
                                         </div>

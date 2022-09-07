@@ -331,7 +331,7 @@ function WalletPage() {
                                         <div className="wallet-transaction">
                                             {secondaryTransactions.map(
                                                 (transaction) => (
-                                                    <div className="wallet-transaction__item">
+                                                    <div key={transaction.id} className="wallet-transaction__item">
                                                         <div className="wallet-transaction__item__left">
                                                             <div className="wallet-transaction__item__left__title">
                                                                 {

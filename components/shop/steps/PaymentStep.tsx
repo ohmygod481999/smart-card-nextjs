@@ -13,7 +13,6 @@ import {
     BANK_ACCOUNT,
     formatMoney,
     getDataGraphqlResult,
-    getWallet,
 } from "../../../utils";
 import { GET_WALLET } from "../../../utils/apollo/queries/wallet.queries";
 
