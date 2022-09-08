@@ -44,7 +44,7 @@ function AgencyStatistic({
               .reduce((previousValue: any, currentValue: any, i) => {
                   const numAgency = currentValue.reduce(
                       (previousValue: any, currentValue: any) => {
-                          if (currentValue.agency) {
+                          if (currentValue.is_agency) {
                               return previousValue + 1;
                           }
                           return previousValue;

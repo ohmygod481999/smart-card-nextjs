@@ -24,6 +24,7 @@ export const GET_TRANSATIONS = gql`
                 email
             }
             type
+            note
             created_at
         }
     }
@@ -53,6 +54,7 @@ export const GET_DETAIL_TRANSATION = gql`
         transaction_by_pk(id: $id) {
             id
             amount
+            note
             source_id
             account {
                 id

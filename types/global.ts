@@ -137,6 +137,7 @@ export interface Transaction {
     accountByTargetId: Account;
     type: TransactionTypeEnum;
     referral: Referral | null;
+    note: string;
 }
 
 export enum SecondaryTransactionType {

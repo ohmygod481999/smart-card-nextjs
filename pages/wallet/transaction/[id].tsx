@@ -173,6 +173,11 @@ function DetailTransaction() {
                             <div className="detail-transaction__id">
                                 Mã giao dịch: {id}
                             </div>
+                            {transaction?.note && (
+                                <div className="detail-transaction__id">
+                                    Nội dung: {transaction.note}
+                                </div>
+                            )}
                             <div className="detail-transaction__date">
                                 Thời gian:{" "}
                                 {transaction &&
@@ -195,7 +200,10 @@ function DetailTransaction() {
                         {attributes.length > 0 && (
                             <div className="detail-transaction-more">
                                 {attributes.map((attribute, i) => (
-                                    <div key={i} className="detail-transaction-more_item">
+                                    <div
+                                        key={i}
+                                        className="detail-transaction-more_item"
+                                    >
                                         <div className="detail-transaction-more_label">
                                             {attribute.label}
                                         </div>

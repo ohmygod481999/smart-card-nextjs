@@ -287,6 +287,13 @@ function WalletPage() {
                                                                                 : transaction.type} */}
                                                                             </Link>
                                                                         </div>
+                                                                        {transaction.note && (
+                                                                            <div className="wallet-transaction__item__left__description">
+                                                                                Nội dung: <strong>{
+                                                                                    transaction.note
+                                                                                }</strong>
+                                                                            </div>
+                                                                        )}
                                                                         <div className="wallet-transaction__item__left__description">
                                                                             {formatDateTime(
                                                                                 transaction.created_at
@@ -331,7 +338,10 @@ function WalletPage() {
                                         <div className="wallet-transaction">
                                             {secondaryTransactions.map(
                                                 (transaction) => (
-                                                    <div key={transaction.id} className="wallet-transaction__item">
+                                                    <div
+                                                        key={transaction.id}
+                                                        className="wallet-transaction__item"
+                                                    >
                                                         <div className="wallet-transaction__item__left">
                                                             <div className="wallet-transaction__item__left__title">
                                                                 {
