@@ -17,6 +17,7 @@ export const GET_TRANSATIONS = gql`
             account {
                 id
                 email
+                is_root
             }
             target_id
             accountByTargetId {
@@ -59,11 +60,13 @@ export const GET_DETAIL_TRANSATION = gql`
             account {
                 id
                 email
+                is_root
             }
             target_id
             accountByTargetId {
                 id
                 email
+                is_root
             }
             type
             created_at
@@ -81,6 +84,7 @@ export const GET_DETAIL_TRANSATION = gql`
                     email
                     agency {
                         id
+                        type
                     }
                 }
                 accountByRefererId {
@@ -88,6 +92,7 @@ export const GET_DETAIL_TRANSATION = gql`
                     email
                     agency {
                         id
+                        type
                     }
                 }
                 accountByTargetId {
@@ -95,6 +100,7 @@ export const GET_DETAIL_TRANSATION = gql`
                     email
                     agency {
                         id
+                        type
                     }
                 }
                 level

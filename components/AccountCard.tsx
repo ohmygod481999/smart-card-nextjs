@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import { Account } from "../types/global";
+import { Account, AgencyType } from "../types/global";
 import { defaultImg } from "../utils";
 
 interface Props {
@@ -51,6 +51,15 @@ function AccountCard({ account }: Props) {
                                     {/* {_.get(traits, "email")} */}
                                     {_.get(account, "account_info.name")}{" "}
                                     {_.get(account, "agency") && (
+                                        <i
+                                            style={{
+                                                color: "khaki",
+                                            }}
+                                            data-tip="Đại lý chính thức"
+                                            className="far fa-star"
+                                        ></i>
+                                    )}
+                                    {_.get(account, "agency.type") === AgencyType.AGENCY && (
                                         <i
                                             style={{
                                                 color: "khaki",

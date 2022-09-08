@@ -9,9 +9,11 @@ import SectionLayout from "../../../components/SectionLayout";
 import SessionContext from "../../../context/session-context";
 import { Order, Transaction, TransactionTypeEnum } from "../../../types/global";
 import {
+    AGENCY_NAME,
     formatDateTime,
     formatMoney,
     getTransactionName,
+    paddingId,
 } from "../../../utils";
 import { apolloClient } from "../../../utils/apollo";
 import { GET_ORDER_BY_ID } from "../../../utils/apollo/queries/order.queries";
@@ -67,7 +69,8 @@ function DetailTransaction() {
         if (!transaction) return [];
         if (
             transaction.type === TransactionTypeEnum.REWARD_REFER_AGENCY ||
-            transaction.type === TransactionTypeEnum.REWARD_REFER
+            transaction.type === TransactionTypeEnum.REWARD_REFER ||
+            transaction.type === TransactionTypeEnum.REWARD_REFER_COLABORATOR
         ) {
             return [
                 {
@@ -76,22 +79,22 @@ function DetailTransaction() {
                 },
                 {
                     label: "Người giới thiệu",
-                    value: transaction.referral?.accountByRefererId.email,
+                    value: transaction.referral ? transaction.referral?.accountByRefererId.email + ` (${paddingId(transaction.referral?.referer_id)})` : "",
                 },
                 {
-                    label: "Là đại lý",
+                    label: "Đại lý/cộng tác viên",
                     value: transaction.referral?.accountByRefererId.agency
-                        ? "Có"
+                        ? AGENCY_NAME[transaction.referral?.accountByRefererId.agency.type]
                         : "Không",
                 },
                 {
                     label: "Giới thiệu cho",
-                    value: transaction.referral?.account.email,
+                    value: transaction.referral ? transaction.referral?.account.email + ` (${paddingId(transaction.referral?.referee_id)})` : "",
                 },
                 {
-                    label: "Là đại lý",
+                    label: "Đại lý/cộng tác viên",
                     value: transaction.referral?.account.agency
-                        ? "Có"
+                        ? AGENCY_NAME[transaction.referral?.account.agency.type]
                         : "Không",
                 },
             ];

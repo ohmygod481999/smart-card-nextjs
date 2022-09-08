@@ -14,6 +14,7 @@ import {
     transactionMapping,
 } from "../../utils";
 import {
+    AgencyType,
     Transaction,
     Wallet,
     WalletType,
@@ -154,7 +155,7 @@ function AgencyTree() {
                         // console.log(res.data);
                         const tree = [[{
                             ...children[0],
-                            is_agency: children[0].agency_id !== null
+                            is_agency: children[0].type === AgencyType.AGENCY
                         }]];
                         let currentLevel = 0;
                         let currentItems = [];
@@ -168,14 +169,14 @@ function AgencyTree() {
                             ) {
                                 currentItems.push({
                                     ...children[i],
-                                    is_agency: children[i].agency_id !== null
+                                    is_agency: children[i].type === AgencyType.AGENCY
                                 });
                             } else {
                                 currentLevel += 1;
                                 tree.push(currentItems);
                                 currentItems = [{
                                     ...children[i],
-                                    is_agency: children[i].agency_id !== null
+                                    is_agency: children[i].type === AgencyType.AGENCY
                                 }];
                             }
                         }
@@ -266,7 +267,8 @@ function AgencyTree() {
                             <h3 className="h5 mb-0 text-gray-800">
                                 Thống kê:{" "}
                             </h3>
-                            {agencyTree && withdrawals && (
+                            <p>Đang trong giai đoạn phát triển</p>
+                            {/* {agencyTree && withdrawals && (
                                 <AgencyStatistic
                                     account_id={userId}
                                     agencyTree={agencyTree}
@@ -275,7 +277,7 @@ function AgencyTree() {
                                     transferTransactions={transferTransactions}
                                     isAgency={isAgency ? true : false}
                                 />
-                            )}
+                            )} */}
                         </div>
 
                         <div className="mb-3">

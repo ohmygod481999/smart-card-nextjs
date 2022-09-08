@@ -53,6 +53,12 @@ function LayoutDashboard({ children }: Props) {
                             <span>Đại lý đăng ký</span>
                         </a>
                     </Link>
+                    <Link href={"/dashboard/agency/register-colaborator-list"}>
+                        <a className="nav-link">
+                            <i className="fas fa-fw fa-cog" />
+                            <span>Cộng tác viên đăng ký</span>
+                        </a>
+                    </Link>
                     <Link href={"/dashboard/agency-tree"}>
                         <a className="nav-link">
                             <i className="fas fa-fw fa-cog" />

@@ -4,6 +4,7 @@ import {
     Wallet,
     WalletType,
     Transaction,
+    AgencyType,
 } from "../types/global";
 
 export const getValueFromGraphql = (input: any) => {
@@ -106,6 +107,11 @@ export const ORDER_STATUS_MAPPING: {
     [OrderStatus.SUCCESS]: "Thành công",
 };
 
+export const AGENCY_NAME = {
+    [AgencyType.AGENCY]: "Đại lý",
+    [AgencyType.COLABORATOR]: "Cộng tác viên",
+}
+
 export const getTransactionName = (
     transaction: Transaction | null,
     account_id?: number
@@ -122,6 +128,10 @@ export const getTransactionName = (
         if (transaction.source_id === account_id) return "Trả doanh đại lý";
         return "Doanh thu đại lý";
     }
+    if (transaction.type === TransactionTypeEnum.REWARD_REFER_COLABORATOR) {
+        if (transaction.source_id === account_id) return "Trả doanh cộng tác viên";
+        return "Doanh thu cộng tác viên";
+    }
     if (transaction.type === TransactionTypeEnum.PAYMENT) {
         if (transaction.source_id === account_id) return "Thanh toán đơn hàng";
         return "Doanh thu bán hàng";
@@ -129,7 +139,7 @@ export const getTransactionName = (
     if (transaction.type === TransactionTypeEnum.TRANSFER) {
         if (transaction.source_id === account_id)
             return "Chuyển tiền đến " + transaction.accountByTargetId.email;
-        return "Nhận tiền từ " + transaction.account.email;
+        return "Nhận tiền từ " + `${transaction.account.is_root ? "Hệ thống" : transaction.account.email}`;
     }
     if (transaction.type === TransactionTypeEnum.RECHARGE) {
         return "Nạp tiền";

@@ -1,10 +1,13 @@
 import { useRouter } from "next/router";
 import React, { useCallback, useContext, useEffect } from "react";
 import SessionContext from "../../../context/session-context";
+import { AgencyType } from "../../../types/global";
 import { BANK_ACCOUNT } from "../../../utils";
 
 function AgencyRegisterSuccess() {
     const router = useRouter();
+
+    const { type } = router.query;
     const { session } = useContext(SessionContext);
 
     // console.log(router.query);
@@ -38,7 +41,7 @@ function AgencyRegisterSuccess() {
                                         Agency registration
                                     </p>
                                     <h1 className="common-title">
-                                        Đăng ký <span>đại lý</span>
+                                        Đăng ký <span>{type === AgencyType.AGENCY ? "đại lý" : "Cộng tác viên"}</span>
                                     </h1>
                                     <div className="animated-bar" />
                                 </div>
@@ -54,8 +57,8 @@ function AgencyRegisterSuccess() {
                                 </h4>
                                 <p className="text-center">
                                     Xin mời quý khách hàng chuyển khoản với lệ
-                                    phí 2,000,000đ để chúng tôi kích hoạt tài
-                                    khoản đại lý cho quý khách
+                                    phí {type === AgencyType.AGENCY ? "2,000,000đ" : "300,000đ"} để chúng tôi kích hoạt tài
+                                    khoản {type === AgencyType.AGENCY ? "đại lý" : "cộng tác viên"} cho quý khách
                                 </p>
                                 <table className="table">
                                     <caption className="text-center">
@@ -74,7 +77,7 @@ function AgencyRegisterSuccess() {
                                             <th scope="row">{BANK_ACCOUNT.BANK_NAME}</th>
                                             <td>{BANK_ACCOUNT.BANK_NUMBER}</td>
                                             <td>{BANK_ACCOUNT.BANK_ACCOUNT_NAME}</td>
-                                            <td>DKDL {session.user.id}</td>
+                                            <td>{type === AgencyType.AGENCY ? "DKDL" : "DKCTV"} {session.user.id}</td>
                                         </tr>
                                     </tbody>
                                 </table>

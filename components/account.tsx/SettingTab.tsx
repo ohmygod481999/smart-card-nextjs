@@ -2,7 +2,7 @@ import Link from "next/link";
 import React, { useState, useEffect, useContext } from "react";
 import SessionContext from "../../context/session-context";
 import * as Styles from "../cv/CvStyles";
-import { Account } from "../../types/global";
+import { Account, AgencyType } from "../../types/global";
 import axios from "axios"
 
 interface Props {
@@ -21,9 +21,16 @@ function SettingTab(props: Props) {
         >
 
             {!account?.agency && (
-                <Link href={"/account/agency-register"}>
-                    <button className="full-width-btn">
+                <Link href={`/account/agency-register?type=${AgencyType.AGENCY}`}>
+                    <button className="full-width-btn mb-3">
                         Kích hoạt làm đại lý
+                    </button>
+                </Link>
+            )}
+            {!account?.agency && (
+                <Link href={`/account/agency-register?type=${AgencyType.COLABORATOR}`}>
+                    <button className="full-width-btn">
+                        Kích hoạt làm cộng tác viên
                     </button>
                 </Link>
             )}

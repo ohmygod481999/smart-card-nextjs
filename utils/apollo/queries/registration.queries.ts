@@ -52,11 +52,35 @@ export const GET_AGENCY_REGISTRATIONS_ADMIN = gql`
             limit: $limit
             offset: $offset
             order_by: { created_at: desc }
-            where: { status: { _eq: "created" } }
+            where: { status: { _eq: "created" }, type: { _eq: "agency" } }
         ) {
             id
             account_id
             created_at
+            type
+            account {
+                id
+                email
+                account_info {
+                    phone
+                }
+            }
+        }
+    }
+`;
+
+export const GET_COLABORATOR_REGISTRATIONS_ADMIN = gql`
+    query getRegistration($limit: Int!, $offset: Int!) {
+        agency_register(
+            limit: $limit
+            offset: $offset
+            order_by: { created_at: desc }
+            where: { status: { _eq: "created" }, type: { _eq: "colaborator" } }
+        ) {
+            id
+            account_id
+            created_at
+            type
             account {
                 id
                 email

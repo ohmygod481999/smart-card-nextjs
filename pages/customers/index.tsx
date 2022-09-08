@@ -8,7 +8,7 @@ import LayoutAuthed from "../../components/LayoutAuthed";
 import { GET_CARD_BY_ORY_ID } from "../../utils/apollo/queries/card.queries";
 import { useLazyQuery } from "@apollo/client";
 import { useRouter } from "next/router";
-import { Account } from "../../types/global";
+import { Account, AgencyType } from "../../types/global";
 import { getDataGraphqlResult, paddingId } from "../../utils";
 import { get } from "lodash";
 import AccountCard from "../../components/AccountCard";
@@ -158,7 +158,7 @@ const Home: NextPage = () => {
                                                         Ngày tham gia
                                                     </th>
                                                     <th scope="col">
-                                                        Là đại lý
+                                                        Đại lý/CTV
                                                     </th>
                                                     <th scope="col">
                                                         Ngày thành đại lý
@@ -176,7 +176,7 @@ const Home: NextPage = () => {
                                                             level={0}
                                                             referee={referee}
                                                             moreExpand={
-                                                                referee.agency !== null
+                                                                referee.agency.type === AgencyType.AGENCY
                                                             }
                                                             // name={referee.name}
                                                             // refereeChildren={referee.referees}

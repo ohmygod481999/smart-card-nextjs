@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { formatDateTime, getDataGraphqlResult } from "../../utils";
+import { AgencyType } from "../../types/global";
+import { AGENCY_NAME, formatDateTime, getDataGraphqlResult } from "../../utils";
 import { apolloClient } from "../../utils/apollo";
 import { GET_REFEREES } from "../../utils/apollo/queries/account.queries";
 
 interface AccountInfo {
-    name: string
+    name: string;
 }
 
 export interface RefereeRecord {
@@ -20,7 +21,8 @@ export interface RefereeRecord {
     agency: {
         id: string;
         join_at: string;
-    }
+        type: AgencyType;
+    };
 }
 
 interface Props {
@@ -100,13 +102,17 @@ function Row(props: Props) {
                                 color: "#95cb28",
                             }}
                         >
-                            Có
+                            {AGENCY_NAME[referee.agency.type]}
                         </span>
                     ) : (
                         "Không"
                     )}
                 </td>
-                <td>{referee.agency ? formatDateTime(referee.agency.join_at, false) : "N/A"}</td>
+                <td>
+                    {referee.agency
+                        ? formatDateTime(referee.agency.join_at, false)
+                        : "N/A"}
+                </td>
                 <td className="">{childrenWithKids.length}</td>
             </tr>
             {toggleLoading && (

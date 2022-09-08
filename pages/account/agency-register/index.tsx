@@ -6,13 +6,15 @@ import { useRouter } from "next/router";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import SectionLayout from "../../../components/SectionLayout";
 import SessionContext from "../../../context/session-context";
-import { RegistrationType } from "../../../types/global";
+import { AgencyType, RegistrationType } from "../../../types/global";
 import { apolloClient } from "../../../utils/apollo";
 import { INSERT_REGISTRATION } from "../../../utils/apollo/mutations/registration.mutation";
 import { GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID } from "../../../utils/apollo/queries/registration.queries";
 
 function AgencyRegister() {
     const router = useRouter();
+
+    const { type } = router.query;
 
     const [getRegistrationByAccountId, { called, loading, data }] =
         useLazyQuery(GET_AGENCY_REGISTRATION_BY_ACCOUNT_ID, {
@@ -50,9 +52,10 @@ function AgencyRegister() {
                     `${process.env.NEXT_PUBLIC_SERVER_URL}/agency/register`,
                     {
                         account_id: session.user.id,
+                        type,
                     }
                 );
-                router.push("/account/agency-register/success");
+                router.push(`/account/agency-register/success?type=${type}`);
             } catch (err) {
                 alert(`Có lỗi xảy ra\n${_.get(err, "response.data.message")}`);
             }
@@ -108,7 +111,12 @@ function AgencyRegister() {
                                         Agency registration
                                     </p>
                                     <h1 className="common-title">
-                                        Đăng ký <span>đại lý</span>
+                                        Đăng ký{" "}
+                                        <span>
+                                            {type === AgencyType.AGENCY
+                                                ? "đại lý"
+                                                : "cộng tác viên"}
+                                        </span>
                                     </h1>
                                     <div className="animated-bar" />
                                 </div>

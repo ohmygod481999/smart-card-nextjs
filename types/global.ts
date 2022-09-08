@@ -2,13 +2,20 @@ export enum ActiveRoute {
     USER_CV = "my-cv",
 }
 
+export enum AgencyType {
+    AGENCY = "agency",
+    COLABORATOR = "colaborator",
+}
+
 export interface Agency {
     id: string;
     join_at: string;
+    type: AgencyType;
 }
 
 export interface Account {
     id: number;
+    is_root: boolean;
     ory_id: string;
     email: string;
     resume: {
@@ -93,6 +100,7 @@ export enum TransactionStatusEnum {
 export enum TransactionTypeEnum {
     REWARD_REFER = "reward-refer",
     REWARD_REFER_AGENCY = "reward-refer-agency",
+    REWARD_REFER_COLABORATOR = 'reward-refer-colaborator',
     TRANSFER = "transfer",
     PAYMENT = "payment",
     WITHDRAW = "withdraw",

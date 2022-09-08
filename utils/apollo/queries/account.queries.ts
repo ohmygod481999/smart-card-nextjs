@@ -41,6 +41,7 @@ export const GET_REFEREES = gql`
             agency {
                 id
                 join_at
+                type
             }
             account_info {
                 name
@@ -57,6 +58,7 @@ export const GET_REFEREES = gql`
                 agency {
                     id
                     join_at
+                    type
                 }
             }
         }
@@ -77,6 +79,7 @@ export const GET_REFEREES_BY_ACCOUNT_ID = gql`
             agency {
                 id
                 join_at
+                type
             }
             accounts {
                 id
