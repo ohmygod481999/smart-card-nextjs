@@ -152,7 +152,10 @@ function AgencyTree() {
                         const children = res.data;
 
                         // console.log(res.data);
-                        const tree = [[children[0]]];
+                        const tree = [[{
+                            ...children[0],
+                            is_agency: children[0].agency_id !== null
+                        }]];
                         let currentLevel = 0;
                         let currentItems = [];
                         const limit = children.length < 2 ? 1 : children.length;
@@ -163,11 +166,17 @@ function AgencyTree() {
                                     .map((item) => item.id)
                                     .includes(children[i].referer_id)
                             ) {
-                                currentItems.push(children[i]);
+                                currentItems.push({
+                                    ...children[i],
+                                    is_agency: children[i].agency_id !== null
+                                });
                             } else {
                                 currentLevel += 1;
                                 tree.push(currentItems);
-                                currentItems = [children[i]];
+                                currentItems = [{
+                                    ...children[i],
+                                    is_agency: children[i].agency_id !== null
+                                }];
                             }
                         }
                         tree.push(currentItems);

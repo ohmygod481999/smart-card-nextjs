@@ -109,7 +109,7 @@ function AgencyStatistic({
                             .map((itemLevel, i: number) => {
                                 const numAgency = itemLevel.reduce(
                                     (previousValue: any, currentValue: any) => {
-                                        if (currentValue.agency) {
+                                        if (currentValue.is_agency) {
                                             return previousValue + 1;
                                         }
                                         return previousValue;
