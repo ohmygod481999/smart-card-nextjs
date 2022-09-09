@@ -176,7 +176,7 @@ const Home: NextPage = () => {
                                                             level={0}
                                                             referee={referee}
                                                             moreExpand={
-                                                                referee.agency.type === AgencyType.AGENCY
+                                                                referee?.agency?.type === AgencyType.AGENCY
                                                             }
                                                             // name={referee.name}
                                                             // refereeChildren={referee.referees}
