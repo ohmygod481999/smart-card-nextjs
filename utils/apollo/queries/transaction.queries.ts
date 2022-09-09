@@ -140,11 +140,13 @@ export const GET_TRANSFER_TRANSATION = gql`
             account {
                 id
                 email
+                is_root
             }
             target_id
             accountByTargetId {
                 id
                 email
+                is_root
             }
         }
     }

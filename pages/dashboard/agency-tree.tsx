@@ -153,10 +153,15 @@ function AgencyTree() {
                         const children = res.data;
 
                         // console.log(res.data);
-                        const tree = [[{
-                            ...children[0],
-                            is_agency: children[0].type === AgencyType.AGENCY
-                        }]];
+                        const tree = [
+                            [
+                                {
+                                    ...children[0],
+                                    is_agency:
+                                        children[0].type === AgencyType.AGENCY,
+                                },
+                            ],
+                        ];
                         let currentLevel = 0;
                         let currentItems = [];
                         const limit = children.length < 2 ? 1 : children.length;
@@ -169,15 +174,20 @@ function AgencyTree() {
                             ) {
                                 currentItems.push({
                                     ...children[i],
-                                    is_agency: children[i].type === AgencyType.AGENCY
+                                    is_agency:
+                                        children[i].type === AgencyType.AGENCY,
                                 });
                             } else {
                                 currentLevel += 1;
                                 tree.push(currentItems);
-                                currentItems = [{
-                                    ...children[i],
-                                    is_agency: children[i].type === AgencyType.AGENCY
-                                }];
+                                currentItems = [
+                                    {
+                                        ...children[i],
+                                        is_agency:
+                                            children[i].type ===
+                                            AgencyType.AGENCY,
+                                    },
+                                ];
                             }
                         }
                         tree.push(currentItems);
@@ -384,14 +394,17 @@ function AgencyTree() {
                                                                 : "Nhận tiền"}
                                                         </td>
                                                         <td>
-                                                            {
-                                                                transaction.source_id
-                                                            }
+                                                            {transaction.account
+                                                                .is_root
+                                                                ? "Hệ thống"
+                                                                : transaction.source_id}
                                                         </td>
                                                         <td>
-                                                            {
-                                                                transaction.target_id
-                                                            }
+                                                            {transaction
+                                                                .accountByTargetId
+                                                                .is_root
+                                                                ? "Hệ thống"
+                                                                : transaction.target_id}
                                                         </td>
                                                         <td>
                                                             {transaction.source_id ===

@@ -112,6 +112,17 @@ function Features() {
                                             <br /> của tôi
                                         </span>
                                     </div>
+                                    <Link href={"/pay-bill/electric"}>
+                                        <div className="section-features__item">
+                                            <span className="icon">
+                                                <i className="fas fa-bolt"></i>
+                                            </span>
+                                            <span>
+                                                Thanh toán
+                                                <br /> tiền điện
+                                            </span>
+                                        </div>
+                                    </Link>
                                 </div>
                             )}
                             {tab === FeatureTab.ENTERPRISE && (
