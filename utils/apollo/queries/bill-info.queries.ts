@@ -18,3 +18,31 @@ export const GET_BILL_INFO = gql`
         }
     }
 `;
+
+export const GET_BILL_INFOS_PAGING = gql`
+    query getBillInfoPaging(
+        $type: bill_info_type_enum!
+        $limit: Int!
+        $offset: Int!
+    ) {
+        bill_info_aggregate(where: { type: { _eq: $type } }) {
+            aggregate {
+                count
+            }
+        }
+        bill_info(
+            where: { type: { _eq: $type } }
+            limit: $limit
+            offset: $offset
+        ) {
+            id
+            type
+            payload
+            account {
+                id
+                email
+            }
+            created_at
+        }
+    }
+`;

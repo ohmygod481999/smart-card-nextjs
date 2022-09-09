@@ -1,11 +1,30 @@
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
     children: React.ReactNode;
 }
 
+const mypassword = "matkhaubimat";
+
 function LayoutDashboard({ children }: Props) {
+    const [password, setPassword] = useState<string | null>(null);
+
+    useEffect(() => {
+        const existPwd = localStorage.getItem("password");
+
+        if (existPwd === mypassword) setPassword(existPwd);
+        else if (password !== mypassword) {
+            const pwd = prompt("Nhập mật khẩu");
+            if (pwd === mypassword) localStorage.setItem("password", pwd);
+            setPassword(pwd);
+        }
+    }, []);
+
+    if (!password) return <div>Bạn không có quyền truy cập</div>;
+
+    if (password && password !== mypassword) return <div>Sai mật khẩu</div>;
+
     return (
         <div id="wrapper">
             {/* Sidebar */}
@@ -77,6 +96,13 @@ function LayoutDashboard({ children }: Props) {
                         <a className="nav-link">
                             <i className="fas fa-fw fa-cog" />
                             <span>Quản trị đơn hàng</span>
+                        </a>
+                    </Link>
+
+                    <Link href={"/dashboard/electric-register"}>
+                        <a className="nav-link">
+                            <i className="fas fa-fw fa-cog" />
+                            <span>Đăng ký tiền điện</span>
                         </a>
                     </Link>
                 </li>

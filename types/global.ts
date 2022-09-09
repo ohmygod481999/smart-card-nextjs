@@ -261,3 +261,19 @@ export enum WithdrawalStatus {
 export enum BillInfoType {
     ELECTRIC = "electric",
 }
+
+export interface BillInfo {
+    id: number;
+    type: BillInfoType;
+    payload: any;
+    account: Account;
+    created_at: string;
+}
+
+export interface ElectricBillInfo extends BillInfo {
+    payload: {
+        phone: string;
+        billcode: string;
+        provider: string;
+    };
+}

@@ -1,5 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import LayoutAuthed from "../../components/LayoutAuthed";
@@ -85,7 +87,15 @@ function Electric() {
                     })
                     .then((data) => {
                         if (data.data) {
-                            setMsg("Thành công");
+                            setMsg(
+                                "Thành công, chúng tôi sẽ lưu thông tin và tự động trả hóa đơn tiền điện cho bạn vào kì đóng tiền điện tiếp theo"
+                            );
+                            setBillInfo({
+                                billcode,
+                                phone,
+                                provider,
+                                id: getDataGraphqlResult(data.data).id,
+                            });
                         }
                     })
                     .catch((err) => {
@@ -132,6 +142,15 @@ function Electric() {
                     <div className="col-12">
                         <div className="section-title animate__animated animate__fadeInDown animate__delay-1s">
                             <h1 className="left-title">
+                                <button className="back-btn">
+                                    <Link href={"/features"}>
+                                        <Image
+                                            src="/icon/back.png"
+                                            width={22}
+                                            height={22}
+                                        />
+                                    </Link>
+                                </button>{" "}
                                 Thanh toán <span>tiền điện</span>
                             </h1>
                             <div className="animated-bar left" />
@@ -187,7 +206,7 @@ function Electric() {
                                 />
                             </div>
 
-                            {msg && <div>{msg}</div>}
+                            {msg && <div className="mb-3">{msg}</div>}
 
                             <div className="form-submit">
                                 <button
