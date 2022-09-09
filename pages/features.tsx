@@ -127,6 +127,17 @@ function Features() {
                             )}
                             {tab === FeatureTab.ENTERPRISE && (
                                 <div className="section-features__list">
+                                    <Link href={"https://erp.smartcardnp.vn"}>
+                                        <div className="section-features__item">
+                                            <span className="icon">
+                                                <i className="fas fa-utensils"></i>
+                                            </span>
+                                            <span>
+                                                Quản trị
+                                                <br /> nhà hàng
+                                            </span>
+                                        </div>
+                                    </Link>
                                     <div className="section-features__item inactive">
                                         <span className="icon">
                                             <i className="far fa-address-card"></i>
