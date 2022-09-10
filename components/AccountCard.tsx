@@ -112,10 +112,7 @@ function AccountCard({ account }: Props) {
                                     {_.get(account, "account_info.phone") && (
                                         <li>
                                             <a
-                                                href={`tel:${_.get(
-                                                    account,
-                                                    "phone"
-                                                )}`}
+                                                href={`tel:${_.get(account, "account_info.phone")}`}
                                             >
                                                 <div className="logo">
                                                     <img
@@ -158,10 +155,7 @@ function AccountCard({ account }: Props) {
                                             <a
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                href={`https://zalo.me/${_.get(
-                                                    account,
-                                                    "zalo"
-                                                )}`}
+                                                href={`https://zalo.me/${_.get(account, "account_info.zalo")}`}
                                             >
                                                 <div className="logo">
                                                     <img
