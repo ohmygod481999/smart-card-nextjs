@@ -30,6 +30,7 @@ import axios from "axios";
 import AgencyStatistic from "../../components/dashboard/AgencyStatistic";
 import { useRouter } from "next/router";
 import { GET_WITHDRAWALS_BY_ACCOUNT_ID } from "../../utils/apollo/queries/withdrawal.queries";
+import AgencyStatistic2 from "../../components/dashboard/AgencyStatistic2";
 
 function AgencyTree() {
     const router = useRouter();
@@ -203,6 +204,14 @@ function AgencyTree() {
         setUserId(idUser);
     };
 
+    const totalWithdraw = useMemo(() => {
+        let total = 0;
+        withdrawals.forEach((withdrawal) => {
+            total -= withdrawal.amount;
+        });
+        return total
+    }, [withdrawals]);
+
     return (
         <LayoutDashboard>
             <div className="container-fluid">
@@ -277,7 +286,7 @@ function AgencyTree() {
                             <h3 className="h5 mb-0 text-gray-800">
                                 Thống kê:{" "}
                             </h3>
-                            <p>Đang trong giai đoạn phát triển</p>
+                            <AgencyStatistic2 account_id={userId} />
                             {/* {agencyTree && withdrawals && (
                                 <AgencyStatistic
                                     account_id={userId}
@@ -299,8 +308,8 @@ function AgencyTree() {
                                     <thead>
                                         <tr>
                                             <th scope="col">STT</th>
-                                            <th scope="col">Số tiền rút</th>
                                             <th scope="col">Ngày</th>
+                                            <th scope="col">Số tiền rút</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -309,19 +318,26 @@ function AgencyTree() {
                                                 <tr key={withdrawal.id}>
                                                     <td>{i + 1}</td>
                                                     <td>
+                                                        {formatDateTime(
+                                                            withdrawal.created_at
+                                                        )}
+                                                    </td>
+                                                    <td>
                                                         -{" "}
                                                         {formatMoney(
                                                             withdrawal.amount
                                                         )}
                                                     </td>
-                                                    <td>
-                                                        {formatDateTime(
-                                                            withdrawal.created_at
-                                                        )}
-                                                    </td>
                                                 </tr>
                                             ))}
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colSpan={1}></td>
+                                            <td>Tổng</td>
+                                            <td>{formatMoney(totalWithdraw)}</td>
+                                        </tr>
+                                    </tfoot>
                                 </table>
                             </div>
                         </div>

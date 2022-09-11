@@ -151,3 +151,57 @@ export const GET_TRANSFER_TRANSATION = gql`
         }
     }
 `;
+
+export const GET_REFER_AGENCY_TRANSACTIONS_BY_ACCOUNT = gql`
+    query getAgencyTransactioAccount($account_id: Int!) {
+        transaction(
+            where: {
+                target_id: { _eq: $account_id }
+                type: { _in: ["reward-refer-agency"] }
+            }
+        ) {
+            id
+            type
+            amount
+            created_at
+            referral {
+                level
+                accountByRefererId {
+                    id
+                    email
+                }
+                account {
+                    id
+                    email
+                }
+            }
+        }
+    }
+`;
+
+export const GET_REFER_COLABORATOR_TRANSACTIONS_BY_ACCOUNT = gql`
+    query getColaboratorTransactioAccount($account_id: Int!) {
+        transaction(
+            where: {
+                target_id: { _eq: $account_id }
+                type: { _in: ["reward-refer-colaborator"] }
+            }
+        ) {
+            id
+            type
+            amount
+            created_at
+            referral {
+                level
+                accountByRefererId {
+                    id
+                    email
+                }
+                account {
+                    id
+                    email
+                }
+            }
+        }
+    }
+`;
