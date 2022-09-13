@@ -149,7 +149,8 @@ export interface Transaction {
 }
 
 export enum SecondaryTransactionType {
-    DEFAULT = "default",
+    DEFAULT = 'default', // Thưởng CTV mới
+    REWARD_NEW_AGENCY = 'reward_new_agency', // Thưởng Đại lý mới
 }
 
 export interface SecondaryTransaction {

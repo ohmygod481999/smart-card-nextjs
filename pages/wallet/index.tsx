@@ -347,7 +347,9 @@ function WalletPage() {
                                                                 {
                                                                     {
                                                                         [SecondaryTransactionType.DEFAULT]:
-                                                                            "Thưởng người dùng mới",
+                                                                            "Thưởng CTV mới",
+                                                                        [SecondaryTransactionType.REWARD_NEW_AGENCY]:
+                                                                            "Thưởng đại lý mới",
                                                                     }[
                                                                         transaction
                                                                             .type
