@@ -105,6 +105,12 @@ function LayoutDashboard({ children }: Props) {
                             <span>Đăng ký tiền điện</span>
                         </a>
                     </Link>
+                    <Link href={"/dashboard/erp-register"}>
+                        <a className="nav-link">
+                            <i className="fas fa-fw fa-cog" />
+                            <span>Đăng ký tk doanh nghiệp</span>
+                        </a>
+                    </Link>
                 </li>
                 {/* Nav Item - Utilities Collapse Menu */}
                 {/* <li className="nav-item">
