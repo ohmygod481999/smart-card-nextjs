@@ -20,17 +20,24 @@ function SettingTab(props: Props) {
             }}
         >
 
-            {!account?.agency && (
+            {!account?.agency || account?.agency.type === AgencyType.COLABORATOR && (
                 <Link href={`/account/agency-register?type=${AgencyType.AGENCY}`}>
                     <button className="full-width-btn mb-3">
                         Kích hoạt làm đại lý
                     </button>
                 </Link>
             )}
-            {!account?.agency && (
+            {!account?.agency  && (
                 <Link href={`/account/agency-register?type=${AgencyType.COLABORATOR}`}>
-                    <button className="full-width-btn">
+                    <button className="full-width-btn mb-3">
                         Kích hoạt làm cộng tác viên
+                    </button>
+                </Link>
+            )}
+            {!account?.erp_account && (
+                <Link href={`/account/erp-register`}>
+                    <button className="full-width-btn mb-3">
+                        Đăng ký trở thành khách hàng doanh nghiệp
                     </button>
                 </Link>
             )}

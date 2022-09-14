@@ -34,6 +34,12 @@ export const GET_CARD_BY_ORY_ID = gql`
             id
             account {
                 id
+                erp_account {
+                    id
+                    status
+                    company_id
+                    company_name
+                }
                 agency {
                     id
                     join_at

@@ -13,11 +13,25 @@ export interface Agency {
     type: AgencyType;
 }
 
+export enum ErpAccountStatus {
+    CREATED = "created",
+    APPROVED = "approved",
+}
+
+export interface ErpAccount {
+    id: number;
+    status: ErpAccountStatus;
+    company_id: number;
+    company_name: string;
+    account: Account;
+    created_at: string;
+}
 export interface Account {
     id: number;
     is_root: boolean;
     ory_id: string;
     email: string;
+    erp_account: ErpAccount;
     resume: {
         id: number;
         path: string;
@@ -149,8 +163,8 @@ export interface Transaction {
 }
 
 export enum SecondaryTransactionType {
-    DEFAULT = 'default', // Thưởng CTV mới
-    REWARD_NEW_AGENCY = 'reward_new_agency', // Thưởng Đại lý mới
+    DEFAULT = "default", // Thưởng CTV mới
+    REWARD_NEW_AGENCY = "reward_new_agency", // Thưởng Đại lý mới
 }
 
 export interface SecondaryTransaction {

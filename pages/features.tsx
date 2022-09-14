@@ -127,7 +127,7 @@ function Features() {
                             )}
                             {tab === FeatureTab.ENTERPRISE && (
                                 <div className="section-features__list">
-                                    <Link href={"https://erp.smartcardnp.vn"}>
+                                    <Link href={process.env.NEXT_PUBLIC_ERP_URL || ""}>
                                         <div className="section-features__item">
                                             <span className="icon">
                                                 <i className="fas fa-utensils"></i>
