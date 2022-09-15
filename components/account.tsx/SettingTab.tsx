@@ -20,7 +20,7 @@ function SettingTab(props: Props) {
             }}
         >
 
-            {!account?.agency || account?.agency.type === AgencyType.COLABORATOR && (
+            {(!account?.agency || account?.agency.type === AgencyType.COLABORATOR) && (
                 <Link href={`/account/agency-register?type=${AgencyType.AGENCY}`}>
                     <button className="full-width-btn mb-3">
                         Kích hoạt làm đại lý
