@@ -111,6 +111,12 @@ function LayoutDashboard({ children }: Props) {
                             <span>Đăng ký tk doanh nghiệp</span>
                         </a>
                     </Link>
+                    <Link href={"/dashboard/recharge-register"}>
+                        <a className="nav-link">
+                            <i className="fas fa-fw fa-cog" />
+                            <span>Đăng ký nạp tiền</span>
+                        </a>
+                    </Link>
                 </li>
                 {/* Nav Item - Utilities Collapse Menu */}
                 {/* <li className="nav-item">

@@ -202,12 +202,14 @@ function WalletPage() {
                                         </div>
                                     </div>
                                     <div className="section-features__list">
-                                        <div className="section-features__item inactive">
-                                            <span className="icon">
-                                                <i className="fas fa-sign-in-alt"></i>
-                                            </span>
-                                            <span>Nạp tiền</span>
-                                        </div>
+                                        <Link href="/wallet/recharge">
+                                            <div className="section-features__item">
+                                                <span className="icon">
+                                                    <i className="fas fa-sign-in-alt"></i>
+                                                </span>
+                                                <span>Nạp tiền</span>
+                                            </div>
+                                        </Link>
                                         <Link href="/wallet/withdraw">
                                             <div className="section-features__item">
                                                 <span className="icon">
@@ -289,9 +291,13 @@ function WalletPage() {
                                                                         </div>
                                                                         {transaction.note && (
                                                                             <div className="wallet-transaction__item__left__description">
-                                                                                Nội dung: <strong>{
-                                                                                    transaction.note
-                                                                                }</strong>
+                                                                                Nội
+                                                                                dung:{" "}
+                                                                                <strong>
+                                                                                    {
+                                                                                        transaction.note
+                                                                                    }
+                                                                                </strong>
                                                                             </div>
                                                                         )}
                                                                         <div className="wallet-transaction__item__left__description">

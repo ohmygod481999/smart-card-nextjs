@@ -297,7 +297,7 @@ button.full-width-btn:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%;
+    height: 70vh;
 }
 .withdraw-balance {
     display: flex;
@@ -317,6 +317,7 @@ button.full-width-btn:hover {
 }
 
 .withdraw-receiving-method {
+    position: relative;
     display: flex;
     border: 1px solid gray;
     padding: 10px;
@@ -327,8 +328,8 @@ button.full-width-btn:hover {
 
 .withdraw-receiving-method__edit {
     position: absolute;
-    right: 30px;
-    bottom: 90px;
+    right: 8px;
+    top: 40%;
     border: 1px solid #95cb28;
     padding: 3px 5px;
     border-radius: 5px;

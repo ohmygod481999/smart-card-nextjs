@@ -292,3 +292,18 @@ export interface ElectricBillInfo extends BillInfo {
         provider: string;
     };
 }
+
+export enum RechargeRegisterStatus {
+    CREATED = "created",
+    ACCEPTED = "accepted",
+    REFUSED = "refused",
+}
+
+export interface RechargeRegister {
+    id: number;
+    account: Account;
+    account_id: number;
+    amount: number;
+    status: RechargeRegisterStatus;
+    created_at: string;
+}
