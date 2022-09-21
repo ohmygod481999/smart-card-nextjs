@@ -89,7 +89,7 @@ function Recharge() {
                 return;
             }
             if (withdrawalAmount < 10000) {
-                setErrMsg("Số tiền rút tối thiểu là 50,000đ");
+                setErrMsg("Số tiền nạp tối thiểu là 10,000đ");
                 return;
             }
             // const unapprovedRegsRes = await apolloClient.query({
@@ -263,7 +263,7 @@ function Recharge() {
                             </div>
                             <button
                                 className="full-width-btn"
-                                // disabled={submitLoading}
+                                disabled={submitLoading}
                                 onClick={onWithdrawSubmit}
                             >
                                 Tạo lệnh nạp tiền

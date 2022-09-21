@@ -5,15 +5,13 @@ export const GET_ACCOUNT = gql`
         account_by_pk(id: $id) {
             id
             ory_id
-            user_info {
-                traits
-                recovery_addresses {
-                    id
-                    status
-                    updated_at
-                    value
-                }
-                credentials
+            email
+            account_info {
+                id
+                name
+                phone
+                bank_name
+                bank_number
             }
         }
     }

@@ -218,6 +218,14 @@ function WalletPage() {
                                                 <span>Rút tiền</span>
                                             </div>
                                         </Link>
+                                        <Link href="/wallet/transfer">
+                                            <div className="section-features__item">
+                                                <span className="icon">
+                                                    <i className="fas fa-exchange-alt"></i>
+                                                </span>
+                                                <span>Chuyển tiền</span>
+                                            </div>
+                                        </Link>
                                         <div className="section-features__item">
                                             <span className="icon">
                                                 <i className="fas fa-history"></i>
@@ -226,12 +234,6 @@ function WalletPage() {
                                                 lịch sử
                                                 <br /> giao dịch
                                             </span>
-                                        </div>
-                                        <div className="section-features__item inactive">
-                                            <span className="icon">
-                                                <i className="fas fa-headset"></i>
-                                            </span>
-                                            <span>Hỗ trợ</span>
                                         </div>
                                     </div>
                                 </>
