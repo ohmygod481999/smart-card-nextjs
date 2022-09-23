@@ -94,8 +94,8 @@ export const PERCENT_AGENCY: { [x: number]: number } = {
 
 export const BANK_ACCOUNT = {
     BANK_NAME: "Vietinbank",
-    BANK_NUMBER: "106881678989",
-    BANK_ACCOUNT_NAME: "Lê Thị Nguyệt",
+    BANK_NUMBER: "115002903559",
+    BANK_ACCOUNT_NAME: "Công ty TNHH tư vấn đầu tư phát triển ứng dụng công nghệ NYP",
     BANK_BRANCH: "",
 };
 
