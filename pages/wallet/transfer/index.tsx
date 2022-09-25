@@ -97,8 +97,8 @@ function TransferMoney() {
                 );
                 return;
             }
-            if (transferAmount < 10000) {
-                setErrMsg("Số tiền chuyển tối thiểu là 10,000đ");
+            if (transferAmount < 1) {
+                setErrMsg("Số tiền không hợp lệ");
                 return;
             }
             if (wallet.balance - transferAmount < 50000) {
